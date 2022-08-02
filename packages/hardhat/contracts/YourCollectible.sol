@@ -96,23 +96,37 @@ contract YourCollectible is ERC721, Ownable {
 
   // Visibility is `public` to enable it being called by other contracts for composition.
   function renderTokenById(uint256 id) public view returns (string memory) {
+
     string memory render = string(abi.encodePacked(
+      '<rect id="rect_bg" x="10" y="10" rx="100" ry="100" width="380" height="380" stroke="yellow" fill="red" stroke-width="2"/>',
+      '<rect id="rect" x="-0.5" y="-0.5" width="1" height="1" stroke="black" fill="rgba(0, 0, 255, 0.5)" stroke-width="0.1"/>',
+      '<g id="f1">',
+        '<g id="temp">',
+          '<animateTransform attributeName="transform" attributeType="XML" type="rotate" values="0 0 0; 5 0 0; 15 0 0; 45 0 0; 55 0 0; 60 0 0; -30 0 0; 0 0 0" dur="2s" repeatCount="indefinite"/>',
+          '<use href="#rect" x="-0.5" y="-0.5"/>',
+        '</g>',
+        '<use href="#rect" x=" 0.5" y="-0.5"/>',
+        '<use href="#rect" x="-0.5" y=" 0.5"/>',
+      '</g>',
+      '<use href="#f1" transform="translate(100, 100) scale(75, 50)"/>',
       '<g id="eye1">',
-          '<ellipse stroke-width="3" ry="29.5" rx="29.5" id="svg_1" cy="154.5" cx="181.5" stroke="#000" fill="#fff"/>',
-          '<ellipse ry="3.5" rx="2.5" id="svg_3" cy="154.5" cx="173.5" stroke-width="3" stroke="#000" fill="#000000"/>',
-        '</g>',
-        '<g id="head">',
-          '<ellipse fill="#',
-          color[id].toColor(),
-          '" stroke-width="3" cx="204.5" cy="211.80065" id="svg_5" rx="',
-          chubbiness[id].toString(),
-          '" ry="51.80065" stroke="#000"/>',
-        '</g>',
-        '<g id="eye2">',
-          '<ellipse stroke-width="3" ry="29.5" rx="29.5" id="svg_2" cy="168.5" cx="209.5" stroke="#000" fill="#fff"/>',
-          '<ellipse ry="3.5" rx="3" id="svg_4" cy="169.5" cx="208" stroke-width="3" fill="#000000" stroke="#000"/>',
-        '</g>'
-      ));
+        '<ellipse stroke-width="3" ry="29.5" rx="29.5" id="svg_1" cy="154.5" cx="181.5" stroke="#000" fill="#fff"/>',
+        '<ellipse ry="3.5" rx="2.5" id="svg_3" cy="154.5" cx="173.5" stroke-width="3" stroke="#000" fill="#000000"/>',
+      '</g>',
+      '<g id="head">',
+        '<ellipse fill="#',
+        color[id].toColor(),
+        '" stroke-width="3" cx="204.5" cy="211.80065" id="svg_5" rx="',
+        chubbiness[id].toString(),
+        '" ry="51.80065" stroke="#000"/>',
+      '</g>',
+      '<g id="eye2">',
+        '<ellipse stroke-width="3" ry="29.5" rx="29.5" id="svg_2" cy="168.5" cx="209.5" stroke="#000" fill="#fff"/>',
+        '<ellipse ry="3.5" rx="3" id="svg_4" cy="169.5" cx="208" stroke-width="3" fill="#000000" stroke="#000">',
+          '<animate attributeName="rx" dur="6s" begin="0s" values="2.5; 3.5; 5.0; 12; 8; 4; 2.5" repeatCount="indefinite" />',
+        '</ellipse>',
+      '</g>'
+    ));
 
     return render;
   }
