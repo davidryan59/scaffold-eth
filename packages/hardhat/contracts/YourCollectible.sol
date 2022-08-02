@@ -84,50 +84,82 @@ contract YourCollectible is ERC721, Ownable {
   }
 
   function generateSVGofTokenById(uint256 id) internal view returns (string memory) {
-
     string memory svg = string(abi.encodePacked(
       '<svg width="400" height="400" xmlns="http://www.w3.org/2000/svg">',
         renderTokenById(id),
       '</svg>'
     ));
-
     return svg;
   }
 
-  // Visibility is `public` to enable it being called by other contracts for composition.
-  function renderTokenById(uint256 id) public view returns (string memory) {
-
-    string memory render = string(abi.encodePacked(
-      '<rect id="rect_bg" x="10" y="10" rx="100" ry="100" width="380" height="380" stroke="yellow" fill="red" stroke-width="2"/>',
-      '<rect id="rect" x="-0.5" y="-0.5" width="1" height="1" stroke="black" fill="rgba(0, 0, 255, 0.5)" stroke-width="0.1"/>',
-      '<g id="f1">',
-        '<g id="temp">',
-          '<animateTransform attributeName="transform" attributeType="XML" type="rotate" values="0 0 0; 5 0 0; 15 0 0; 45 0 0; 55 0 0; 60 0 0; -30 0 0; 0 0 0" dur="2s" repeatCount="indefinite"/>',
-          '<use href="#rect" x="-0.5" y="-0.5"/>',
-        '</g>',
-        '<use href="#rect" x=" 0.5" y="-0.5"/>',
-        '<use href="#rect" x="-0.5" y=" 0.5"/>',
-      '</g>',
-      '<use href="#f1" transform="translate(100, 100) scale(75, 50)"/>',
-      '<g id="eye1">',
-        '<ellipse stroke-width="3" ry="29.5" rx="29.5" id="svg_1" cy="154.5" cx="181.5" stroke="#000" fill="#fff"/>',
-        '<ellipse ry="3.5" rx="2.5" id="svg_3" cy="154.5" cx="173.5" stroke-width="3" stroke="#000" fill="#000000"/>',
-      '</g>',
-      '<g id="head">',
-        '<ellipse fill="#',
-        color[id].toColor(),
-        '" stroke-width="3" cx="204.5" cy="211.80065" id="svg_5" rx="',
-        chubbiness[id].toString(),
-        '" ry="51.80065" stroke="#000"/>',
-      '</g>',
-      '<g id="eye2">',
-        '<ellipse stroke-width="3" ry="29.5" rx="29.5" id="svg_2" cy="168.5" cx="209.5" stroke="#000" fill="#fff"/>',
-        '<ellipse ry="3.5" rx="3" id="svg_4" cy="169.5" cx="208" stroke-width="3" fill="#000000" stroke="#000">',
-          '<animate attributeName="rx" dur="6s" begin="0s" values="2.5; 3.5; 5.0; 12; 8; 4; 2.5" repeatCount="indefinite" />',
-        '</ellipse>',
+  function getIteration0Line(
+    string memory label,
+    string memory transl,
+    string memory x,
+    string memory y
+  ) private view returns (string memory) {
+    return string(abi.encodePacked(
+      '<g>',
+        '<animateTransform attributeName="transform" attributeType="XML" type="translate" values="0; ',transl,'; 0" dur="4s" repeatCount="indefinite" additive="sum"/>',
+        '<animateTransform attributeName="transform" attributeType="XML" type="scale" values="1 1; 0.5 1; 1 1" dur="4s" repeatCount="indefinite" additive="sum"/>',
+        '<use href="#',label,'0" x="',x,'" y="',y,'"/>',
       '</g>'
     ));
+  }
 
+  function makeNextIteration4Square(
+    string memory label,
+    string memory thisIt,
+    string memory prevIt
+  ) private view returns (string memory) {
+    string memory labelThisIt = string(abi.encodePacked(label, thisIt));
+    string memory labelPrevIt = string(abi.encodePacked(label, prevIt));
+    return string(abi.encodePacked(
+      '<g id="',labelThisIt,'" transform="scale(0.5)">',
+        '<use href="#',labelPrevIt,'" x="-0.5" y=" 0.5"/>',
+        '<use href="#',labelPrevIt,'" x=" 0.5" y=" 0.5"/>',
+        '<use href="#',labelPrevIt,'" x="-0.5" y="-0.5"/>',
+        '<use href="#',labelPrevIt,'" x=" 0.5" y="-0.5"/>',
+      '</g>'
+    ));
+  }
+
+  function getFractal(
+    string memory label,
+    string memory lineCol,
+    string memory fillCol,
+    string memory t1,
+    string memory t2
+  ) private view returns (string memory) {
+    return string(abi.encodePacked(
+      '<rect id="',label,'0" x="-0.5" y="-0.5" width="1" height="1" stroke="',lineCol,'" fill="',fillCol,'" stroke-width="0.1"/>',
+      '<g id="',label,'1" transform="scale(0.5)">',
+        getIteration0Line(label, t1, "-0.5", " 0.5"),
+        getIteration0Line(label, t1, " 0.5", " 0.5"),
+        getIteration0Line(label, t2, "-0.5", "-0.5"),
+        getIteration0Line(label, t2, " 0.5", "-0.5"),
+      '</g>',
+      makeNextIteration4Square(label, "2", "1")
+    ));
+  }
+
+  // Function visibility is `public` to enable it being called by other contracts for composition.
+  function renderTokenById(uint256 id) public view returns (string memory) {
+    string memory render = string(abi.encodePacked(
+      '<rect id="rect_bg" x="2" y="2" rx="150" ry="150" width="396" height="396" stroke="rgba(0, 80, 255, 1)" fill="rgba(160, 160, 160, 1)" stroke-width="5"/>',
+      '<g visibility="hidden">',
+        getFractal('f', 'rgba(0, 0, 0, 0.75)', 'rgba(0, 0, 255, 0.5)', '-0.5', '0.5'),
+        getFractal('g', 'rgba(200, 200, 0, 0.75)', 'rgba(255, 255, 220, 0.5)', '0.5', '-0.5'),
+      '</g>',
+      '<g>',
+        '<animateTransform attributeName="transform" attributeType="XML" type="translate" values="0; 0; 30; 70; 100; 100; 80; 20; 0" dur="4s" repeatCount="indefinite"/>',
+        '<use href="#f2" transform="translate(100, 200) scale(100, 200) rotate(45)"/>',
+      '</g>',
+      '<g>',
+        '<animateTransform attributeName="transform" attributeType="XML" type="translate" values="0; 0; -30; -70; -100; -100; -80; -20; 0" dur="4s" repeatCount="indefinite"/>',
+        '<use href="#g2" transform="translate(300, 200) scale(100, 200) rotate(45)"/>',
+      '</g>'
+    ));
     return render;
   }
 
