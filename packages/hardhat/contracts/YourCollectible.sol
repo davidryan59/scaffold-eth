@@ -139,7 +139,8 @@ contract YourCollectible is ERC721, Ownable {
         getIteration0Line(label, t2, "-0.5", "-0.5"),
         getIteration0Line(label, t2, " 0.5", "-0.5"),
       '</g>',
-      makeNextIteration4Square(label, "2", "1")
+      makeNextIteration4Square(label, "2", "1"),
+      makeNextIteration4Square(label, "3", "2")
     ));
   }
 
@@ -152,12 +153,12 @@ contract YourCollectible is ERC721, Ownable {
         getFractal('g', 'rgba(200, 200, 0, 0.75)', 'rgba(255, 255, 220, 0.5)', '0.5', '-0.5'),
       '</g>',
       '<g>',
-        '<animateTransform attributeName="transform" attributeType="XML" type="translate" values="0; 0; 30; 70; 100; 100; 80; 20; 0" dur="4s" repeatCount="indefinite"/>',
-        '<use href="#f2" transform="translate(100, 200) scale(100, 200) rotate(45)"/>',
+        '<animateTransform attributeName="transform" attributeType="XML" type="translate" values="0; 100; 0" dur="4s" repeatCount="indefinite"/>',
+        '<use href="#f3" transform="translate(100, 200) scale(100, 200) rotate(45)"/>',
       '</g>',
       '<g>',
-        '<animateTransform attributeName="transform" attributeType="XML" type="translate" values="0; 0; -30; -70; -100; -100; -80; -20; 0" dur="4s" repeatCount="indefinite"/>',
-        '<use href="#g2" transform="translate(300, 200) scale(100, 200) rotate(45)"/>',
+        '<animateTransform attributeName="transform" attributeType="XML" type="translate" values="0; -100; 0" dur="4s" repeatCount="indefinite"/>',
+        '<use href="#g3" transform="translate(300, 200) scale(100, 200) rotate(45)"/>',
       '</g>'
     ));
     return render;
