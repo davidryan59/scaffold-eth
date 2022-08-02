@@ -435,7 +435,13 @@ function App(props) {
                   tx( writeContracts.YourCollectible.mintItem() )
                 }}>MINT</Button>
               ):(
-                <Button type={"primary"} onClick={loadWeb3Modal}>CONNECT WALLET</Button>
+                <div>
+                  <Button type={"primary"} onClick={()=>{
+                    tx( writeContracts.YourCollectible.mintItem() )
+                  }}>MINT</Button>
+                  <span> </span>
+                  <Button type={"primary"} onClick={loadWeb3Modal}>CONNECT WALLET</Button>
+                </div>
               )}
 
             </div>
