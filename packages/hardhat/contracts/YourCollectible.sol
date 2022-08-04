@@ -77,8 +77,7 @@ contract YourCollectible is ERC721, Ownable {
                               uint2str(chubbiness[id]),
                               '}], "owner":"',
                               (uint160(ownerOf(id))).toHexString(20),
-                              '", "image": "',
-                              'data:image/svg+xml;base64,',
+                              '", "image": "data:image/svg+xml;base64,',
                               image,
                               '"}'
                           )
