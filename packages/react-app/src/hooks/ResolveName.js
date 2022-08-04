@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 
   ~ How can I use? ~
 
-  const addressFromENS = useResolveName(mainnetProvider, "austingriffith.eth");
+  const addressFromENS = useResolveName(mainnetProvider, "dryan.eth");
 
   ~ Features ~
 

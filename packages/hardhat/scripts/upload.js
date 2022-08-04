@@ -33,7 +33,7 @@ const main = async () => {
   //If you want to send value to an address from the deployer
   const deployerWallet = ethers.provider.getSigner()
   await deployerWallet.sendTransaction({
-    to: "0x34aA3F359A9D614239015126635CE7732c18fDF3",
+    to: "0x8c8B07C2501b3A3b034202ba11f270cfE5F11c27",
     value: ethers.utils.parseEther("0.001")
   })
   */

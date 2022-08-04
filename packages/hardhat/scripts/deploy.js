@@ -24,7 +24,7 @@ const main = async () => {
   // deploy the contract with all the artworks forSale
   const mergeFractal = await deploy("MergeFractal"/*,[ bytes32Array ]*/) // <-- add in constructor args like line 19 vvvv
 
-  mergeFractal.transferOwnership("0x34aA3F359A9D614239015126635CE7732c18fDF3") //austingriffith.eth
+  mergeFractal.transferOwnership("0x8c8B07C2501b3A3b034202ba11f270cfE5F11c27")  // dryan.eth
 
   //const yourContract = await ethers.getContractAt('YourContract', "0xaAC799eC2d00C013f1F11c37E654e59B0429DF6A") //<-- if you want to instantiate a version of a contract at a specific address!
   //const secondContract = await deploy("SecondContract")
@@ -37,7 +37,7 @@ const main = async () => {
   //If you want to send value to an address from the deployer
   const deployerWallet = ethers.provider.getSigner()
   await deployerWallet.sendTransaction({
-    to: "0x34aA3F359A9D614239015126635CE7732c18fDF3",
+    to: "0x8c8B07C2501b3A3b034202ba11f270cfE5F11c27",
     value: ethers.utils.parseEther("0.001")
   })
   */
