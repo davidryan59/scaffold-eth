@@ -4,7 +4,8 @@ const fs = require("fs");
 
 const directoryName = "build";
 
-const BUCKETNAME = "loogies.io"; // <<---- SET YOUR BUCKET NAME AND CREATE aws.json ** see below vvvvvvvvvv
+// TODO: need to get a suitable domain like the one below
+const BUCKETNAME = "mergefractals.io"; // <<---- SET YOUR BUCKET NAME AND CREATE aws.json ** see below vvvvvvvvvv
 
 
  const invalidation = {

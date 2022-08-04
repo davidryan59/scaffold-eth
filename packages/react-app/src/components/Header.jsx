@@ -7,7 +7,7 @@ export default function Header() {
   return (
     <a href="/">
       <PageHeader
-        title="🟢 Loogies"
+        title="🟢 Merge Fractal NFTs"
         subTitle=""
         style={{ cursor: "pointer" }}
       />
