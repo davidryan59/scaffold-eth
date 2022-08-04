@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.6.7;
+
 library ToColor {
     bytes16 internal constant ALPHABET = '0123456789abcdef';
 
