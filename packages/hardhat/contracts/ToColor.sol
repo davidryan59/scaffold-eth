@@ -9,4 +9,9 @@ library ToColor {
       }
       return string(buffer);
     }
+
+    // TODO: Debug this function, it doesn't appear to work
+    function toRGBA(bytes3 value, string memory alpha) internal pure returns (string memory) {
+      return string(abi.encodePacked('rgba(',uint8(value[0]),',',uint8(value[1]),',',uint8(value[2]),',',alpha,')'));
+    }
 }
