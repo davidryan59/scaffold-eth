@@ -179,28 +179,28 @@ function App(props) {
   ]);*/
 
   // keep track of a variable from the contract in the local React state:
-  const balance = useContractReader(readContracts, "YourCollectible", "balanceOf", [address]);
+  const balance = useContractReader(readContracts, "MergeFractal", "balanceOf", [address]);
   console.log("🤗 balance:", balance);
 
   // 📟 Listen for broadcast events
-  const transferEvents = useEventListener(readContracts, "YourCollectible", "Transfer", localProvider, 1);
+  const transferEvents = useEventListener(readContracts, "MergeFractal", "Transfer", localProvider, 1);
   console.log("📟 Transfer events:", transferEvents);
 
   //
-  // 🧠 This effect will update yourCollectibles by polling when your balance changes
+  // 🧠 This effect will update yourMergeFractals by polling when your balance changes
   //
   const yourBalance = balance && balance.toNumber && balance.toNumber();
-  const [yourCollectibles, setYourCollectibles] = useState();
+  const [yourMergeFractals, setYourMergeFractals] = useState();
 
   useEffect(() => {
-    const updateYourCollectibles = async () => {
-      const collectibleUpdate = [];
+    const updateYourMergeFractals = async () => {
+      const mergeFractalUpdate = [];
       for (let tokenIndex = 0; tokenIndex < balance; tokenIndex++) {
         try {
           console.log("GEtting token index", tokenIndex);
-          const tokenId = await readContracts.YourCollectible.tokenOfOwnerByIndex(address, tokenIndex);
+          const tokenId = await readContracts.MergeFractal.tokenOfOwnerByIndex(address, tokenIndex);
           console.log("tokenId", tokenId);
-          const tokenURI = await readContracts.YourCollectible.tokenURI(tokenId);
+          const tokenURI = await readContracts.MergeFractal.tokenURI(tokenId);
           const jsonManifestString = atob(tokenURI.substring(29))
           console.log("jsonManifestString", jsonManifestString);
 /*
@@ -213,7 +213,7 @@ function App(props) {
           try {
             const jsonManifest = JSON.parse(jsonManifestString);
             console.log("jsonManifest", jsonManifest);
-            collectibleUpdate.push({ id: tokenId, uri: tokenURI, owner: address, ...jsonManifest });
+            mergeFractalUpdate.push({ id: tokenId, uri: tokenURI, owner: address, ...jsonManifest });
           } catch (e) {
             console.log(e);
           }
@@ -222,9 +222,9 @@ function App(props) {
           console.log(e);
         }
       }
-      setYourCollectibles(collectibleUpdate.reverse());
+      setYourMergeFractals(mergeFractalUpdate.reverse());
     };
-    updateYourCollectibles();
+    updateYourMergeFractals();
   }, [address, yourBalance]);
 
   /*
@@ -369,15 +369,15 @@ function App(props) {
 
   const [loadedAssets, setLoadedAssets] = useState();
   /*useEffect(() => {
-    const updateYourCollectibles = async () => {
+    const updateYourMergeFractals = async () => {
       const assetUpdate = [];
       for (const a in assets) {
         try {
-          const forSale = await readContracts.YourCollectible.forSale(utils.id(a));
+          const forSale = await readContracts.MergeFractal.forSale(utils.id(a));
           let owner;
           if (!forSale) {
-            const tokenId = await readContracts.YourCollectible.uriToTokenId(utils.id(a));
-            owner = await readContracts.YourCollectible.ownerOf(tokenId);
+            const tokenId = await readContracts.MergeFractal.uriToTokenId(utils.id(a));
+            owner = await readContracts.MergeFractal.ownerOf(tokenId);
           }
           assetUpdate.push({ id: a, ...assets[a], forSale, owner });
         } catch (e) {
@@ -386,7 +386,7 @@ function App(props) {
       }
       setLoadedAssets(assetUpdate);
     };
-    if (readContracts && readContracts.YourCollectible) updateYourCollectibles();
+    if (readContracts && readContracts.MergeFractal) updateYourMergeFractals();
   }, [assets, readContracts, transferEvents]);*/
 
   const galleryList = [];
@@ -432,12 +432,12 @@ function App(props) {
             <div style={{ maxWidth: 820, margin: "auto", marginTop: 32, paddingBottom: 32 }}>
               {isSigner?(
                 <Button type={"primary"} onClick={()=>{
-                  tx( writeContracts.YourCollectible.mintItem() )
+                  tx( writeContracts.MergeFractal.mintItem() )
                 }}>MINT</Button>
               ):(
                 <div>
                   <Button type={"primary"} onClick={()=>{
-                    tx( writeContracts.YourCollectible.mintItem() )
+                    tx( writeContracts.MergeFractal.mintItem() )
                   }}>MINT</Button>
                   <span> </span>
                   <Button type={"primary"} onClick={loadWeb3Modal}>CONNECT WALLET</Button>
@@ -449,7 +449,7 @@ function App(props) {
             <div style={{ width: 820, margin: "auto", paddingBottom: 256 }}>
               <List
                 bordered
-                dataSource={yourCollectibles}
+                dataSource={yourMergeFractals}
                 renderItem={item => {
                   const id = item.id.toNumber();
 
@@ -464,7 +464,7 @@ function App(props) {
                           </div>
                         }
                       >
-                        <a href={"https://opensea.io/assets/"+(readContracts && readContracts.YourCollectible && readContracts.YourCollectible.address)+"/"+item.id} target="_blank">
+                        <a href={"https://opensea.io/assets/"+(readContracts && readContracts.MergeFractal && readContracts.MergeFractal.address)+"/"+item.id} target="_blank">
                         <img src={item.image} />
                         </a>
                         <div>{item.description}</div>
@@ -491,7 +491,7 @@ function App(props) {
                         <Button
                           onClick={() => {
                             console.log("writeContracts", writeContracts);
-                            tx(writeContracts.YourCollectible.transferFrom(address, transferToAddresses[id], id));
+                            tx(writeContracts.MergeFractal.transferFrom(address, transferToAddresses[id], id));
                           }}
                         >
                           Transfer
@@ -513,11 +513,11 @@ function App(props) {
           <Route path="/debug">
 
             <div style={{padding:32}}>
-              <Address value={readContracts && readContracts.YourCollectible && readContracts.YourCollectible.address} />
+              <Address value={readContracts && readContracts.MergeFractal && readContracts.MergeFractal.address} />
             </div>
 
             <Contract
-              name="YourCollectible"
+              name="MergeFractal"
               signer={userProvider.getSigner()}
               provider={localProvider}
               address={address}
