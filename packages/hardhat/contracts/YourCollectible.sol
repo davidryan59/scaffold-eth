@@ -26,7 +26,6 @@ contract YourCollectible is ERC721, Ownable {
   }
 
   mapping (uint256 => bytes3) public color;
-  mapping (uint256 => uint256) public chubbiness;
   mapping (uint256 => bool) public iteration2ternary;
   mapping (uint256 => bool) public iteration3ternary;
   mapping (uint256 => bool) public rotatoor;
@@ -45,17 +44,16 @@ contract YourCollectible is ERC721, Ownable {
 
       bytes32 predictableRandom = keccak256(abi.encodePacked( blockhash(block.number-1), msg.sender, address(this), id ));
       color[id] = bytes2(predictableRandom[0]) | ( bytes2(predictableRandom[1]) >> 8 ) | ( bytes3(predictableRandom[2]) >> 16 );
-      chubbiness[id] = 35+((55*uint256(uint8(predictableRandom[3])))/255);
-      iteration2ternary[id] = uint8(predictableRandom[4]) & 0x1 == 1;
-      iteration3ternary[id] = uint8(predictableRandom[4]) & 0x2 == 2;
-      rotatoor[id] = uint8(predictableRandom[4]) & 0x4 == 4;
+      iteration2ternary[id] = uint8(predictableRandom[3]) & 0x1 == 1;
+      iteration3ternary[id] = uint8(predictableRandom[3]) & 0x2 == 2;
+      rotatoor[id] = uint8(predictableRandom[3]) & 0x4 == 4;
       return id;
   }
 
   function tokenURI(uint256 id) public view override returns (string memory) {
       require(_exists(id), "not exist");
       string memory name = string(abi.encodePacked('Merge Fractal #',id.toString()));
-      string memory description = string(abi.encodePacked('This Merge Fractal is the color #',color[id].toColor(),' with a chubbiness of ',uint2str(chubbiness[id]),'!!!'));
+      string memory description = string(abi.encodePacked('This Merge Fractal is the color #',color[id].toColor(),'!!!'));
       string memory image = Base64.encode(bytes(generateSVGofTokenById(id)));
 
       return
@@ -73,9 +71,7 @@ contract YourCollectible is ERC721, Ownable {
                               id.toString(),
                               '", "attributes": [{"trait_type": "color", "value": "#',
                               color[id].toColor(),
-                              '"},{"trait_type": "chubbiness", "value": ',
-                              uint2str(chubbiness[id]),
-                              '}], "owner":"',
+                              '"}], "owner":"',
                               (uint160(ownerOf(id))).toHexString(20),
                               '", "image": "data:image/svg+xml;base64,',
                               image,
