@@ -67,7 +67,7 @@ contract MergeFractal is ERC721, Ownable {
 
   // TODO: make internal
   function getRGBA(uint256 id, uint8 startBit, uint8 section, string memory alpha) public view returns (string memory) {
-    // section should be 0, 1, 2 or 3
+    // Section should be 0, 1, 2 or 3 (0 is darkest, 3 is lightest)
     // Gives colours 0-7, 8-15, 16-23, 24-31 via idx
     uint8 idx = 8 * section + getUint8(id, startBit, 3); // 3 bits = 8 colour choices
     return string(abi.encodePacked(
@@ -126,25 +126,75 @@ contract MergeFractal is ERC721, Ownable {
     return svg;
   }
 
+  function renderBackgroundCircle(uint256 id) public view returns (string memory) {
+    string memory render = '';
+    render = string(abi.encodePacked(
+      // render,
+      '<circle fill="',
+      getRGBA(id, 97, 3, "1"),
+      '" cx="200" cy="200" r="200"/>'
+    ));
+    return render;    
+  }
+
+
+
+  // function renderLines(uint256 id) public view returns (string memory) {
+  //   // string memory linesPath = "M 2 226 L 2 174 M 6 247 L 6 153 M 9 261 L 9 139 M 13 272 L 13 128 M 17 281 L 17 119 M 21 289 L 21 111 M 25 297 L 25 103 M 29 304 L 29 96 M 33 310 L 33 90 M 37 315 L 37 85 M 41 321 L 41 79 M 44 326 L 44 74 M 48 330 L 48 70 M 52 335 L 52 65 M 56 339 L 56 61 M 60 343 L 60 57 M 64 347 L 64 53 M 68 350 L 68 50 M 72 353 L 72 47 M 76 357 L 76 43 M 79 360 L 79 40 M 83 362 L 83 38 M 87 365 L 87 35 M 91 368 L 91 32 M 95 370 L 95 30 M 99 373 L 99 27 M 103 375 L 103 25 M 107 377 L 107 23 M 111 379 L 111 21 M 114 381 L 114 19 M 118 383 L 118 17 M 122 384 L 122 16 M 126 386 L 126 14 M 130 387 L 130 13 M 134 389 L 134 11 M 138 390 L 138 10 M 142 391 L 142 9 M 146 392 L 146 8 M 149 394 L 149 6 M 153 394 L 153 6 M 157 395 L 157 5 M 161 396 L 161 4 M 165 397 L 165 3 M 169 398 L 169 2 M 173 398 L 173 2 M 177 399 L 177 1 M 181 399 L 181 1 M 184 399 L 184 1 M 188 400 L 188 0 M 192 400 L 192 0 M 196 400 L 196 0 M 200 400 L 200 0 M 204 400 L 204 0 M 208 400 L 208 0 M 212 400 L 212 0 M 216 399 L 216 1 M 219 399 L 219 1 M 223 399 L 223 1 M 227 398 L 227 2 M 231 398 L 231 2 M 235 397 L 235 3 M 239 396 L 239 4 M 243 395 L 243 5 M 247 394 L 247 6 M 251 394 L 251 6 M 254 392 L 254 8 M 258 391 L 258 9 M 262 390 L 262 10 M 266 389 L 266 11 M 270 387 L 270 13 M 274 386 L 274 14 M 278 384 L 278 16 M 282 383 L 282 17 M 286 381 L 286 19 M 289 379 L 289 21 M 293 377 L 293 23 M 297 375 L 297 25 M 301 373 L 301 27 M 305 370 L 305 30 M 309 368 L 309 32 M 313 365 L 313 35 M 317 362 L 317 38 M 321 360 L 321 40 M 324 357 L 324 43 M 328 353 L 328 47 M 332 350 L 332 50 M 336 347 L 336 53 M 340 343 L 340 57 M 344 339 L 344 61 M 348 335 L 348 65 M 352 330 L 352 70 M 356 326 L 356 74 M 359 321 L 359 79 M 363 315 L 363 85 M 367 310 L 367 90 M 371 304 L 371 96 M 375 297 L 375 103 M 379 289 L 379 111 M 383 281 L 383 119 M 387 272 L 387 128 M 391 261 L 391 139 M 394 247 L 394 153 M 398 226 L 398 174 ";
+  //   // string memory strokeAndLine = string(abi.encodePacked('" stroke-width="1px" d="',linesPath,'"/>'));
+  //   // string memory col0 = string(abi.encodePacked(getRGBA(id, 88, 0, "0.99"), strokeAndLine));
+  //   // string memory col1 = string(abi.encodePacked(getRGBA(id, 91, 1, "0.99"), strokeAndLine));
+  //   // string memory col2 = string(abi.encodePacked(getRGBA(id, 94, 2, "0.99"), strokeAndLine));
+  //   // string memory col3 = string(abi.encodePacked(getRGBA(id, 97, 3, "0.99"), strokeAndLine));
+  //   string memory render = '';
+  //   render = string(abi.encodePacked(
+  //     // render,
+  //     '<g><animateTransform attributeName="transform" attributeType="XML" type="rotate" values="0 200 200; -270 200 200; 0 200 200"',
+  //     getDur(id, 56),
+  //     ' repeatCount="indefinite"/><use href="#lines0"/></g>'
+  //   ));
+  //   return render;    
+  // }
+
+  function renderRotatingLines(uint256 id) public view returns (string memory) {
+    string memory linesPath = "M 2 226 L 2 174 M 6 247 L 6 153 M 9 261 L 9 139 M 13 272 L 13 128 M 17 281 L 17 119 M 21 289 L 21 111 M 25 297 L 25 103 M 29 304 L 29 96 M 33 310 L 33 90 M 37 315 L 37 85 M 41 321 L 41 79 M 44 326 L 44 74 M 48 330 L 48 70 M 52 335 L 52 65 M 56 339 L 56 61 M 60 343 L 60 57 M 64 347 L 64 53 M 68 350 L 68 50 M 72 353 L 72 47 M 76 357 L 76 43 M 79 360 L 79 40 M 83 362 L 83 38 M 87 365 L 87 35 M 91 368 L 91 32 M 95 370 L 95 30 M 99 373 L 99 27 M 103 375 L 103 25 M 107 377 L 107 23 M 111 379 L 111 21 M 114 381 L 114 19 M 118 383 L 118 17 M 122 384 L 122 16 M 126 386 L 126 14 M 130 387 L 130 13 M 134 389 L 134 11 M 138 390 L 138 10 M 142 391 L 142 9 M 146 392 L 146 8 M 149 394 L 149 6 M 153 394 L 153 6 M 157 395 L 157 5 M 161 396 L 161 4 M 165 397 L 165 3 M 169 398 L 169 2 M 173 398 L 173 2 M 177 399 L 177 1 M 181 399 L 181 1 M 184 399 L 184 1 M 188 400 L 188 0 M 192 400 L 192 0 M 196 400 L 196 0 M 200 400 L 200 0 M 204 400 L 204 0 M 208 400 L 208 0 M 212 400 L 212 0 M 216 399 L 216 1 M 219 399 L 219 1 M 223 399 L 223 1 M 227 398 L 227 2 M 231 398 L 231 2 M 235 397 L 235 3 M 239 396 L 239 4 M 243 395 L 243 5 M 247 394 L 247 6 M 251 394 L 251 6 M 254 392 L 254 8 M 258 391 L 258 9 M 262 390 L 262 10 M 266 389 L 266 11 M 270 387 L 270 13 M 274 386 L 274 14 M 278 384 L 278 16 M 282 383 L 282 17 M 286 381 L 286 19 M 289 379 L 289 21 M 293 377 L 293 23 M 297 375 L 297 25 M 301 373 L 301 27 M 305 370 L 305 30 M 309 368 L 309 32 M 313 365 L 313 35 M 317 362 L 317 38 M 321 360 L 321 40 M 324 357 L 324 43 M 328 353 L 328 47 M 332 350 L 332 50 M 336 347 L 336 53 M 340 343 L 340 57 M 344 339 L 344 61 M 348 335 L 348 65 M 352 330 L 352 70 M 356 326 L 356 74 M 359 321 L 359 79 M 363 315 L 363 85 M 367 310 L 367 90 M 371 304 L 371 96 M 375 297 L 375 103 M 379 289 L 379 111 M 383 281 L 383 119 M 387 272 L 387 128 M 391 261 L 391 139 M 394 247 L 394 153 M 398 226 L 398 174 ";
+    string memory strokeAndLine = string(abi.encodePacked('" stroke-width="1px" d="',linesPath,'"/>'));
+    string memory col0 = string(abi.encodePacked(getRGBA(id, 88, 0, "0.99"), strokeAndLine));
+    string memory col1 = string(abi.encodePacked(getRGBA(id, 91, 1, "0.99"), strokeAndLine));
+    // string memory col2 = string(abi.encodePacked(getRGBA(id, 94, 2, "0.99"), strokeAndLine));
+    string memory col3 = string(abi.encodePacked(getRGBA(id, 97, 2, "0.99"), strokeAndLine));
+    // string memory col3 = string(abi.encodePacked(getRGBA(id, 97, 3, "0.99"), strokeAndLine));
+    string memory render = '';
+    {
+      render = string(abi.encodePacked(
+        // render,
+        '<defs><path id="lines0" fill="none" stroke="',col0,
+        '<path id="lines1" fill="none" stroke="',col1,
+        // '<path id="lines2" fill="none" stroke="',col2,
+        '<path id="lines3" fill="none" stroke="',col3,
+        '</defs><g><animateTransform attributeName="transform" attributeType="XML" type="rotate" values="0 200 200; -270 200 200; 0 200 200"',getDur(id, 56),' repeatCount="indefinite"/><use href="#lines0"/></g>',
+        '<g><animateTransform attributeName="transform" attributeType="XML" type="rotate" values="0 200 200;  270 200 200; 0 200 200"',getDur(id, 64),' repeatCount="indefinite"/><use href="#lines1"/></g>',
+        // '<g><animateTransform attributeName="transform" attributeType="XML" type="rotate" values="0 200 200; -180 200 200; 0 200 200"',getDur(id, 72),' repeatCount="indefinite"/><use href="#lines2"/></g>',
+        '<g><animateTransform attributeName="transform" attributeType="XML" type="rotate" values="0 200 200;  180 200 200; 0 200 200"',getDur(id, 80),' repeatCount="indefinite"/><use href="#lines3"/></g>'
+      ));
+    }
+    return render;    
+  }
+
   // Function visibility is `public` to enable it being called by other contracts for composition.
   function renderTokenById(uint256 id) public view returns (string memory) {
-    string memory linesPath = "M 2 226 L 2 174 M 6 247 L 6 153 M 9 261 L 9 139 M 13 272 L 13 128 M 17 281 L 17 119 M 21 289 L 21 111 M 25 297 L 25 103 M 29 304 L 29 96 M 33 310 L 33 90 M 37 315 L 37 85 M 41 321 L 41 79 M 44 326 L 44 74 M 48 330 L 48 70 M 52 335 L 52 65 M 56 339 L 56 61 M 60 343 L 60 57 M 64 347 L 64 53 M 68 350 L 68 50 M 72 353 L 72 47 M 76 357 L 76 43 M 79 360 L 79 40 M 83 362 L 83 38 M 87 365 L 87 35 M 91 368 L 91 32 M 95 370 L 95 30 M 99 373 L 99 27 M 103 375 L 103 25 M 107 377 L 107 23 M 111 379 L 111 21 M 114 381 L 114 19 M 118 383 L 118 17 M 122 384 L 122 16 M 126 386 L 126 14 M 130 387 L 130 13 M 134 389 L 134 11 M 138 390 L 138 10 M 142 391 L 142 9 M 146 392 L 146 8 M 149 394 L 149 6 M 153 394 L 153 6 M 157 395 L 157 5 M 161 396 L 161 4 M 165 397 L 165 3 M 169 398 L 169 2 M 173 398 L 173 2 M 177 399 L 177 1 M 181 399 L 181 1 M 184 399 L 184 1 M 188 400 L 188 0 M 192 400 L 192 0 M 196 400 L 196 0 M 200 400 L 200 0 M 204 400 L 204 0 M 208 400 L 208 0 M 212 400 L 212 0 M 216 399 L 216 1 M 219 399 L 219 1 M 223 399 L 223 1 M 227 398 L 227 2 M 231 398 L 231 2 M 235 397 L 235 3 M 239 396 L 239 4 M 243 395 L 243 5 M 247 394 L 247 6 M 251 394 L 251 6 M 254 392 L 254 8 M 258 391 L 258 9 M 262 390 L 262 10 M 266 389 L 266 11 M 270 387 L 270 13 M 274 386 L 274 14 M 278 384 L 278 16 M 282 383 L 282 17 M 286 381 L 286 19 M 289 379 L 289 21 M 293 377 L 293 23 M 297 375 L 297 25 M 301 373 L 301 27 M 305 370 L 305 30 M 309 368 L 309 32 M 313 365 L 313 35 M 317 362 L 317 38 M 321 360 L 321 40 M 324 357 L 324 43 M 328 353 L 328 47 M 332 350 L 332 50 M 336 347 L 336 53 M 340 343 L 340 57 M 344 339 L 344 61 M 348 335 L 348 65 M 352 330 L 352 70 M 356 326 L 356 74 M 359 321 L 359 79 M 363 315 L 363 85 M 367 310 L 367 90 M 371 304 L 371 96 M 375 297 L 375 103 M 379 289 L 379 111 M 383 281 L 383 119 M 387 272 L 387 128 M 391 261 L 391 139 M 394 247 L 394 153 M 398 226 L 398 174 ";
-    string memory render = string(abi.encodePacked(
+    // string memory linesPath = "M 2 226 L 2 174 M 6 247 L 6 153 M 9 261 L 9 139 M 13 272 L 13 128 M 17 281 L 17 119 M 21 289 L 21 111 M 25 297 L 25 103 M 29 304 L 29 96 M 33 310 L 33 90 M 37 315 L 37 85 M 41 321 L 41 79 M 44 326 L 44 74 M 48 330 L 48 70 M 52 335 L 52 65 M 56 339 L 56 61 M 60 343 L 60 57 M 64 347 L 64 53 M 68 350 L 68 50 M 72 353 L 72 47 M 76 357 L 76 43 M 79 360 L 79 40 M 83 362 L 83 38 M 87 365 L 87 35 M 91 368 L 91 32 M 95 370 L 95 30 M 99 373 L 99 27 M 103 375 L 103 25 M 107 377 L 107 23 M 111 379 L 111 21 M 114 381 L 114 19 M 118 383 L 118 17 M 122 384 L 122 16 M 126 386 L 126 14 M 130 387 L 130 13 M 134 389 L 134 11 M 138 390 L 138 10 M 142 391 L 142 9 M 146 392 L 146 8 M 149 394 L 149 6 M 153 394 L 153 6 M 157 395 L 157 5 M 161 396 L 161 4 M 165 397 L 165 3 M 169 398 L 169 2 M 173 398 L 173 2 M 177 399 L 177 1 M 181 399 L 181 1 M 184 399 L 184 1 M 188 400 L 188 0 M 192 400 L 192 0 M 196 400 L 196 0 M 200 400 L 200 0 M 204 400 L 204 0 M 208 400 L 208 0 M 212 400 L 212 0 M 216 399 L 216 1 M 219 399 L 219 1 M 223 399 L 223 1 M 227 398 L 227 2 M 231 398 L 231 2 M 235 397 L 235 3 M 239 396 L 239 4 M 243 395 L 243 5 M 247 394 L 247 6 M 251 394 L 251 6 M 254 392 L 254 8 M 258 391 L 258 9 M 262 390 L 262 10 M 266 389 L 266 11 M 270 387 L 270 13 M 274 386 L 274 14 M 278 384 L 278 16 M 282 383 L 282 17 M 286 381 L 286 19 M 289 379 L 289 21 M 293 377 L 293 23 M 297 375 L 297 25 M 301 373 L 301 27 M 305 370 L 305 30 M 309 368 L 309 32 M 313 365 L 313 35 M 317 362 L 317 38 M 321 360 L 321 40 M 324 357 L 324 43 M 328 353 L 328 47 M 332 350 L 332 50 M 336 347 L 336 53 M 340 343 L 340 57 M 344 339 L 344 61 M 348 335 L 348 65 M 352 330 L 352 70 M 356 326 L 356 74 M 359 321 L 359 79 M 363 315 L 363 85 M 367 310 L 367 90 M 371 304 L 371 96 M 375 297 L 375 103 M 379 289 L 379 111 M 383 281 L 383 119 M 387 272 L 387 128 M 391 261 L 391 139 M 394 247 L 394 153 M 398 226 L 398 174 ";
+    string memory render = '';
+    render = string(abi.encodePacked(
+      render,
       '<defs><linearGradient id="linear-gradient-13" x1="96" y1="202.4" x2="150" y2="202.4" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#574581" /><stop offset="1" stop-color="#4c235b" /></linearGradient><linearGradient id="linear-gradient-19" x1="149.1" y1="24" x2="149.1" y2="276" href="#linear-gradient-13" /><clipPath id="clip-path"><path class="cls-1" d="M0-42.3h300v188.6H0z" /></clipPath><clipPath id="clip-path-2"><path class="cls-1" d="M.4 0h300v300H.4z" /></clipPath><style>.cls-1{fill:none}.cls-2{fill:url(#linear-gradient)}.cls-4{fill:url(#linear-gradient-2)}.cls-5{fill:url(#linear-gradient-3)}.cls-14{fill:url(#linear-gradient-12)}.cls-15{opacity:.2}.cls-16{clip-path:url(#clip-path-2)}.cls-17{fill:#e75a00}.cls-18{fill:url(#linear-gradient-13)}.cls-19{fill:#fff}.cls-20{fill:url(#linear-gradient-14)}.cls-21{fill:url(#linear-gradient-15)}.cls-22{fill:url(#linear-gradient-16)}.cls-23{fill:url(#linear-gradient-17)}.cls-24{fill:url(#linear-gradient-18)}.cls-25{stroke:#fff;stroke-miterlimit:10;fill:url(#linear-gradient-19)}</style><style>@keyframes ff{0%,49.9%,to{transform:translate(0,0) scale(1,1)}50%,99.9%{transform:translate(300px,0) scale(-1,1)}}#Fire1{animation:ff 300ms linear infinite normal forwards}text{font-size:16px;font-family:Helvetica,sans-serif;font-weight:900;fill:#fff;letter-spacing:1px}#Ether,#Ring,#background{filter:hue-rotate(42deg)}#Fire_to_move{transform:translate(0px,20px)}</style>',
       '<g><animateTransform attributeName="transform" attributeType="XML" type="translate" values="0; 95; 0" dur="10s" repeatCount="indefinite" additive="sum"/>',
       '<use href="#f3" transform="translate(105, 200) scale(125, 250) rotate(45)"/></g>',
       '<g><animateTransform attributeName="transform" attributeType="XML" type="translate" values="0; -95; 0" dur="10s" repeatCount="indefinite" additive="sum"/>',
         '<use href="#g3" transform="translate(295, 200) scale(125, 250) rotate(45)"/></g>',
-      '<path id="lines0" fill="none" stroke="',getRGBA(id,  88, 0, "0.55"),'" stroke-width="2px" d="',linesPath,'"/>',
-      '<path id="lines1" fill="none" stroke="',getRGBA(id,  91, 1, "0.55"),'" stroke-width="2px" d="',linesPath,'"/>',
-      '<path id="lines2" fill="none" stroke="',getRGBA(id,  94, 2, "0.55"),'" stroke-width="2px" d="',linesPath,'"/>',
-      '<path id="lines3" fill="none" stroke="',getRGBA(id,  97, 3, "0.55"),'" stroke-width="2px" d="',linesPath,'"/>',
       '</defs>',
-      '<circle fill="',getRGBA(id, 97, 3, "1"),'" cx="200" cy="200" r="200"/>',
-      '<g><animateTransform attributeName="transform" attributeType="XML" type="rotate" values="0 200 200; -180 200 200; 0 200 200"',getDur(id, 64),' repeatCount="indefinite"/><use href="#lines1"/></g>',
-      '<g><animateTransform attributeName="transform" attributeType="XML" type="rotate" values="0 200 200;  180 200 200; 0 200 200"',getDur(id, 72),' repeatCount="indefinite"/><use href="#lines2"/></g>',
-      '<g><animateTransform attributeName="transform" attributeType="XML" type="rotate" values="0 200 200;  180 200 200; 0 200 200"',getDur(id, 80),' repeatCount="indefinite"/><use href="#lines3"/></g>',
-      '<defs/>'
+      renderBackgroundCircle(id),
+      renderRotatingLines(id)
     ));
     return render;
   }
