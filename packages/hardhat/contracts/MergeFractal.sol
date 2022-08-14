@@ -20,7 +20,7 @@ contract MergeFractal is ERC721, Ownable {
   uint8[32] internal colsB = [0,170,85,0,85,0,0,255,170,255,85,170,85,170,0,85,0,85,0,255,255,170,255,170,255,85,170,85,0,255,255,170];
   uint8[32] internal durations = [31,53,73,103,137,167,197,233,37,59,79,107,139,173,199,239,41,61,83,109,149,179,211,241,43,67,89,113,151,181,223,251];
   uint8[4] internal sectionColStartBits = [50, 56, 62, 68];
-  uint8[4] internal sectionLineTranslates = [2, 2, 39, 39];
+  uint8[4] internal sectionLineTranslates = [2, 4, 46, 48];
 
   using Strings for uint256;
   using HexStrings for uint160;
@@ -200,17 +200,17 @@ contract MergeFractal is ERC721, Ownable {
 
   function renderBorder(uint256 id) public view returns (string memory) {
     string memory rgba0 = getRGBA(id, sectionColStartBits[0], 0, "0.9");
-    string memory rgba3 = getRGBA(id, sectionColStartBits[3], 3, "0.7");
+    string memory rgba3 = getRGBA(id, sectionColStartBits[3], 3, "0.8");
     string memory render = '';    
     render = string(abi.encodePacked(
       // render,
-      '<circle r="198" stroke-width="4px" stroke="',
-      rgba0,
-      '" fill="none" cx="200" cy="200"/>',
-      '<circle r="180" stroke-width="32px" stroke="',
+      '<circle r="175" stroke-width="38px" stroke="',
       rgba3,
       '" fill="none" cx="200" cy="200"/>',
-      '<circle r="162" stroke-width="4px" stroke="',
+      '<circle r="197" stroke-width="6px" stroke="',
+      rgba0,
+      '" fill="none" cx="200" cy="200"/>',
+      '<circle r="153" stroke-width="6px" stroke="',
       rgba0,
       '" fill="none" cx="200" cy="200"/>'
     ));
