@@ -224,10 +224,13 @@ contract MergeFractal is ERC721, Ownable {
   }
 
   function renderText(uint256 id) public view returns (string memory) {
+    string memory rgba0 = getRGBA(id, sectionColStartBits[0], 0, "1");
     string memory render = '';    
     render = string(abi.encodePacked(
       // render,
-      '<defs><style>text{font-size:15px;font-family:Helvetica,sans-serif;font-weight:900;fill:#006;letter-spacing:1px}</style><path id="textcircle" fill="none" stroke="rgba(255,0,0,0.5)" d="M 196 375 A 175 175 270 1 1 375 200 A 175 175 90 0 1 204 375" /></defs>',
+      '<defs><style>text{font-size:15px;font-family:Helvetica,sans-serif;font-weight:900;fill:',
+      rgba0,
+      ';letter-spacing:1px}</style><path id="textcircle" fill="none" stroke="rgba(255,0,0,0.5)" d="M 196 375 A 175 175 270 1 1 375 200 A 175 175 90 0 1 204 375" /></defs>',
       '<g><animateTransform attributeName="transform" attributeType="XML" type="rotate" values="0 200 200; 360 200 200" dur="60s" repeatCount="indefinite"/><text><textPath href="#textcircle">/ Ethereum Merge Fractal #',
       ToColor.uint2str(id),
       ' / Thank you Core Devs! / Sassal is dancing with Vitalik',
