@@ -20,7 +20,7 @@ contract MergeFractal is ERC721, Ownable {
   uint8[32] internal colsB = [0,170,85,0,85,0,0,255,170,255,85,170,85,170,0,85,0,85,0,255,255,170,255,170,255,85,170,85,0,255,255,170];
   uint8[32] internal durations = [31,53,73,103,137,167,197,233,37,59,79,107,139,173,199,239,41,61,83,109,149,179,211,241,43,67,89,113,151,181,223,251];
   uint8[4] internal sectionColStartBits = [50, 56, 62, 68];
-  uint8[4] internal sectionLineTranslates = [2, 4, 46, 48];
+  uint8[4] internal sectionLineTranslates = [2, 4, 36, 38];
 
   using Strings for uint256;
   using HexStrings for uint160;
@@ -33,6 +33,7 @@ contract MergeFractal is ERC721, Ownable {
   }
 
   mapping (uint256 => uint256) public generator;
+  mapping (uint256 => address) public mintooor;
   uint256 mintDeadline = block.timestamp + 24 hours;
 
   function mintItem()
@@ -44,6 +45,7 @@ contract MergeFractal is ERC721, Ownable {
       uint256 id = _tokenIds.current();
       _mint(msg.sender, id);
       generator[id] = uint256(keccak256(abi.encodePacked( blockhash(block.number-1), msg.sender, address(this), id)));
+      mintooor[id] = msg.sender;
       return id;
   }
 
@@ -204,18 +206,37 @@ contract MergeFractal is ERC721, Ownable {
     string memory render = '';    
     render = string(abi.encodePacked(
       // render,
-      '<circle r="175" stroke-width="38px" stroke="',
+      '<circle r="180" stroke-width="28px" stroke="',
       rgba3,
       '" fill="none" cx="200" cy="200"/>',
       '<circle r="197" stroke-width="6px" stroke="',
       rgba0,
       '" fill="none" cx="200" cy="200"/>',
-      '<circle r="153" stroke-width="6px" stroke="',
+      '<circle r="163" stroke-width="6px" stroke="',
       rgba0,
       '" fill="none" cx="200" cy="200"/>'
     ));
 
     // // TEMP to switch off borders temporarily
+    // render = '';
+
+    return render;    
+  }
+
+  function renderText(uint256 id) public view returns (string memory) {
+    string memory render = '';    
+    render = string(abi.encodePacked(
+      // render,
+      '<defs><style>text{font-size:15px;font-family:Helvetica,sans-serif;font-weight:900;fill:#006;letter-spacing:1px}</style><path id="textcircle" fill="none" stroke="rgba(255,0,0,0.5)" d="M 196 375 A 175 175 270 1 1 375 200 A 175 175 90 0 1 204 375" /></defs>',
+      '<g><animateTransform attributeName="transform" attributeType="XML" type="rotate" values="0 200 200; 360 200 200" dur="60s" repeatCount="indefinite"/><text><textPath href="#textcircle">/ Ethereum Merge Fractal #',
+      ToColor.uint2str(id),
+      ' / Thank you Core Devs! / Sassal is dancing with Vitalik',
+      ' / Minted by ',
+      (uint160(mintooor[id])).toHexString(20),
+      '</textPath></text></g>'
+    ));
+
+    // // TEMP to switch off text temporarily
     // render = '';
 
     return render;    
@@ -228,7 +249,8 @@ contract MergeFractal is ERC721, Ownable {
     render = string(abi.encodePacked(
       // render,
       renderDiskAndLines(id),
-      renderBorder(id)
+      renderBorder(id),
+      renderText(id)
     ));
     return render;
   }
