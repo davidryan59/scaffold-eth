@@ -30,6 +30,10 @@ import {
 import { BlockPicker } from 'react-color'
 
 
+// TEMP
+import tempImageBackground from "./Checkerboard_background.png"
+
+
 const { BufferList } = require("bl");
 // https://www.npmjs.com/package/ipfs-http-client
 const ipfsAPI = require("ipfs-http-client");
@@ -465,7 +469,7 @@ function App(props) {
                         }
                       >
                         <a href={"https://opensea.io/assets/"+(readContracts && readContracts.MergeFractal && readContracts.MergeFractal.address)+"/"+item.id} target="_blank">
-                        <img src={item.image} />
+                        <img src={item.image} style={{backgroundImage: `url(${tempImageBackground})`, backgroundSize: 'cover'}}/>
                         </a>
                         <div>{item.description}</div>
                       </Card>
