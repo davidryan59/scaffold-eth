@@ -182,23 +182,20 @@ contract MergeFractal is ERC721, Ownable {
   }
 
   function renderBorder(uint256 id) public view returns (string memory) {
-    string memory rgba1 = getRGBA(id, startBitCols[0], 0, "0.6");
-    string memory rgba2 = getRGBA(id, startBitCols[3], 3, "0.8");
-    string memory borderPath1 = 'M 392 207 C 366 295 312 359 219 382 139 373 65 323 15 250 14 154 58 65 134 23 217 12 304 41 372 114 395 209 366 285 316 358 218 394 142 375 63 324 19 252 21 165 50 74 124 22 221 6 311 41 368 121 387 196 366 283 301 359 222 386 136 387 52 323 23 252 12 155 64 72 133 21 220 4 306 37 364 116 386 209 ';
-    string memory borderPath2 = 'M 385 210 C 362 311 281 378 175 388 82 347 15 256 20 142 81 49 167 15 278 31 362 103 387 190 369 296 271 381 175 382 87 344 18 248 18 152 80 53 177 11 279 32 366 104 386 204 367 297 280 376 170 384 82 348 21 250 24 142 77 60 169 17 271 30 355 92 396 200 ';
+    string memory rgba0 = getRGBA(id, startBitCols[0], 0, "0.9");
+    string memory rgba3 = getRGBA(id, startBitCols[3], 3, "0.7");
     string memory render = '';    
     render = string(abi.encodePacked(
       // render,
-      '<path fill="none" stroke-linecap="round" stroke="',
-      rgba1,
-      '" stroke-width="40px" d="',
-      borderPath1,
-      '"/>',
-      '<path fill="none" stroke-linecap="round" stroke="',
-      rgba2,
-      '" stroke-width="30px" d="',
-      borderPath2,
-      '"/>'
+      '<circle r="198.5" stroke-width="5px" stroke="',
+      rgba0,
+      '" fill="none" cx="200" cy="200"/>',
+      '<circle r="180" stroke-width="32px" stroke="',
+      rgba3,
+      '" fill="none" cx="200" cy="200"/>',
+      '<circle r="161.5" stroke-width="5px" stroke="',
+      rgba0,
+      '" fill="none" cx="200" cy="200"/>'
     ));
     return render;    
   }
