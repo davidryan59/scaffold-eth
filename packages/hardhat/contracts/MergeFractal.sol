@@ -47,8 +47,8 @@ contract MergeFractal is ERC721, Ownable {
 
   // Random saying
   uint8 internal constant SAYING_START_BIT = 8; // Uses 8 bits
-  uint8 internal constant SAYING_ARRAY_LEN = 9;
-  string[SAYING_ARRAY_LEN] internal sayings = ['PoS > PoW','Environmentally friendly at last','The Flippening','Vitalik is clapping','Vitalik is dancing','TTD 58750000000000000000000','TTD 5.875 * 10^22','TTD 2^19 * 5^22 * 47','Anthony Sassano is dancing'];
+  uint8 internal constant SAYING_ARRAY_LEN = 19;
+  string[SAYING_ARRAY_LEN] internal sayings = ['PoS > PoW','Environmentally friendly at last','The Flippening','Decentralise Everything','Energy consumption -99.95%','Unstoppable smart contracts','Run your own node','TTD 58750000000000000000000','TTD 5.875 * 10^22','TTD 2^19 * 5^22 * 47','Validate with 32 ETH','Validators > Miners','Sustainable and secure','Proof-of-stake consensus','World Computer','Permissionless','Vitalik is clapping','Vitalik is dancing','Anthony Sassano is dancing'];
 
   using Strings for uint256;
   using HexStrings for uint160;
@@ -216,18 +216,20 @@ contract MergeFractal is ERC721, Ownable {
 
     // -------------------------------
     // TEMP RECTANGLES TO TEST COLOURS
-    uint16 x = arraySection >> 1 == 0 ? 0 : 350;
-    uint16 y = arraySection % 2 == 1 ? 0 : 350;
-    render = string(abi.encodePacked(
-      render,
-      '<rect x="',
-      ToColor.uint2str(x),
-      '" y="',
-      ToColor.uint2str(y),
-      '" width="50" height="50" rx="15" fill="',
-      rgba,
-      '"/>'
-    ));
+    if (IS_TESTNET) {
+      uint16 x = arraySection >> 1 == 0 ? 0 : 350;
+      uint16 y = arraySection % 2 == 1 ? 0 : 350;
+      render = string(abi.encodePacked(
+        render,
+        '<rect x="',
+        ToColor.uint2str(x),
+        '" y="',
+        ToColor.uint2str(y),
+        '" width="50" height="50" rx="15" fill="',
+        rgba,
+        '"/>'
+      ));
+    }
     // -------------------------------
 
     return render;     
@@ -305,7 +307,7 @@ contract MergeFractal is ERC721, Ownable {
   }
 
   function renderText(uint256 id) internal view returns (string memory) {
-    string memory rgba0 = IS_TESTNET ? 'rgba(96,96,96,0.9)' : getRGBA(id, 0, "1");
+    string memory rgba0 = getRGBA(id, 0, "1");
     string memory render = '';    
     render = string(abi.encodePacked(
       // render,
@@ -328,13 +330,17 @@ contract MergeFractal is ERC721, Ownable {
   }
 
   function renderEthereum(uint256 id) internal view returns (string memory) {
-    string memory rgbaLine = getRGBA(id, 1, "0.85");
-    string memory rgbaFill = getRGBA(id, 2, "0.60");
+    string memory rgbaLineF = getRGBA(id, 1, "0.80");
+    string memory rgbaFillF = getRGBA(id, 1, "0.65");
+    string memory rgbaFillG = getRGBA(id, 2, "0.65");
+    string memory rgbaLineG = getRGBA(id, 2, "0.80");
     string memory render = '';    
     render = string(abi.encodePacked(
       // render,
-      '<defs><rect id="f0" x="-0.5" y="-0.5" width="1" height="1" stroke="',rgbaLine,'" fill="',rgbaFill,'" stroke-width="0.1"/></defs>',
-      '<use href="#f0" transform="translate(200, 200) scale(120, 180) rotate(45)"/>'
+      '<defs><rect id="f0" x="-0.5" y="-0.5" width="1" height="1" stroke="',rgbaLineF,'" fill="',rgbaFillF,'" stroke-width="0.05"/></defs>',
+      '<defs><rect id="g0" x="-0.5" y="-0.5" width="1" height="1" stroke="',rgbaLineG,'" fill="',rgbaFillG,'" stroke-width="0.05"/></defs>',
+      '<use href="#f0" transform="translate(125, 200) scale(95, 170) rotate(45)"/>',
+      '<use href="#g0" transform="translate(275, 200) scale(95, 170) rotate(45)"/>'
     ));
     return render;    
   }
