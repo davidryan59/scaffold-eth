@@ -6,14 +6,29 @@ import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import 'base64-sol/base64.sol';
+// Learn more: https://docs.openzeppelin.com/contracts/3.x/erc721
 
 import './HexStrings.sol';
 import './ToColor.sol';
-//learn more: https://docs.openzeppelin.com/contracts/3.x/erc721
 
 // GET LISTED ON OPENSEA: https://testnets.opensea.io/get-listed/step-two
 
+// Merge Fractal NFT developed for the Ethereum Merge event
+// by David Ryan (@davidryan59 on Twitter)
+// Check out some more of my fractal art at Nifty Ink!
+// Artist page for niftymaestro.eth: https://nifty.ink/artist/0xbFAc61D1e22EFA9d37Fc3Ff36B9dff9655131F52
+
 contract MergeFractal is ERC721, Ownable {
+
+  // ----------------------------------------------
+  // Amend these when deploying to new networks  
+  bool internal constant IS_TESTNET = true;
+  string internal constant NETWORK = 'TESTNET';
+  // bool internal constant IS_TESTNET = false;
+  // string internal constant NETWORK = 'Ethereum';
+  // string internal constant NETWORK = 'Optimism';  // etc
+  // ----------------------------------------------
+
   uint8[8] internal masks8 = [1, 3, 7, 15, 31, 63, 127, 255];
   uint8[32] internal colsR = [0,0,85,170,0,85,0,85,170,0,255,85,170,0,255,85,170,0,85,255,170,255,85,170,0,255,85,170,255,255,170,255];
   uint8[32] internal colsG = [0,0,0,0,85,85,170,0,0,85,0,85,85,170,85,170,170,255,255,0,85,85,170,170,255,170,255,255,255,170,255,255];
@@ -296,14 +311,16 @@ contract MergeFractal is ERC721, Ownable {
   }
 
   function renderText(uint256 id) public view returns (string memory) {
-    string memory rgba0 = getRGBA(id, 0, "1");
+    string memory rgba0 = IS_TESTNET ? 'rgba(96,96,96,0.9)' : getRGBA(id, 0, "1");
     string memory render = '';    
     render = string(abi.encodePacked(
       // render,
       '<defs><style>text{font-size:15px;font-family:Helvetica,sans-serif;font-weight:900;fill:',
       rgba0,
       ';letter-spacing:1px}</style><path id="textcircle" fill="none" stroke="rgba(255,0,0,0.5)" d="M 196 375 A 175 175 270 1 1 375 200 A 175 175 90 0 1 204 375" /></defs>',
-      '<g><animateTransform attributeName="transform" attributeType="XML" type="rotate" values="0 200 200; 360 200 200" dur="120s" repeatCount="indefinite"/><text><textPath href="#textcircle">/ Ethereum Merge Fractal #',
+      '<g><animateTransform attributeName="transform" attributeType="XML" type="rotate" values="0 200 200; 360 200 200" dur="120s" repeatCount="indefinite"/><text><textPath href="#textcircle">/ ',
+      NETWORK,
+      ' Merge Fractal #',
       ToColor.uint2str(id),
       ' / ',
       getCoreDevAndTeamText(id),
