@@ -25,12 +25,12 @@ contract MergeFractal is ERC721, Ownable {
   // Random team to thank
   uint8 internal constant TEAM_START_BIT = 0; // Uses 8 bits
   uint8 internal constant TEAM_ARRAY_LEN = 25;
-  string[25] internal teams = ['0xSplits','Akula','EF DevOps','EF Geth','EF Ipsilon','EF JavaScript','EF Portal','EF Protocol Support','EF Research','EF Robust Incentives Group (RIG)','EF Security','EF Solidity','EF Testing','Erigon','Ethereum Cat Herders','Hyperledger Besu','Independent','Lighthouse','Lodestar','Nethermind','Prysmatic','Quilt','Status','Teku','TXRX'];
+  string[TEAM_ARRAY_LEN] internal teams = ['0xSplits','Akula','EF DevOps','EF Geth','EF Ipsilon','EF JavaScript','EF Portal','EF Protocol Support','EF Research','EF Robust Incentives Group (RIG)','EF Security','EF Solidity','EF Testing','Erigon','Ethereum Cat Herders','Hyperledger Besu','Independent','Lighthouse','Lodestar','Nethermind','Prysmatic','Quilt','Status','Teku','TXRX'];
 
   // Random saying
   uint8 internal constant SAYING_START_BIT = 8; // Uses 8 bits
-  uint8 internal constant SAYING_ARRAY_LEN = 5;
-  string[5] internal sayings = ['Vitalik is dancing','Anthony Sassano is dancing','58750000000000000000000','5.875 * 10^22','2^19 * 5^22 * 47'];
+  uint8 internal constant SAYING_ARRAY_LEN = 6;
+  string[SAYING_ARRAY_LEN] internal sayings = ['Vitalik is dancing','Anthony Sassano is dancing','58750000000000000000000','5.875 * 10^22','2^19 * 5^22 * 47','The Flippening'];
 
   using Strings for uint256;
   using HexStrings for uint160;
@@ -228,10 +228,6 @@ contract MergeFractal is ERC721, Ownable {
       rgba0,
       '" fill="none" cx="200" cy="200"/>'
     ));
-
-    // // TEMP to switch off borders temporarily
-    // render = '';
-
     return render;    
   }
 
@@ -253,20 +249,14 @@ contract MergeFractal is ERC721, Ownable {
       ';letter-spacing:1px}</style><path id="textcircle" fill="none" stroke="rgba(255,0,0,0.5)" d="M 196 375 A 175 175 270 1 1 375 200 A 175 175 90 0 1 204 375" /></defs>',
       '<g><animateTransform attributeName="transform" attributeType="XML" type="rotate" values="0 200 200; 360 200 200" dur="60s" repeatCount="indefinite"/><text><textPath href="#textcircle">/ Ethereum Merge Fractal #',
       ToColor.uint2str(id),
-      // ' / Current Difficulty ',
-      // ToColor.uint2str(block.difficulty), // fixed 131,072 in test environment
       ' / Thank you ',
       getTeam(id),
       '! / ',
       getSaying(id),
       ' / Minted by ',
       (uint160(mintooor[id])).toHexString(20),
-      '</textPath></text></g>'
+      '♦♢♦♢♦♢♦♢♦♢♦♢♦♢♦♢♦♢♦♢♦♢♦♢♦♢♦♢♦♢♦♢♦♢♦♢♦♢♦♢♦♢♦♢♦</textPath></text></g>'
     ));
-
-    // // TEMP to switch off text temporarily
-    // render = '';
-
     return render;    
   }
 
