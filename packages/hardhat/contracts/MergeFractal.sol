@@ -27,8 +27,13 @@ contract MergeFractal is ERC721, Ownable {
   uint8 internal constant TEAM_ARRAY_LEN = 25;
   string[TEAM_ARRAY_LEN] internal teams = ['0xSplits','Akula','EF DevOps','EF Geth','EF Ipsilon','EF JavaScript','EF Portal','EF Protocol Support','EF Research','EF Robust Incentives Group (RIG)','EF Security','EF Solidity','EF Testing','Erigon','Ethereum Cat Herders','Hyperledger Besu','Independent','Lighthouse','Lodestar','Nethermind','Prysmatic','Quilt','Status','Teku','TXRX'];
 
+  // Random core dev to thank
+  uint8 internal constant CORE_DEV_START_BIT = 8; // Uses 8 bits
+  uint8 internal constant CORE_DEV_ARRAY_LEN = 9;
+  string[CORE_DEV_ARRAY_LEN] internal coreDevs = ['donations.0xSplits.eth','Jose Hugo de la cruz Romero','Francesco d’Amato','Barnabé Monnot','Łukasz Rozmej','Marek Moraczyński','Mateusz Jędrzejewski','potuz','Radosław Kapka'];
+
   // Random saying
-  uint8 internal constant SAYING_START_BIT = 8; // Uses 8 bits
+  uint8 internal constant SAYING_START_BIT = 16; // Uses 8 bits
   uint8 internal constant SAYING_ARRAY_LEN = 6;
   string[SAYING_ARRAY_LEN] internal sayings = ['Vitalik is dancing','Anthony Sassano is dancing','58750000000000000000000','5.875 * 10^22','2^19 * 5^22 * 47','The Flippening'];
 
@@ -235,6 +240,10 @@ contract MergeFractal is ERC721, Ownable {
     return teams[getUint8(id, TEAM_START_BIT, 8) % TEAM_ARRAY_LEN];
   }
 
+  function getCoreDev(uint256 id) public view returns (string memory) {
+    return coreDevs[getUint8(id, CORE_DEV_START_BIT, 8) % CORE_DEV_ARRAY_LEN];
+  }
+
   function getSaying(uint256 id) public view returns (string memory) {
     return sayings[getUint8(id, SAYING_START_BIT, 8) % SAYING_ARRAY_LEN];
   }
@@ -247,11 +256,13 @@ contract MergeFractal is ERC721, Ownable {
       '<defs><style>text{font-size:15px;font-family:Helvetica,sans-serif;font-weight:900;fill:',
       rgba0,
       ';letter-spacing:1px}</style><path id="textcircle" fill="none" stroke="rgba(255,0,0,0.5)" d="M 196 375 A 175 175 270 1 1 375 200 A 175 175 90 0 1 204 375" /></defs>',
-      '<g><animateTransform attributeName="transform" attributeType="XML" type="rotate" values="0 200 200; 360 200 200" dur="60s" repeatCount="indefinite"/><text><textPath href="#textcircle">/ Ethereum Merge Fractal #',
+      '<g><animateTransform attributeName="transform" attributeType="XML" type="rotate" values="0 200 200; 360 200 200" dur="120s" repeatCount="indefinite"/><text><textPath href="#textcircle">/ Ethereum Merge Fractal #',
       ToColor.uint2str(id),
       ' / Thank you ',
       getTeam(id),
-      '! / ',
+      '! / Core Dev ',
+      getCoreDev(id),
+      ' / ',
       getSaying(id),
       ' / Minted by ',
       (uint160(mintooor[id])).toHexString(20),
