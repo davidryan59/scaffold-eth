@@ -19,8 +19,18 @@ contract MergeFractal is ERC721, Ownable {
   uint8[32] internal colsG = [0,0,0,0,85,85,170,0,0,85,0,85,85,170,85,170,170,255,255,0,85,85,170,170,255,170,255,255,255,170,255,255];
   uint8[32] internal colsB = [0,170,85,0,85,0,0,255,170,255,85,170,85,170,0,85,0,85,0,255,255,170,255,170,255,85,170,85,0,255,255,170];
   uint8[32] internal durations = [31,53,73,103,137,167,197,233,37,59,79,107,139,173,199,239,41,61,83,109,149,179,211,241,43,67,89,113,151,181,223,251];
-  uint8[4] internal sectionColStartBits = [50, 56, 62, 68];
+  uint8[4] internal sectionColStartBits = [50, 56, 62, 68]; // Uses 3 bits for colour, 3 bits for duration
   uint8[4] internal sectionLineTranslates = [2, 4, 36, 38];
+
+  // Random team to thank
+  uint8 internal constant TEAM_START_BIT = 0; // Uses 8 bits
+  uint8 internal constant TEAM_ARRAY_LEN = 25;
+  string[25] internal teams = ['0xSplits','Akula','EF DevOps','EF Geth','EF Ipsilon','EF JavaScript','EF Portal','EF Protocol Support','EF Research','EF Robust Incentives Group (RIG)','EF Security','EF Solidity','EF Testing','Erigon','Ethereum Cat Herders','Hyperledger Besu','Independent','Lighthouse','Lodestar','Nethermind','Prysmatic','Quilt','Status','Teku','TXRX'];
+
+  // Random saying
+  uint8 internal constant SAYING_START_BIT = 8; // Uses 8 bits
+  uint8 internal constant SAYING_ARRAY_LEN = 5;
+  string[5] internal sayings = ['Vitalik is dancing','Anthony Sassano is dancing','58750000000000000000000','5.875 * 10^22','2^19 * 5^22 * 47'];
 
   using Strings for uint256;
   using HexStrings for uint160;
@@ -225,6 +235,14 @@ contract MergeFractal is ERC721, Ownable {
     return render;    
   }
 
+  function getTeam(uint256 id) public view returns (string memory) {
+    return teams[getUint8(id, TEAM_START_BIT, 8) % TEAM_ARRAY_LEN];
+  }
+
+  function getSaying(uint256 id) public view returns (string memory) {
+    return sayings[getUint8(id, SAYING_START_BIT, 8) % SAYING_ARRAY_LEN];
+  }
+
   function renderText(uint256 id) public view returns (string memory) {
     string memory rgba0 = getRGBA(id, 0, "1");
     string memory render = '';    
@@ -237,7 +255,10 @@ contract MergeFractal is ERC721, Ownable {
       ToColor.uint2str(id),
       // ' / Current Difficulty ',
       // ToColor.uint2str(block.difficulty), // fixed 131,072 in test environment
-      ' / Thank you Core Devs! / Sassal is dancing with Vitalik',
+      ' / Thank you ',
+      getTeam(id),
+      '! / ',
+      getSaying(id),
       ' / Minted by ',
       (uint160(mintooor[id])).toHexString(20),
       '</textPath></text></g>'
