@@ -103,10 +103,30 @@ contract MergeFractal is ERC721, Ownable {
     ));
   }
 
+  function getTrait(string memory traitType, string memory traitValue) internal pure returns (string memory) {
+    return string(abi.encodePacked(
+      '{"trait_type": "',
+      traitType,
+      '", "value": "',
+      traitValue,
+      '"}'
+    ));
+  }
+
+  function getAllAttributes(uint256 id) public view returns (string memory) {
+    return string(abi.encodePacked(
+      '[',
+      getTrait("Core Dev", getCoreDevName(id)),
+      ',',
+      getTrait("Team", getTeamName(id)),
+      ']'
+    ));
+  }
+
   function tokenURI(uint256 id) public view override returns (string memory) {
     require(_exists(id), "not exist");
     string memory name = string(abi.encodePacked('Merge Fractal #',id.toString()));
-    string memory description = string(abi.encodePacked('This Merge Fractal is the color #F00!!!'));
+    string memory description = string(abi.encodePacked('This Merge Fractal is to thank ', getCoreDevName(id), '!'));
     string memory image = Base64.encode(bytes(generateSVGofTokenById(id)));
 
     return string(abi.encodePacked(
@@ -118,7 +138,9 @@ contract MergeFractal is ERC721, Ownable {
         description,
         '", "external_url":"https://burnyboys.com/token/',
         id.toString(),
-        '", "attributes": [{"trait_type": "color", "value": "#F00"}], "owner":"',
+        '", "attributes": ',
+        getAllAttributes(id),
+        ', "owner":"',
         (uint160(ownerOf(id))).toHexString(20),
         '", "image": "data:image/svg+xml;base64,',
         image,
@@ -234,11 +256,26 @@ contract MergeFractal is ERC721, Ownable {
     return render;    
   }
 
-  function getCoreDevAndTeamText(uint256 id) public view returns (string memory) {
-    uint8 devIdx = getUint8(id, CORE_DEV_START_BIT, 8) % CORE_DEV_ARRAY_LEN;
-    uint8 teamIdx = coreDevTeamIndices[devIdx];
-    string memory devName = coreDevNames[devIdx];
-    string memory teamText = string(abi.encodePacked(' and ',teams[teamIdx]));
+  function getCoreDevIdx(uint256 id) internal view returns (uint8 idx) {
+    return getUint8(id, CORE_DEV_START_BIT, 8) % CORE_DEV_ARRAY_LEN;
+  }
+
+  function getTeamIdx(uint256 id) internal view returns (uint8 idx) {
+    return coreDevTeamIndices[getCoreDevIdx(id)];
+  }
+
+  function getCoreDevName(uint256 id) public view returns (string memory) {
+    return coreDevNames[getCoreDevIdx(id)];
+  }
+
+  function getTeamName(uint256 id) public view returns (string memory) {
+    return teams[getTeamIdx(id)];
+  }
+
+  function getCoreDevAndTeamText(uint256 id) internal view returns (string memory) {
+    uint8 devIdx = getCoreDevIdx(id);
+    uint8 teamIdx = getTeamIdx(id);
+    string memory teamText = string(abi.encodePacked(' and ', getTeamName(id)));
     if (devIdx == 0) { // Dev = Vitalik
       teamText = string(abi.encodePacked(' for Ethereum'));
     } else if (teamIdx == 0) { // Team = Individual
@@ -248,7 +285,7 @@ contract MergeFractal is ERC721, Ownable {
     render = string(abi.encodePacked(
       // render,
       'Thank you ',
-      devName,
+      getCoreDevName(id),
       teamText
     ));
     return render;       
