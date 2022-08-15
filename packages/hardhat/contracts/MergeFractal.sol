@@ -239,12 +239,17 @@ contract MergeFractal is ERC721, Ownable {
     uint8 teamIdx = coreDevTeamIndices[devIdx];
     string memory devName = coreDevNames[devIdx];
     string memory teamText = string(abi.encodePacked(' and ',teams[teamIdx]));
+    if (devIdx == 0) { // Dev = Vitalik
+      teamText = string(abi.encodePacked(' for Ethereum'));
+    } else if (teamIdx == 0) { // Team = Individual
+      teamText = '';
+    }
     string memory render = '';    
     render = string(abi.encodePacked(
       // render,
       'Thank you ',
       devName,
-      (teamIdx > 0) ? teamText : ''
+      teamText
     ));
     return render;       
   }
