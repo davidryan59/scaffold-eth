@@ -22,18 +22,16 @@ contract MergeFractal is ERC721, Ownable {
   uint8[4] internal sectionColStartBits = [50, 56, 62, 68]; // Uses 3 bits for colour, 3 bits for duration
   uint8[4] internal sectionLineTranslates = [2, 4, 36, 38];
 
-  // Random team to thank
-  uint8 internal constant TEAM_START_BIT = 0; // Uses 8 bits
+  // Random core dev and team to thank
+  uint8 internal constant CORE_DEV_START_BIT = 0; // Uses 8 bits
+  uint8 internal constant CORE_DEV_ARRAY_LEN = 120;
+  string[CORE_DEV_ARRAY_LEN] internal coreDevNames = ['Vitalik','donations.0xSplits.eth','Artem Vorotnikov','Parithosh Jayanthi','Rafael Matias','Guillaume Ballet','Jared Wasinger','Marius van der Wijden','Matt Garnett','Peter Szilagyi','Andrei Maiboroda','Jose Hugo de la cruz Romero','Paweł Bylica','Andrew Day','Gabriel','Holger Drewes','Jochem','Scotty Poi','Jacob Kaufmann','Jason Carver','Mike Ferris','Ognyan Genev','Piper Merriam','Danny Ryan','Tim Beiko','Trenton Van Epps','Aditya Asgaonkar','Alex Stokes','Ansgar Dietrichs','Antonio Sanso','Carl Beekhuizen','Dankrad Feist','Dmitry Khovratovich','Francesco d’Amato','George Kadianakis','Hsiao Wei Wang','Justin Drake','Mark Simkin','Proto','Zhenfei Zhang','Anders','Barnabé Monnot','Caspar Schwarz-Schilling','David Theodore','Fredrik Svantes','Justin Traglia','Tyler Holmes','Yoav Weiss','Alex Beregszaszi','Harikrishnan Mulackal','Kaan Uzdogan','Kamil Sliwak','Leonardo de Sa Alt','Mario Vega','Andrey Ashikhmin','Enrique Avila Asapche','Giulio Rebuffo','Michelangelo Riccobene','Tullio Canepa','Pooja Ranjan','Daniel Lehrner','Danno Ferrin','Gary Schulte','Jiri Peinlich','Justin Florentine','Karim Taam','Guru','Jim McDonald','Peter Davies','Adrian Manning','Diva Martínez','Mac Ladson','Mark Mackey','Mehdi Zerouali','Michael Sproul','Paul Hauner','Pawan Dhananjay Ravi','Sean Anderson','Cayman Nava','Dadepo Aderemi','dapplion','Gajinder Singh','Phil Ngo','Tuyen Nguyen','Daniel Caleda','Jorge Mederos','Łukasz Rozmej','Marcin Sobczak','Marek Moraczyński','Mateusz Jędrzejewski','Tanishq','Tomasz Stanzeck','James He','Kasey Kirkham','Nishant Das','potuz','Preston Van Loon','Radosław Kapka','Raul Jordan','Taran Singh','Terence Tsao','Sam Wilson','Dustin Brody','Etan Kissling','Eugene Kabanov','Jacek Sieka','Jordan Hrycaj','Kim De Mey','Konrad Staniec','Mamy Ratsimbazafy','Zahary Karadzhov','Adrian Sutton','Ben Edgington','Courtney Hunter','Dmitry Shmatko','Enrico Del Fante','Paul Harris','Alex Vlasov','Anton Nashatyrev','Mikhail Kalinin'];
+  uint8[CORE_DEV_ARRAY_LEN] internal coreDevTeamIndices = [0,1,2,3,3,4,4,4,4,4,5,5,5,6,6,6,6,6,7,7,7,7,7,8,8,8,9,9,9,9,9,9,9,9,9,9,9,9,9,9,10,10,10,11,11,11,11,11,12,12,12,12,12,13,14,14,14,14,14,15,16,16,16,16,16,16,0,0,0,17,17,17,17,17,17,17,17,17,18,18,18,18,18,18,19,19,19,19,19,19,19,19,20,20,20,20,20,20,20,20,20,21,22,22,22,22,22,22,22,22,22,23,23,23,23,23,23,24,24,24];
   uint8 internal constant TEAM_ARRAY_LEN = 25;
-  string[TEAM_ARRAY_LEN] internal teams = ['0xSplits','Akula','EF DevOps','EF Geth','EF Ipsilon','EF JavaScript','EF Portal','EF Protocol Support','EF Research','EF Robust Incentives Group (RIG)','EF Security','EF Solidity','EF Testing','Erigon','Ethereum Cat Herders','Hyperledger Besu','Independent','Lighthouse','Lodestar','Nethermind','Prysmatic','Quilt','Status','Teku','TXRX'];
-
-  // Random core dev to thank
-  uint8 internal constant CORE_DEV_START_BIT = 8; // Uses 8 bits
-  uint8 internal constant CORE_DEV_ARRAY_LEN = 9;
-  string[CORE_DEV_ARRAY_LEN] internal coreDevs = ['donations.0xSplits.eth','Jose Hugo de la cruz Romero','Francesco d’Amato','Barnabé Monnot','Łukasz Rozmej','Marek Moraczyński','Mateusz Jędrzejewski','potuz','Radosław Kapka'];
+  string[TEAM_ARRAY_LEN] internal teams = ['Independent','0xSplits','Akula','EF DevOps','EF Geth','EF Ipsilon','EF JavaScript','EF Portal','EF Protocol Support','EF Research','EF Robust Incentives Group','EF Security','EF Solidity','EF Testing','Erigon','Ethereum Cat Herders','Hyperledger Besu','Lighthouse','Lodestar','Nethermind','Prysmatic','Quilt','Status','Teku','TXRX'];
 
   // Random saying
-  uint8 internal constant SAYING_START_BIT = 16; // Uses 8 bits
+  uint8 internal constant SAYING_START_BIT = 8; // Uses 8 bits
   uint8 internal constant SAYING_ARRAY_LEN = 6;
   string[SAYING_ARRAY_LEN] internal sayings = ['Vitalik is dancing','Anthony Sassano is dancing','58750000000000000000000','5.875 * 10^22','2^19 * 5^22 * 47','The Flippening'];
 
@@ -236,12 +234,19 @@ contract MergeFractal is ERC721, Ownable {
     return render;    
   }
 
-  function getTeam(uint256 id) public view returns (string memory) {
-    return teams[getUint8(id, TEAM_START_BIT, 8) % TEAM_ARRAY_LEN];
-  }
-
-  function getCoreDev(uint256 id) public view returns (string memory) {
-    return coreDevs[getUint8(id, CORE_DEV_START_BIT, 8) % CORE_DEV_ARRAY_LEN];
+  function getCoreDevAndTeamText(uint256 id) public view returns (string memory) {
+    uint8 devIdx = getUint8(id, CORE_DEV_START_BIT, 8) % CORE_DEV_ARRAY_LEN;
+    uint8 teamIdx = coreDevTeamIndices[devIdx];
+    string memory devName = coreDevNames[devIdx];
+    string memory teamText = string(abi.encodePacked(' and ',teams[teamIdx]));
+    string memory render = '';    
+    render = string(abi.encodePacked(
+      // render,
+      'Thank you ',
+      devName,
+      (teamIdx > 0) ? teamText : ''
+    ));
+    return render;       
   }
 
   function getSaying(uint256 id) public view returns (string memory) {
@@ -258,11 +263,9 @@ contract MergeFractal is ERC721, Ownable {
       ';letter-spacing:1px}</style><path id="textcircle" fill="none" stroke="rgba(255,0,0,0.5)" d="M 196 375 A 175 175 270 1 1 375 200 A 175 175 90 0 1 204 375" /></defs>',
       '<g><animateTransform attributeName="transform" attributeType="XML" type="rotate" values="0 200 200; 360 200 200" dur="120s" repeatCount="indefinite"/><text><textPath href="#textcircle">/ Ethereum Merge Fractal #',
       ToColor.uint2str(id),
-      ' / Thank you ',
-      getTeam(id),
-      '! / Core Dev ',
-      getCoreDev(id),
       ' / ',
+      getCoreDevAndTeamText(id),
+      '! / ',
       getSaying(id),
       ' / Minted by ',
       (uint160(mintooor[id])).toHexString(20),
