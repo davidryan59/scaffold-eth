@@ -32,8 +32,8 @@ contract MergeFractal is ERC721, Ownable {
 
   // Random saying
   uint8 internal constant SAYING_START_BIT = 8; // Uses 8 bits
-  uint8 internal constant SAYING_ARRAY_LEN = 6;
-  string[SAYING_ARRAY_LEN] internal sayings = ['Vitalik is dancing','Anthony Sassano is dancing','58750000000000000000000','5.875 * 10^22','2^19 * 5^22 * 47','The Flippening'];
+  uint8 internal constant SAYING_ARRAY_LEN = 9;
+  string[SAYING_ARRAY_LEN] internal sayings = ['PoS > PoW','Environmentally friendly at last','The Flippening','Vitalik is clapping','Vitalik is dancing','TTD 58750000000000000000000','TTD 5.875 * 10^22','TTD 2^19 * 5^22 * 47','Anthony Sassano is dancing'];
 
   using Strings for uint256;
   using HexStrings for uint160;
