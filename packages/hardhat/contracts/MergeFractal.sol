@@ -190,7 +190,7 @@ contract MergeFractal is ERC721, Ownable {
     uint8 idx = 8 * arraySection + getUint8(id, startBitDur, 3); // 3 bits = 8 duration choices
     return string(abi.encodePacked(
       ' dur="',
-      ToColor.uint2str(durations[idx]),
+      ToColor.uint2str(3 * durations[idx]), // It was rotating too fast! Extra factor here
       's"'
     ));
   }
