@@ -30,12 +30,19 @@ contract MergeFractal is ERC721, Ownable {
   // ----------------------------------------------
 
   uint8[8] internal masks8 = [1, 3, 7, 15, 31, 63, 127, 255];
+  uint16[32] internal durations = [31,53,73,103,137,167,197,233,37,59,79,107,139,173,199,239,41,61,83,109,149,179,211,241,43,67,89,113,151,181,223,251];
+
+  // Control colours that are used in the NFT
   uint8[32] internal colsR = [0,128,96,64,0,0,0,64,85,255,191,128,0,0,0,128,170,0,64,127,255,255,255,127,255,127,191,255,255,255,191,255];
   uint8[32] internal colsG = [0,0,32,64,128,64,0,0,85,0,64,128,255,128,0,0,170,255,191,127,0,127,255,255,255,255,191,127,191,255,255,159];
   uint8[32] internal colsB = [0,0,0,0,0,64,128,64,85,0,0,0,0,128,255,128,170,255,255,255,255,127,0,127,255,255,255,255,191,127,191,223];
-  uint16[32] internal durations = [31,53,73,103,137,167,197,233,37,59,79,107,139,173,199,239,41,61,83,109,149,179,211,241,43,67,89,113,151,181,223,251];
-  uint8[4] internal sectionColStartBits = [50, 56, 62, 68]; // Uses 3 bits for colour, 3 bits for duration
+
+  // Control placement of 4 sets of rotating lines
   uint8[4] internal sectionLineTranslates = [2, 4, 36, 38];
+
+  // Control how randomisation is generated via startBit
+  uint8[4] internal sectionShapesStartBits = [74, 78, 82, 86]; // Uses 4 bits for shape selection
+  uint8[4] internal sectionColStartBits = [50, 56, 62, 68]; // Uses 3 bits for colour, 3 bits for duration
 
   // Random core dev and team to thank
   uint8 internal constant CORE_DEV_START_BIT = 0; // Uses 8 bits
@@ -49,6 +56,14 @@ contract MergeFractal is ERC721, Ownable {
   uint8 internal constant SAYING_START_BIT = 8; // Uses 8 bits
   uint8 internal constant SAYING_ARRAY_LEN = 19;
   string[SAYING_ARRAY_LEN] internal sayings = ['PoS > PoW','Environmentally friendly at last','The Flippening','Decentralise Everything','Energy consumption -99.95%','Unstoppable smart contracts','Run your own node','TTD 58750000000000000000000','TTD 5.875 * 10^22','TTD 2^19 * 5^22 * 47','Validate with 32 ETH','Validators > Miners','Sustainable and secure','Proof-of-stake consensus','World Computer','Permissionless','Vitalik is clapping','Vitalik is dancing','Anthony Sassano is dancing'];
+
+  // Paths are (approx) in a box [-50, -50] to [50, 50] so require scale 1/100 to fix in a unit box
+  uint8 internal constant PATHS_LEN = 3;
+  string[PATHS_LEN] internal pathData = [
+    'M -50 -50 L -50 50 50 50 50 -50 -50 -50',
+    'M 0 -50 L -50 0 -50 50 0 25 50 50 50 0 0 -50',
+    'M 0 -50 L -50 -33 -50 33 0 50 50 33 50 -33 0 -50'
+  ];
 
   using Strings for uint256;
   using HexStrings for uint160;
@@ -329,18 +344,50 @@ contract MergeFractal is ERC721, Ownable {
     return render;    
   }
 
-  function renderEthereum(uint256 id) internal view returns (string memory) {
-    string memory rgbaLineF = getRGBA(id, 1, "0.80");
-    string memory rgbaFillF = getRGBA(id, 1, "0.65");
-    string memory rgbaFillG = getRGBA(id, 2, "0.65");
-    string memory rgbaLineG = getRGBA(id, 2, "0.80");
+  // 4-bit choice for each path
+  function getPathIdx(uint256 id, uint8 shapeIdx) internal view returns (uint8 pathIdx) {
+    uint8 startBit = sectionShapesStartBits[shapeIdx];
+    return getUint8(id, startBit, 4) % PATHS_LEN;  // pathIdx
+  }
+
+  function defineShape(uint256 id, uint8 shapeIdx, uint8 colourIdxFill, uint8 colourIdxLine) internal view returns (string memory) {
+    uint8 pathIdx = getPathIdx(id, shapeIdx);
+    string memory rgbaFill = getRGBA(id, colourIdxFill, "0.65");
+    string memory rgbaLine = getRGBA(id, colourIdxLine, "0.80");
     string memory render = '';    
     render = string(abi.encodePacked(
       // render,
-      '<defs><rect id="f0" x="-0.5" y="-0.5" width="1" height="1" stroke="',rgbaLineF,'" fill="',rgbaFillF,'" stroke-width="0.05"/></defs>',
-      '<defs><rect id="g0" x="-0.5" y="-0.5" width="1" height="1" stroke="',rgbaLineG,'" fill="',rgbaFillG,'" stroke-width="0.05"/></defs>',
-      '<use href="#f0" transform="translate(125, 200) scale(95, 170) rotate(45)"/>',
-      '<use href="#g0" transform="translate(275, 200) scale(95, 170) rotate(45)"/>'
+      '<defs><path id="shape',
+      ToColor.uint2str(shapeIdx),
+      '" d="',
+      pathData[pathIdx],
+      '" fill="',
+      rgbaFill,
+      '" stroke="',
+      rgbaLine,
+      '" stroke-width="10px" stroke-linecap="round" transform="scale(0.01 0.01)" /></defs>'
+    ));
+    return render;    
+  }
+
+  // Defines shape0, shape1, shape2...
+  function defineAllShapes(uint256 id) public view returns (string memory) {
+    string memory render = '';    
+    render = string(abi.encodePacked(
+      // render,
+      defineShape(id, 0, 1, 1),
+      defineShape(id, 1, 2, 2)
+    ));
+    return render;    
+  }
+
+  function renderEthereum(uint256 id) internal view returns (string memory) {
+    string memory render = '';    
+    render = string(abi.encodePacked(
+      // render,
+      defineAllShapes(id),
+      '<use href="#shape0" transform="translate(125, 200) scale(95, 170) rotate(45)"/>',
+      '<use href="#shape1" transform="translate(275, 200) scale(95, 170) rotate(45)"/>'
     ));
     return render;    
   }
