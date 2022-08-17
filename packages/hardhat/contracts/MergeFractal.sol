@@ -41,8 +41,8 @@ contract MergeFractal is ERC721, Ownable {
   uint8[4] internal sectionLineTranslates = [2, 4, 36, 38];
 
   // Control how randomisation is generated via startBit
-  uint8[4] internal sectionShapesStartBits = [74, 78, 82, 86]; // Uses 4 bits for shape selection
-  uint8[4] internal sectionColStartBits = [50, 56, 62, 68]; // Uses 3 bits for colour, 3 bits for duration
+  uint8[8] internal sectionShapesStartBits = [74, 78, 82, 86, 90, 94, 98, 102]; // 8 shapes, each uses 4 bits for shape selection
+  uint8[4] internal sectionColStartBits = [50, 56, 62, 68]; // 4 sections, each uses 3 bits for colour, 3 bits for duration
 
   // Random core dev and team to thank
   uint8 internal constant CORE_DEV_START_BIT = 0; // Uses 8 bits
@@ -320,7 +320,7 @@ contract MergeFractal is ERC721, Ownable {
 
   function defineShape(uint256 id, uint8 shapeIdx, uint8 colourIdxFill, uint8 colourIdxLine) internal view returns (string memory) {
     return string(abi.encodePacked(
-      '<defs><path id="shape',
+      '<path id="shape',
       ToColor.uint2str(shapeIdx),
       '" d="',
       pathData[getUint8(id, sectionShapesStartBits[shapeIdx], 4) % PATHS_LEN],
@@ -328,23 +328,31 @@ contract MergeFractal is ERC721, Ownable {
       getRGBA(id, colourIdxFill, "0.65"),
       '" stroke="',
       getRGBA(id, colourIdxLine, "0.80"),
-      '" stroke-width="10px" stroke-linecap="round" transform="scale(0.01 0.01)" /></defs>'
+      '" stroke-width="6px" transform="scale(0.01 -0.01)" />'
     ));
   }
 
   // Defines shape0, shape1, shape2...
   function defineAllShapes(uint256 id) public view returns (string memory) {
     return string(abi.encodePacked(
-      defineShape(id, 0, 1, 1),
-      defineShape(id, 1, 2, 2)
+      defineShape(id, 0, 1, 0),
+      defineShape(id, 1, 1, 1),
+      defineShape(id, 2, 1, 2),
+      defineShape(id, 3, 1, 3),
+      defineShape(id, 4, 2, 0),
+      defineShape(id, 5, 2, 1),
+      defineShape(id, 6, 2, 2),
+      defineShape(id, 7, 2, 3)
     ));
   }
 
   function renderEthereum(uint256 id) internal view returns (string memory) {
     return string(abi.encodePacked(
+      '<defs>',
       defineAllShapes(id),
+      '</defs>',
       '<use href="#shape0" transform="translate(125, 200) scale(95, 170) rotate(45)"/>',
-      '<use href="#shape1" transform="translate(275, 200) scale(95, 170) rotate(45)"/>'
+      '<use href="#shape7" transform="translate(275, 200) scale(95, 170) rotate(45)"/>'
     ));
   }
 
