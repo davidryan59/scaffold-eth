@@ -351,8 +351,14 @@ contract MergeFractal is ERC721, Ownable {
       '<defs>',
       defineAllShapes(id),
       '</defs>',
+      '<g>',
+      '<animateTransform attributeName="transform" attributeType="XML" type="translate" values="0; 37.5; 75; 0" dur="10s" repeatCount="indefinite"/>',
       '<use href="#shape0" transform="translate(125, 200) scale(95, 170) rotate(45)"/>',
-      '<use href="#shape7" transform="translate(275, 200) scale(95, 170) rotate(45)"/>'
+      '</g>',
+      '<g>',
+      '<animateTransform attributeName="transform" attributeType="XML" type="translate" values="0; -37.5; -75; 0" dur="10s" repeatCount="indefinite"/>',
+      '<use href="#shape7" transform="translate(275, 200) scale(95, 170) rotate(45)"/>',
+      '</g>'
     ));
   }
 
