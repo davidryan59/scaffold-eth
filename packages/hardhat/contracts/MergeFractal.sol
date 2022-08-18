@@ -240,7 +240,7 @@ contract MergeFractal is ERC721, Ownable {
       ' repeatCount="indefinite"/><path fill="none" stroke-linecap="round" stroke="',
       rgba,
       '" stroke-width="9px"',
-      ToColor.linesPath,
+      sfad.getLinesPath(),
       getLinesTransform(arraySection),
       '/></g>'
     ));
