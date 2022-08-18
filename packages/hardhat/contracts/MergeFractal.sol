@@ -8,7 +8,6 @@ import "@openzeppelin/contracts/utils/Strings.sol";
 import 'base64-sol/base64.sol';
 // Learn more: https://docs.openzeppelin.com/contracts/3.x/erc721
 
-import './ToColor.sol';
 import './SharedFnsAndData.sol';
 import './FractalStrings.sol';
 
@@ -48,9 +47,6 @@ contract MergeFractal is ERC721, Ownable {
 
   // Random core dev and team to thank
   uint8 internal constant CORE_DEV_START_BIT = 0; // Uses 8 bits
-  uint8 internal constant CORE_DEV_ARRAY_LEN = 120;
-  string[CORE_DEV_ARRAY_LEN] internal coreDevNames = ['Vitalik','donations.0xSplits.eth','Artem Vorotnikov','Parithosh Jayanthi','Rafael Matias','Guillaume Ballet','Jared Wasinger','Marius van der Wijden','Matt Garnett','Peter Szilagyi','Andrei Maiboroda','Jose Hugo de la cruz Romero','Paweł Bylica','Andrew Day','Gabriel','Holger Drewes','Jochem','Scotty Poi','Jacob Kaufmann','Jason Carver','Mike Ferris','Ognyan Genev','Piper Merriam','Danny Ryan','Tim Beiko','Trenton Van Epps','Aditya Asgaonkar','Alex Stokes','Ansgar Dietrichs','Antonio Sanso','Carl Beekhuizen','Dankrad Feist','Dmitry Khovratovich','Francesco d’Amato','George Kadianakis','Hsiao Wei Wang','Justin Drake','Mark Simkin','Proto','Zhenfei Zhang','Anders','Barnabé Monnot','Caspar Schwarz-Schilling','David Theodore','Fredrik Svantes','Justin Traglia','Tyler Holmes','Yoav Weiss','Alex Beregszaszi','Harikrishnan Mulackal','Kaan Uzdogan','Kamil Sliwak','Leonardo de Sa Alt','Mario Vega','Andrey Ashikhmin','Enrique Avila Asapche','Giulio Rebuffo','Michelangelo Riccobene','Tullio Canepa','Pooja Ranjan','Daniel Lehrner','Danno Ferrin','Gary Schulte','Jiri Peinlich','Justin Florentine','Karim Taam','Guru','Jim McDonald','Peter Davies','Adrian Manning','Diva Martínez','Mac Ladson','Mark Mackey','Mehdi Zerouali','Michael Sproul','Paul Hauner','Pawan Dhananjay Ravi','Sean Anderson','Cayman Nava','Dadepo Aderemi','dapplion','Gajinder Singh','Phil Ngo','Tuyen Nguyen','Daniel Caleda','Jorge Mederos','Łukasz Rozmej','Marcin Sobczak','Marek Moraczyński','Mateusz Jędrzejewski','Tanishq','Tomasz Stanzeck','James He','Kasey Kirkham','Nishant Das','potuz','Preston Van Loon','Radosław Kapka','Raul Jordan','Taran Singh','Terence Tsao','Sam Wilson','Dustin Brody','Etan Kissling','Eugene Kabanov','Jacek Sieka','Jordan Hrycaj','Kim De Mey','Konrad Staniec','Mamy Ratsimbazafy','Zahary Karadzhov','Adrian Sutton','Ben Edgington','Courtney Hunter','Dmitry Shmatko','Enrico Del Fante','Paul Harris','Alex Vlasov','Anton Nashatyrev','Mikhail Kalinin'];
-  uint8[CORE_DEV_ARRAY_LEN] internal coreDevTeamIndices = [0,1,2,3,3,4,4,4,4,4,5,5,5,6,6,6,6,6,7,7,7,7,7,8,8,8,9,9,9,9,9,9,9,9,9,9,9,9,9,9,10,10,10,11,11,11,11,11,12,12,12,12,12,13,14,14,14,14,14,15,16,16,16,16,16,16,0,0,0,17,17,17,17,17,17,17,17,17,18,18,18,18,18,18,19,19,19,19,19,19,19,19,20,20,20,20,20,20,20,20,20,21,22,22,22,22,22,22,22,22,22,23,23,23,23,23,23,24,24,24];
   uint8 internal constant TEAM_ARRAY_LEN = 25;
   string[TEAM_ARRAY_LEN] internal teams = ['Independent','0xSplits','Akula','EF DevOps','EF Geth','EF Ipsilon','EF JavaScript','EF Portal','EF Protocol Support','EF Research','EF Robust Incentives Group','EF Security','EF Solidity','EF Testing','Erigon','Ethereum Cat Herders','Hyperledger Besu','Lighthouse','Lodestar','Nethermind','Prysmatic','Quilt','Status','Teku','TXRX'];
 
@@ -68,7 +64,6 @@ contract MergeFractal is ERC721, Ownable {
   ];
 
   using Strings for uint256;
-  using ToColor for bytes3;
   using Counters for Counters.Counter;
   Counters.Counter private _tokenIds;
 
@@ -108,11 +103,11 @@ contract MergeFractal is ERC721, Ownable {
     uint8 idx = 8 * arraySection + getUint8(id, startBit, 3); // 3 bits = 8 colour choices
     return string(abi.encodePacked(
       'rgba(',
-      ToColor.uint2str(colsR[idx]),
+      sfad.uint2str(colsR[idx]),
       ',',
-      ToColor.uint2str(colsG[idx]),
+      sfad.uint2str(colsG[idx]),
       ',',
-      ToColor.uint2str(colsB[idx]),
+      sfad.uint2str(colsB[idx]),
       ',',
       alpha,
       ')'
@@ -187,11 +182,11 @@ contract MergeFractal is ERC721, Ownable {
     uint16 num1 = sectionLineTranslates[arraySection];
     return string(abi.encodePacked(
       ' transform="translate(',
-      ToColor.uint2str(num1),
+      sfad.uint2str(num1),
       ' ',
-      ToColor.uint2str(num1),
+      sfad.uint2str(num1),
       ') scale(0.',
-      ToColor.uint2str(200 - num1),
+      sfad.uint2str(200 - num1),
       ')"'
     ));
   }
@@ -201,7 +196,7 @@ contract MergeFractal is ERC721, Ownable {
     uint8 idx = 8 * arraySection + getUint8(id, startBitDur, 3); // 3 bits = 8 duration choices
     return string(abi.encodePacked(
       ' dur="',
-      ToColor.uint2str(3 * durations[idx]), // It was rotating too fast! Extra factor here
+      sfad.uint2str(3 * durations[idx]), // It was rotating too fast! Extra factor here
       's"'
     ));
   }
@@ -220,9 +215,9 @@ contract MergeFractal is ERC721, Ownable {
     //   render = string(abi.encodePacked(
     //     render,
     //     '<rect x="',
-    //     ToColor.uint2str(x),
+    //     sfad.uint2str(x),
     //     '" y="',
-    //     ToColor.uint2str(y),
+    //     sfad.uint2str(y),
     //     '" width="50" height="50" rx="15" fill="',
     //     rgba,
     //     '"/>'
@@ -270,15 +265,15 @@ contract MergeFractal is ERC721, Ownable {
   }
 
   function getCoreDevIdx(uint256 id) internal view returns (uint8 idx) {
-    return getUint8(id, CORE_DEV_START_BIT, 8) % CORE_DEV_ARRAY_LEN;
+    return getUint8(id, CORE_DEV_START_BIT, 8) % sfad.getCoreDevArrayLen();
   }
 
   function getTeamIdx(uint256 id) internal view returns (uint8 idx) {
-    return coreDevTeamIndices[getCoreDevIdx(id)];
+    return sfad.getCoreDevTeamIndex(getCoreDevIdx(id));
   }
 
   function getCoreDevName(uint256 id) internal view returns (string memory) {
-    return coreDevNames[getCoreDevIdx(id)];
+    return sfad.getCoreDevName(getCoreDevIdx(id));
   }
 
   function getTeamName(uint256 id) internal view returns (string memory) {
@@ -311,7 +306,7 @@ contract MergeFractal is ERC721, Ownable {
       '<g><animateTransform attributeName="transform" attributeType="XML" type="rotate" values="0 200 200; 360 200 200" dur="120s" repeatCount="indefinite"/><text><textPath href="#textcircle">/ ',
       NETWORK,
       ' Merge Fractal #',
-      ToColor.uint2str(id),
+      sfad.uint2str(id),
       ' / ',
       getCoreDevAndTeamText(id),
       '! / ',
@@ -326,7 +321,7 @@ contract MergeFractal is ERC721, Ownable {
   function defineShape(uint256 id, uint8 shapeIdx, uint8 colourIdxFill, uint8 colourIdxLine) internal view returns (string memory) {
     return string(abi.encodePacked(
       '<path id="shape',
-      ToColor.uint2str(shapeIdx),
+      sfad.uint2str(shapeIdx),
       '" d="',
       pathData[getUint8(id, sectionShapesStartBits[shapeIdx], 4) % PATHS_LEN],
       '" fill="',
