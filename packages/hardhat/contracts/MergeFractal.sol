@@ -10,6 +10,8 @@ import 'base64-sol/base64.sol';
 
 import './HexStrings.sol';
 import './ToColor.sol';
+import './FractalStrings.sol';
+
 
 // GET LISTED ON OPENSEA: https://testnets.opensea.io/get-listed/step-two
 
@@ -19,6 +21,8 @@ import './ToColor.sol';
 // Artist page for niftymaestro.eth: https://nifty.ink/artist/0xbFAc61D1e22EFA9d37Fc3Ff36B9dff9655131F52
 
 contract MergeFractal is ERC721, Ownable {
+
+  FractalStrings fs;
 
   // ----------------------------------------------
   // Amend these when deploying to new networks  
@@ -71,8 +75,9 @@ contract MergeFractal is ERC721, Ownable {
   using Counters for Counters.Counter;
   Counters.Counter private _tokenIds;
 
-  constructor() public ERC721("MergeFractals", "MERGFR") {
+  constructor(address fsAddress) public ERC721("MergeFractals", "MERGFR") {
     // RELEASE THE MERGE FRACTALS!
+    fs = FractalStrings(fsAddress);
   }
 
   mapping (uint256 => uint256) internal generator;
@@ -311,7 +316,8 @@ contract MergeFractal is ERC721, Ownable {
       ' / ',
       getCoreDevAndTeamText(id),
       '! / ',
-      getSaying(id),
+      // getSaying(id),
+      fs.getTestString(),
       ' / Minted by ',
       (uint160(mintooor[id])).toHexString(20),
       '♦♢♦♢♦♢♦♢♦♢♦♢♦♢♦♢♦♢♦♢♦♢♦♢♦♢♦♢♦♢♦♢♦♢♦♢♦♢♦♢♦♢♦♢♦</textPath></text></g>'
@@ -336,15 +342,22 @@ contract MergeFractal is ERC721, Ownable {
   function defineAllShapes(uint256 id) public view returns (string memory) {
     return string(abi.encodePacked(
       defineShape(id, 0, 1, 0),
-      defineShape(id, 1, 1, 1),
-      defineShape(id, 2, 1, 2),
-      defineShape(id, 3, 1, 3),
-      defineShape(id, 4, 2, 0),
-      defineShape(id, 5, 2, 1),
-      defineShape(id, 6, 2, 2),
-      defineShape(id, 7, 2, 3)
+      defineShape(id, 1, 1, 1)
+      // defineShape(id, 2, 1, 2),
+      // defineShape(id, 3, 1, 3),
+      // defineShape(id, 4, 2, 0),
+      // defineShape(id, 5, 2, 1),
+      // defineShape(id, 6, 2, 2),
+      // defineShape(id, 7, 2, 3)
     ));
   }
+
+  // uint16[31] internal interpolationCurve10k = [0,50,200,450,800,1250,1800,2450,3200,4050,5000,5950,6800,7550,8200,8750,9200,9550,9800,9950,10000,9992,9872,9352,7952,5000,2048,648,128,8,0];
+
+  // function calculateTransformValues(int64 startVal, int64 endVal) internal pure returns (string memory) {
+  //   string memory result = '';
+  //   return '0; 37; 75; 0';
+  // }
 
   function renderEthereum(uint256 id) internal view returns (string memory) {
     return string(abi.encodePacked(
@@ -357,7 +370,7 @@ contract MergeFractal is ERC721, Ownable {
       '</g>',
       '<g>',
       '<animateTransform attributeName="transform" attributeType="XML" type="translate" values="0; -37.5; -75; 0" dur="10s" repeatCount="indefinite"/>',
-      '<use href="#shape7" transform="translate(275, 200) scale(95, 170) rotate(45)"/>',
+      '<use href="#shape1" transform="translate(275, 200) scale(95, 170) rotate(45)"/>',
       '</g>'
     ));
   }

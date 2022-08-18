@@ -1,1 +1,1 @@
-module.exports = ["MergeFractal"];
+module.exports = ["FractalStrings","MergeFractal"];
