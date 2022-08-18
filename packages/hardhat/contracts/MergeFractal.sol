@@ -10,6 +10,7 @@ import 'base64-sol/base64.sol';
 
 import './HexStrings.sol';
 import './ToColor.sol';
+import './SharedFnsAndData.sol';
 import './FractalStrings.sol';
 
 
@@ -21,8 +22,6 @@ import './FractalStrings.sol';
 // Artist page for niftymaestro.eth: https://nifty.ink/artist/0xbFAc61D1e22EFA9d37Fc3Ff36B9dff9655131F52
 
 contract MergeFractal is ERC721, Ownable {
-
-  FractalStrings fs;
 
   // ----------------------------------------------
   // Amend these when deploying to new networks  
@@ -75,8 +74,10 @@ contract MergeFractal is ERC721, Ownable {
   using Counters for Counters.Counter;
   Counters.Counter private _tokenIds;
 
-  constructor(address fsAddress) public ERC721("MergeFractals", "MERGFR") {
-    // RELEASE THE MERGE FRACTALS!
+  SharedFnsAndData sfad;
+  FractalStrings fs;
+  constructor(address sfadAddress, address fsAddress) public ERC721("MergeFractals", "MERGFR") {
+    sfad = SharedFnsAndData(sfadAddress);
     fs = FractalStrings(fsAddress);
   }
 
