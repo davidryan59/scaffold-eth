@@ -8,7 +8,6 @@ import "@openzeppelin/contracts/utils/Strings.sol";
 import 'base64-sol/base64.sol';
 // Learn more: https://docs.openzeppelin.com/contracts/3.x/erc721
 
-import './HexStrings.sol';
 import './ToColor.sol';
 import './SharedFnsAndData.sol';
 import './FractalStrings.sol';
@@ -69,7 +68,6 @@ contract MergeFractal is ERC721, Ownable {
   ];
 
   using Strings for uint256;
-  using HexStrings for uint160;
   using ToColor for bytes3;
   using Counters for Counters.Counter;
   Counters.Counter private _tokenIds;
@@ -161,7 +159,7 @@ contract MergeFractal is ERC721, Ownable {
         '", "attributes": ',
         getAllAttributes(id),
         ', "owner":"',
-        (uint160(ownerOf(id))).toHexString(20),
+        sfad.toHexString(uint160(ownerOf(id)), 20),
         '", "image": "data:image/svg+xml;base64,',
         image,
         '"}'
@@ -320,7 +318,7 @@ contract MergeFractal is ERC721, Ownable {
       // getSaying(id),
       fs.getTestString(),
       ' / Minted by ',
-      (uint160(mintooor[id])).toHexString(20),
+      sfad.toHexString(uint160(mintooor[id]), 20),
       '♦♢♦♢♦♢♦♢♦♢♦♢♦♢♦♢♦♢♦♢♦♢♦♢♦♢♦♢♦♢♦♢♦♢♦♢♦♢♦♢♦♢♦♢♦</textPath></text></g>'
     ));  
   }
