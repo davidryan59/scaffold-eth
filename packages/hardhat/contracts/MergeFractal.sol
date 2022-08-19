@@ -202,41 +202,32 @@ contract MergeFractal is ERC721, Ownable {
     ));
   }
 
+  function renderTestnetColourPatch(uint256 id, uint8 arraySection) internal view returns (string memory) {
+    return string(abi.encodePacked(
+      '<rect x="',
+      sfad.uint2str(arraySection >> 1 == 0 ? 0 : 350),
+      '" y="',
+      sfad.uint2str(arraySection % 2 == 1 ? 0 : 350),
+      '" width="50" height="50" rx="15" fill="',
+      getRGBA(generator[id], arraySection, "1"),
+      '"/>'
+    ));
+  }
+
   // Uses 6 random bits
   function renderLines(uint256 id, uint8 arraySection, string memory maxAngleText) internal view returns (string memory) {
-    string memory rgba = getRGBA(generator[id], arraySection, "0.90");
-    // // -------------------------------
-    // // TEMP RECTANGLES TO TEST COLOURS
-    // string memory render = '';
-    // render = '' // <<assign it>>
-    // // ...
-    // if (IS_TESTNET) {
-    //   uint16 x = arraySection >> 1 == 0 ? 0 : 350;
-    //   uint16 y = arraySection % 2 == 1 ? 0 : 350;
-    //   render = string(abi.encodePacked(
-    //     render,
-    //     '<rect x="',
-    //     sfad.uint2str(x),
-    //     '" y="',
-    //     sfad.uint2str(y),
-    //     '" width="50" height="50" rx="15" fill="',
-    //     rgba,
-    //     '"/>'
-    //   ));
-    // }
-    // // -------------------------------
-
     return string(abi.encodePacked(
       '<g><animateTransform attributeName="transform" attributeType="XML" type="rotate" values="0 200 200; ',
       maxAngleText,
       ' 200 200; 0 200 200"',
       getDur(generator[id], arraySection),
       ' repeatCount="indefinite"/><path fill="none" stroke-linecap="round" stroke="',
-      rgba,
+      getRGBA(generator[id], arraySection, "0.90"),
       '" stroke-width="9px"',
       sfad.getLinesPath(),
       getLinesTransform(arraySection),
-      '/></g>'
+      '/></g>',
+      IS_TESTNET ? renderTestnetColourPatch(id, arraySection) : ''
     ));
   }
 
@@ -250,11 +241,11 @@ contract MergeFractal is ERC721, Ownable {
     ));
   }
 
-  function renderBorder(uint256 id) internal view returns (string memory) {
-    string memory rgba0 = getRGBA(generator[id], 0, "0.9");
+  function renderBorder(uint256 gen) internal view returns (string memory) {
+    string memory rgba0 = getRGBA(gen, 0, "0.9");
     return string(abi.encodePacked(
       '<circle r="180" stroke-width="28px" stroke="',
-      getRGBA(generator[id], 3, "0.8"),
+      getRGBA(gen, 3, "0.8"),
       '" fill="none" cx="200" cy="200"/>',
       '<circle r="197" stroke-width="6px" stroke="',
       rgba0,
@@ -375,7 +366,7 @@ contract MergeFractal is ERC721, Ownable {
     uint256 gen = generator[id];
     return string(abi.encodePacked(
       renderDiskAndLines(id),
-      renderBorder(id),
+      renderBorder(gen),
       renderText(id),
       renderEthereum(gen)
     ));
