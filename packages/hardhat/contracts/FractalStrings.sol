@@ -7,11 +7,14 @@ contract FractalStrings {
 
 
   // Paths are (approx) in a box [-50, -50] to [50, 50] so require scale 1/100 to fix in a unit box
-  uint8 internal constant PATHS_LEN = 3;
+  uint8 internal constant PATHS_LEN = 6;
   string[PATHS_LEN] internal pathData = [
     'M -50 -50 L -50 50 50 50 50 -50 -50 -50',
-    'M 0 -50 L -50 0 -50 50 0 25 50 50 50 0 0 -50',
-    'M 0 -50 L -50 -33 -50 33 0 50 50 33 50 -33 0 -50'
+    'M -50 -50 L -50 50 50 50 50 0 0 -50 -50 -50',
+    'M -50 -50 L -50 50 50 50 50 0 0 0 0 -50 -50 -50',
+    'M -50 -50 L -50 50 50 50 0 0 50 -50 -50 -50',
+    'M -50 -50 L -50 50 0 33 50 50 50 -50 0 -33 -50 -50',
+    'M -50 -50 L -33 0 -50 50 0 33 50 50 33 0 50 -50 0 -33 -50 -50'
   ];
 
   SharedFnsAndData sfad;
@@ -34,8 +37,8 @@ contract FractalStrings {
     ));
   }
 
-  // Defines shapes 0 to 7
-  function defineAllShapes(uint256 gen) public view returns (string memory) {
+  // Defines shape0, shape1, ... shape7
+  function defineAllShapes(uint256 gen) internal view returns (string memory) {
     return string(abi.encodePacked(
       defineShape(gen, 0, 1, 0),
       defineShape(gen, 1, 1, 1),
@@ -48,18 +51,47 @@ contract FractalStrings {
     ));
   }
 
+  function getIteration1Item(uint8 sideIdx, uint8 itemIdx) internal view returns (string memory) {
+    return string(abi.encodePacked(
+      '<use href="#shape',
+      sfad.uint2str(4 * sideIdx + itemIdx),
+      '" transform="scale(0.5) translate(',
+      itemIdx % 2 == 0 ? "0.5" : "-0.5",
+      ', ',
+      itemIdx >> 1 == 0 ? "0.5" : "-0.5",
+      ')"/>'
+    ));
+  }
+
+  // Defines it_1_0, it_1_1
+  function defineIteration1(uint8 sideIdx) internal view returns (string memory) {
+    // sideIdx should be 0 (left) or 1 (right)
+    return string(abi.encodePacked(
+      '<g id="it_1_',
+      sfad.uint2str(sideIdx),
+      '">',
+      getIteration1Item(sideIdx, 0),
+      getIteration1Item(sideIdx, 1),
+      getIteration1Item(sideIdx, 2),
+      getIteration1Item(sideIdx, 3),
+      '</g>'
+    ));
+  }
+
   function renderEthereum(uint256 gen) public view returns (string memory) {
     return string(abi.encodePacked(
       '<defs>',
       defineAllShapes(gen),
+      defineIteration1(0),
+      defineIteration1(1),
       '</defs>',
       '<g>',
       '<animateTransform attributeName="transform" attributeType="XML" type="translate" values="0; 37.5; 75; 0" dur="10s" repeatCount="indefinite"/>',
-      '<use href="#shape0" transform="translate(125, 200) scale(95, 170) rotate(45)"/>',
+      '<use href="#it_1_0" transform="translate(125, 200) scale(95, 170) rotate(45)"/>',
       '</g>',
       '<g>',
       '<animateTransform attributeName="transform" attributeType="XML" type="translate" values="0; -37.5; -75; 0" dur="10s" repeatCount="indefinite"/>',
-      '<use href="#shape7" transform="translate(275, 200) scale(95, 170) rotate(45)"/>',
+      '<use href="#it_1_1" transform="translate(275, 200) scale(95, 170) rotate(45)"/>',
       '</g>'
     ));
   }
