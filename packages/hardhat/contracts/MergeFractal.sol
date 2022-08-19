@@ -97,11 +97,11 @@ contract MergeFractal is ERC721, Ownable {
     return gen8bits % 2 ** bits;
   }
 
-  function getRGBA(uint256 id, uint8 arraySection, string memory alpha) internal view returns (string memory) {
+  function getRGBA(uint256 gen, uint8 arraySection, string memory alpha) internal view returns (string memory) {
     uint8 startBit = sectionColStartBits[arraySection];
     // Array section values are 0, 1, 2 or 3 (0 is darkest, 3 is lightest)
     // These sections give colours 0-7, 8-15, 16-23, 24-31
-    uint8 idx = 8 * arraySection + getUint8(generator[id], startBit, 3); // 3 bits = 8 colour choices
+    uint8 idx = 8 * arraySection + getUint8(gen, startBit, 3); // 3 bits = 8 colour choices
     return string(abi.encodePacked(
       'rgba(',
       sfad.uint2str(colsR[idx]),
@@ -174,7 +174,7 @@ contract MergeFractal is ERC721, Ownable {
   function renderDisk(uint256 id) internal view returns (string memory) {
     return string(abi.encodePacked(
       '<circle fill="',
-      getRGBA(id, 3, "1"),
+      getRGBA(generator[id], 3, "1"),
       '" cx="200" cy="200" r="200"/>'
     ));
   }
@@ -204,7 +204,7 @@ contract MergeFractal is ERC721, Ownable {
 
   // Uses 6 random bits
   function renderLines(uint256 id, uint8 arraySection, string memory maxAngleText) internal view returns (string memory) {
-    string memory rgba = getRGBA(id, arraySection, "0.90");
+    string memory rgba = getRGBA(generator[id], arraySection, "0.90");
     // // -------------------------------
     // // TEMP RECTANGLES TO TEST COLOURS
     // string memory render = '';
@@ -251,10 +251,10 @@ contract MergeFractal is ERC721, Ownable {
   }
 
   function renderBorder(uint256 id) internal view returns (string memory) {
-    string memory rgba0 = getRGBA(id, 0, "0.9");
+    string memory rgba0 = getRGBA(generator[id], 0, "0.9");
     return string(abi.encodePacked(
       '<circle r="180" stroke-width="28px" stroke="',
-      getRGBA(id, 3, "0.8"),
+      getRGBA(generator[id], 3, "0.8"),
       '" fill="none" cx="200" cy="200"/>',
       '<circle r="197" stroke-width="6px" stroke="',
       rgba0,
@@ -302,7 +302,7 @@ contract MergeFractal is ERC721, Ownable {
   function renderText(uint256 id) internal view returns (string memory) {
     return string(abi.encodePacked(
       '<defs><style>text{font-size:15px;font-family:Helvetica,sans-serif;font-weight:900;fill:',
-      getRGBA(id, 0, "1"),
+      getRGBA(generator[id], 0, "1"),
       ';letter-spacing:1px}</style><path id="textcircle" fill="none" stroke="rgba(255,0,0,0.5)" d="M 196 375 A 175 175 270 1 1 375 200 A 175 175 90 0 1 204 375" /></defs>',
       '<g><animateTransform attributeName="transform" attributeType="XML" type="rotate" values="0 200 200; 360 200 200" dur="120s" repeatCount="indefinite"/><text><textPath href="#textcircle">/ ',
       NETWORK,
@@ -326,9 +326,9 @@ contract MergeFractal is ERC721, Ownable {
       '" d="',
       pathData[getUint8(generator[id], sectionShapesStartBits[shapeIdx], 4) % PATHS_LEN],
       '" fill="',
-      getRGBA(id, colourIdxFill, "0.65"),
+      getRGBA(generator[id], colourIdxFill, "0.65"),
       '" stroke="',
-      getRGBA(id, colourIdxLine, "0.80"),
+      getRGBA(generator[id], colourIdxLine, "0.80"),
       '" stroke-width="6px" transform="scale(0.01 -0.01)" />'
     ));
   }
