@@ -5,7 +5,12 @@
 //  ||==    ||   ||==|| ||==  ||_// ||==  || || || \/ ||    || \/ || ||==  ||_// (( ___ ||==     ||==  ||_// ||=|| ((      ||   ||=|| ||   
 //  ||___   ||   ||  || ||___ || \\ ||___ \\_// ||    ||    ||    || ||___ || \\  \\_|| ||___    ||    || \\ || ||  \\__   ||   || || ||__|
                                                                                                                                         
-// (font: Double, via https://patorjk.com/software/taag)
+// (ASCII art font: Double, via https://patorjk.com/software/taag)
+
+// Merge Fractal NFT developed for the Ethereum Merge event
+// by David Ryan (@davidryan59 on Twitter)
+// Check out some more of my fractal art at Nifty Ink!
+// Artist page for niftymaestro.eth: https://nifty.ink/artist/0xbFAc61D1e22EFA9d37Fc3Ff36B9dff9655131F52
 
 pragma solidity ^0.6.7;
 
@@ -19,13 +24,7 @@ import 'base64-sol/base64.sol';
 import './SharedFnsAndData.sol';
 import './FractalStrings.sol';
 
-
 // GET LISTED ON OPENSEA: https://testnets.opensea.io/get-listed/step-two
-
-// Merge Fractal NFT developed for the Ethereum Merge event
-// by David Ryan (@davidryan59 on Twitter)
-// Check out some more of my fractal art at Nifty Ink!
-// Artist page for niftymaestro.eth: https://nifty.ink/artist/0xbFAc61D1e22EFA9d37Fc3Ff36B9dff9655131F52
 
 contract MergeFractal is ERC721, Ownable {
 
@@ -38,19 +37,8 @@ contract MergeFractal is ERC721, Ownable {
   // string internal constant NETWORK = 'Optimism';  // etc
   // ----------------------------------------------
 
-  uint16[32] internal durations = [31,53,73,103,137,167,197,233,37,59,79,107,139,173,199,239,41,61,83,109,149,179,211,241,43,67,89,113,151,181,223,251];
-
-  // Control colours that are used in the NFT
-  uint8[32] internal colsR = [0,128,96,64,0,0,0,64,85,255,191,128,0,0,0,128,170,0,64,127,255,255,255,127,255,127,191,255,255,255,191,255];
-  uint8[32] internal colsG = [0,0,32,64,128,64,0,0,85,0,64,128,255,128,0,0,170,255,191,127,0,127,255,255,255,255,191,127,191,255,255,159];
-  uint8[32] internal colsB = [0,0,0,0,0,64,128,64,85,0,0,0,0,128,255,128,170,255,255,255,255,127,0,127,255,255,255,255,191,127,191,223];
-
   // Control placement of 4 sets of rotating lines
   uint8[4] internal sectionLineTranslates = [2, 4, 36, 38];
-
-  // Control how randomisation is generated via startBit
-  uint8[8] internal sectionShapesStartBits = [74, 78, 82, 86, 90, 94, 98, 102]; // 8 shapes, each uses 4 bits for shape selection
-  uint8[4] internal sectionColStartBits = [50, 56, 62, 68]; // 4 sections, each uses 3 bits for colour, 3 bits for duration
 
   // Random core dev and team to thank
   uint8 internal constant CORE_DEV_START_BIT = 0; // Uses 8 bits
@@ -61,14 +49,6 @@ contract MergeFractal is ERC721, Ownable {
   uint8 internal constant SAYING_START_BIT = 8; // Uses 8 bits
   uint8 internal constant SAYING_ARRAY_LEN = 19;
   string[SAYING_ARRAY_LEN] internal sayings = ['PoS > PoW','Environmentally friendly at last','The Flippening','Decentralise Everything','Energy consumption -99.95%','Unstoppable smart contracts','Run your own node','TTD 58750000000000000000000','TTD 5.875 * 10^22','TTD 2^19 * 5^22 * 47','Validate with 32 ETH','Validators > Miners','Sustainable and secure','Proof-of-stake consensus','World Computer','Permissionless','Vitalik is clapping','Vitalik is dancing','Anthony Sassano is dancing'];
-
-  // Paths are (approx) in a box [-50, -50] to [50, 50] so require scale 1/100 to fix in a unit box
-  uint8 internal constant PATHS_LEN = 3;
-  string[PATHS_LEN] internal pathData = [
-    'M -50 -50 L -50 50 50 50 50 -50 -50 -50',
-    'M 0 -50 L -50 0 -50 50 0 25 50 50 50 0 0 -50',
-    'M 0 -50 L -50 -33 -50 33 0 50 50 33 50 -33 0 -50'
-  ];
 
   using Strings for uint256;
   using Counters for Counters.Counter;
@@ -96,24 +76,6 @@ contract MergeFractal is ERC721, Ownable {
       generator[id] = uint256(keccak256(abi.encodePacked( blockhash(block.number-1), msg.sender, address(this), id)));
       mintooor[id] = msg.sender;
       return id;
-  }
-
-  function getRGBA(uint256 gen, uint8 arraySection, string memory alpha) internal view returns (string memory) {
-    uint8 startBit = sectionColStartBits[arraySection];
-    // Array section values are 0, 1, 2 or 3 (0 is darkest, 3 is lightest)
-    // These sections give colours 0-7, 8-15, 16-23, 24-31
-    uint8 idx = 8 * arraySection + sfad.getUint8(gen, startBit, 3); // 3 bits = 8 colour choices
-    return string(abi.encodePacked(
-      'rgba(',
-      sfad.uint2str(colsR[idx]),
-      ',',
-      sfad.uint2str(colsG[idx]),
-      ',',
-      sfad.uint2str(colsB[idx]),
-      ',',
-      alpha,
-      ')'
-    ));
   }
 
   function getTrait(string memory traitType, string memory traitValue) internal pure returns (string memory) {
@@ -175,7 +137,7 @@ contract MergeFractal is ERC721, Ownable {
   function renderDisk(uint256 gen) internal view returns (string memory) {
     return string(abi.encodePacked(
       '<circle fill="',
-      getRGBA(gen, 3, "1"),
+      sfad.getRGBA(gen, 3, "1"),
       '" cx="200" cy="200" r="200"/>'
     ));
   }
@@ -193,16 +155,6 @@ contract MergeFractal is ERC721, Ownable {
     ));
   }
 
-  function getDur(uint256 gen, uint8 arraySection) internal view returns (string memory) {
-    uint8 startBitDur = sectionColStartBits[arraySection] + 3;
-    uint8 idx = 8 * arraySection + sfad.getUint8(gen, startBitDur, 3); // 3 bits = 8 duration choices
-    return string(abi.encodePacked(
-      ' dur="',
-      sfad.uint2str(3 * durations[idx]), // It was rotating too fast! Extra factor here
-      's"'
-    ));
-  }
-
   function renderTestnetColourPatch(uint256 gen, uint8 arraySection) internal view returns (string memory) {
     return string(abi.encodePacked(
       '<rect x="',
@@ -210,20 +162,20 @@ contract MergeFractal is ERC721, Ownable {
       '" y="',
       sfad.uint2str(arraySection % 2 == 1 ? 0 : 350),
       '" width="50" height="50" rx="15" fill="',
-      getRGBA(gen, arraySection, "1"),
+      sfad.getRGBA(gen, arraySection, "1"),
       '"/>'
     ));
   }
 
-  // Uses 6 random bits
+  // Uses 6 random bits per line set / section
   function renderLines(uint256 gen, uint8 arraySection, string memory maxAngleText) internal view returns (string memory) {
     return string(abi.encodePacked(
       '<g><animateTransform attributeName="transform" attributeType="XML" type="rotate" values="0 200 200; ',
       maxAngleText,
       ' 200 200; 0 200 200"',
-      getDur(gen, arraySection),
+      sfad.getDurText(gen, arraySection),
       ' repeatCount="indefinite"/><path fill="none" stroke-linecap="round" stroke="',
-      getRGBA(gen, arraySection, "0.90"),
+      sfad.getRGBA(gen, arraySection, "0.90"),
       '" stroke-width="9px"',
       sfad.getLinesPath(),
       getLinesTransform(arraySection),
@@ -243,10 +195,10 @@ contract MergeFractal is ERC721, Ownable {
   }
 
   function renderBorder(uint256 gen) internal view returns (string memory) {
-    string memory rgba0 = getRGBA(gen, 0, "0.9");
+    string memory rgba0 = sfad.getRGBA(gen, 0, "0.9");
     return string(abi.encodePacked(
       '<circle r="180" stroke-width="28px" stroke="',
-      getRGBA(gen, 3, "0.8"),
+      sfad.getRGBA(gen, 3, "0.8"),
       '" fill="none" cx="200" cy="200"/>',
       '<circle r="197" stroke-width="6px" stroke="',
       rgba0,
@@ -294,7 +246,7 @@ contract MergeFractal is ERC721, Ownable {
   function renderText(uint256 id) internal view returns (string memory) {
     return string(abi.encodePacked(
       '<defs><style>text{font-size:15px;font-family:Helvetica,sans-serif;font-weight:900;fill:',
-      getRGBA(generator[id], 0, "1"),
+      sfad.getRGBA(generator[id], 0, "1"),
       ';letter-spacing:1px}</style><path id="textcircle" fill="none" stroke="rgba(255,0,0,0.5)" d="M 196 375 A 175 175 270 1 1 375 200 A 175 175 90 0 1 204 375" /></defs>',
       '<g><animateTransform attributeName="transform" attributeType="XML" type="rotate" values="0 200 200; 360 200 200" dur="120s" repeatCount="indefinite"/><text><textPath href="#textcircle">/ ',
       NETWORK,
@@ -303,63 +255,11 @@ contract MergeFractal is ERC721, Ownable {
       ' / ',
       getCoreDevAndTeamText(id),
       '! / ',
-      // getSaying(id),
-      fs.getTestString(),
+      getSaying(id),
       ' / Minted by ',
       sfad.toHexString(uint160(mintooor[id]), 20),
       '♦♢♦♢♦♢♦♢♦♢♦♢♦♢♦♢♦♢♦♢♦♢♦♢♦♢♦♢♦♢♦♢♦♢♦♢♦♢♦♢♦♢♦♢♦</textPath></text></g>'
     ));  
-  }
-
-  function defineShape(uint256 gen, uint8 shapeIdx, uint8 colourIdxFill, uint8 colourIdxLine) internal view returns (string memory) {
-    return string(abi.encodePacked(
-      '<path id="shape',
-      sfad.uint2str(shapeIdx),
-      '" d="',
-      pathData[sfad.getUint8(gen, sectionShapesStartBits[shapeIdx], 4) % PATHS_LEN],
-      '" fill="',
-      getRGBA(gen, colourIdxFill, "0.65"),
-      '" stroke="',
-      getRGBA(gen, colourIdxLine, "0.80"),
-      '" stroke-width="6px" transform="scale(0.01 -0.01)" />'
-    ));
-  }
-
-  // Defines shape0, shape1, shape2...
-  function defineAllShapes(uint256 gen) public view returns (string memory) {
-    return string(abi.encodePacked(
-      defineShape(gen, 0, 1, 0),
-      defineShape(gen, 1, 1, 1)
-      // defineShape(gen, 2, 1, 2),
-      // defineShape(gen, 3, 1, 3),
-      // defineShape(gen, 4, 2, 0),
-      // defineShape(gen, 5, 2, 1),
-      // defineShape(gen, 6, 2, 2),
-      // defineShape(gen, 7, 2, 3)
-    ));
-  }
-
-  // uint16[31] internal interpolationCurve10k = [0,50,200,450,800,1250,1800,2450,3200,4050,5000,5950,6800,7550,8200,8750,9200,9550,9800,9950,10000,9992,9872,9352,7952,5000,2048,648,128,8,0];
-
-  // function calculateTransformValues(int64 startVal, int64 endVal) internal pure returns (string memory) {
-  //   string memory result = '';
-  //   return '0; 37; 75; 0';
-  // }
-
-  function renderEthereum(uint256 gen) internal view returns (string memory) {
-    return string(abi.encodePacked(
-      '<defs>',
-      defineAllShapes(gen),
-      '</defs>',
-      '<g>',
-      '<animateTransform attributeName="transform" attributeType="XML" type="translate" values="0; 37.5; 75; 0" dur="10s" repeatCount="indefinite"/>',
-      '<use href="#shape0" transform="translate(125, 200) scale(95, 170) rotate(45)"/>',
-      '</g>',
-      '<g>',
-      '<animateTransform attributeName="transform" attributeType="XML" type="translate" values="0; -37.5; -75; 0" dur="10s" repeatCount="indefinite"/>',
-      '<use href="#shape1" transform="translate(275, 200) scale(95, 170) rotate(45)"/>',
-      '</g>'
-    ));
   }
 
   function renderTokenById(uint256 id) public view returns (string memory) {
@@ -368,7 +268,7 @@ contract MergeFractal is ERC721, Ownable {
       renderDiskAndLines(gen),
       renderBorder(gen),
       renderText(id),
-      renderEthereum(gen)
+      fs.renderEthereum(gen)
     ));
   }
 }
