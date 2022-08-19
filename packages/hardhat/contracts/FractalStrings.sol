@@ -68,27 +68,19 @@ contract FractalStrings {
   string[4] internal ys = ['-0.25',' 0.25','-0.25',' 0.25'];
   function getIterationNItem(uint256 gen, uint8 iteration, uint8 sideIdx, uint8 itemIdx) internal view returns (string memory) {
     return string(abi.encodePacked(
-      '<g>',
-      // '<animateTransform attributeName="transform" attributeType="XML" type="rotate"',
-      // sfad.calcValues(90, 0),
-      // ANIM_DUR,
-      // ' repeatCount="indefinite"/>',
-      '<use href="#it_',
+      '<g><use href="#it_',
       sfad.uint2str(iteration-1),
       '_',
       sfad.uint2str(sideIdx),
-      '" transform="',
-      ' translate(',
+      '" transform="translate(',
       xs[itemIdx],
       ',',
       ys[itemIdx],
-      ')',
-      ' rotate(',
+      ') rotate(',
       sfad.uint2str(90 * uint16(sfad.getUint8(gen, 13 + itemIdx * 2, 2))),
       ') scale(0.5 ',
       sfad.getUint8(gen, 21 + itemIdx, 1) == 0 ? '-0.5' : '0.5',
-      ')',
-      '"/></g>'
+      ')"/></g>'
     ));
   }
 
@@ -119,8 +111,7 @@ contract FractalStrings {
       sfad.uint2str(iteration),
       '_',
       sfad.uint2str(sideIdx),
-      '">',
-      '<animateTransform attributeName="transform" attributeType="XML" type="rotate" values="',
+      '"><animateTransform attributeName="transform" attributeType="XML" type="rotate" values="',
       rotates[sfad.getUint8(gen, 155 + 4 * sideIdx + 8 * iteration, 4)],
       '" ',
       ANIM_DUR,

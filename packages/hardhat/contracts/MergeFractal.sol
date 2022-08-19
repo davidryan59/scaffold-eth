@@ -32,6 +32,7 @@ contract MergeFractal is ERC721, Ownable {
   // Amend these when deploying to new networks  
   bool internal constant IS_TESTNET = true;
   string internal constant NETWORK = 'TESTNET';
+  // string internal constant NETWORK = 'GOERLI DEPLOYMENT 1';
   // bool internal constant IS_TESTNET = false;
   // string internal constant NETWORK = 'Ethereum';
   // string internal constant NETWORK = 'Optimism';  // etc
@@ -199,11 +200,9 @@ contract MergeFractal is ERC721, Ownable {
     return string(abi.encodePacked(
       '<circle r="180" stroke-width="28px" stroke="',
       sfad.getRGBA(gen, 3, "0.8"),
-      '" fill="none" cx="200" cy="200"/>',
-      '<circle r="197" stroke-width="6px" stroke="',
+      '" fill="none" cx="200" cy="200"/><circle r="197" stroke-width="6px" stroke="',
       rgba0,
-      '" fill="none" cx="200" cy="200"/>',
-      '<circle r="163" stroke-width="6px" stroke="',
+      '" fill="none" cx="200" cy="200"/><circle r="163" stroke-width="6px" stroke="',
       rgba0,
       '" fill="none" cx="200" cy="200"/>'
     ));
