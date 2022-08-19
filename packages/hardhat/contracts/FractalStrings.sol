@@ -28,7 +28,8 @@ contract FractalStrings {
       '<path id="shape',
       sfad.uint2str(shapeIdx),
       '" d="',
-      pathData[sfad.getUint8(gen, sfad.getSectionShapesStartBits(shapeIdx), 4) % PATHS_LEN],
+      pathData[0],
+      // pathData[sfad.getUint8(gen, sfad.getSectionShapesStartBits(shapeIdx), 4) % PATHS_LEN],
       '" fill="',
       sfad.getRGBA(gen, colourIdxFill, "0.65"),
       '" stroke="',
@@ -53,13 +54,18 @@ contract FractalStrings {
 
   function getIteration1Item(uint8 sideIdx, uint8 itemIdx) internal view returns (string memory) {
     return string(abi.encodePacked(
+      '<g>',
+      '<animateTransform attributeName="transform" attributeType="XML" type="scale"',
+      sfad.calcValuesFull(5000, 2500, '0.', ' 0.5'),
+      ' dur="30s" repeatCount="indefinite"/>',
       '<use href="#shape',
       sfad.uint2str(4 * sideIdx + itemIdx),
-      '" transform="scale(0.5) translate(',
+      '" transform="translate(',
       itemIdx % 2 == 0 ? "0.5" : "-0.5",
       ', ',
       itemIdx >> 1 == 0 ? "0.5" : "-0.5",
-      ')"/>'
+      ')"/>',
+      '</g>'
     ));
   }
 
@@ -125,7 +131,7 @@ contract FractalStrings {
     ));
   }
 
-  uint8 internal constant RENDER_ITERATION = 4;
+  uint8 internal constant RENDER_ITERATION = 2;
 
   function renderEthereums(uint256 gen) public view returns (string memory) {
     return string(abi.encodePacked(
