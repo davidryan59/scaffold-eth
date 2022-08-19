@@ -192,9 +192,9 @@ contract MergeFractal is ERC721, Ownable {
     ));
   }
 
-  function getDur(uint256 id, uint8 arraySection) internal view returns (string memory) {
+  function getDur(uint256 gen, uint8 arraySection) internal view returns (string memory) {
     uint8 startBitDur = sectionColStartBits[arraySection] + 3;
-    uint8 idx = 8 * arraySection + getUint8(generator[id], startBitDur, 3); // 3 bits = 8 duration choices
+    uint8 idx = 8 * arraySection + getUint8(gen, startBitDur, 3); // 3 bits = 8 duration choices
     return string(abi.encodePacked(
       ' dur="',
       sfad.uint2str(3 * durations[idx]), // It was rotating too fast! Extra factor here
@@ -230,7 +230,7 @@ contract MergeFractal is ERC721, Ownable {
       '<g><animateTransform attributeName="transform" attributeType="XML" type="rotate" values="0 200 200; ',
       maxAngleText,
       ' 200 200; 0 200 200"',
-      getDur(id, arraySection),
+      getDur(generator[id], arraySection),
       ' repeatCount="indefinite"/><path fill="none" stroke-linecap="round" stroke="',
       rgba,
       '" stroke-width="9px"',
