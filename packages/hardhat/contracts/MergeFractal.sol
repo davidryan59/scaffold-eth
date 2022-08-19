@@ -171,10 +171,10 @@ contract MergeFractal is ERC721, Ownable {
     ));
   }
 
-  function renderDisk(uint256 id) internal view returns (string memory) {
+  function renderDisk(uint256 gen) internal view returns (string memory) {
     return string(abi.encodePacked(
       '<circle fill="',
-      getRGBA(generator[id], 3, "1"),
+      getRGBA(gen, 3, "1"),
       '" cx="200" cy="200" r="200"/>'
     ));
   }
@@ -202,42 +202,42 @@ contract MergeFractal is ERC721, Ownable {
     ));
   }
 
-  function renderTestnetColourPatch(uint256 id, uint8 arraySection) internal view returns (string memory) {
+  function renderTestnetColourPatch(uint256 gen, uint8 arraySection) internal view returns (string memory) {
     return string(abi.encodePacked(
       '<rect x="',
       sfad.uint2str(arraySection >> 1 == 0 ? 0 : 350),
       '" y="',
       sfad.uint2str(arraySection % 2 == 1 ? 0 : 350),
       '" width="50" height="50" rx="15" fill="',
-      getRGBA(generator[id], arraySection, "1"),
+      getRGBA(gen, arraySection, "1"),
       '"/>'
     ));
   }
 
   // Uses 6 random bits
-  function renderLines(uint256 id, uint8 arraySection, string memory maxAngleText) internal view returns (string memory) {
+  function renderLines(uint256 gen, uint8 arraySection, string memory maxAngleText) internal view returns (string memory) {
     return string(abi.encodePacked(
       '<g><animateTransform attributeName="transform" attributeType="XML" type="rotate" values="0 200 200; ',
       maxAngleText,
       ' 200 200; 0 200 200"',
-      getDur(generator[id], arraySection),
+      getDur(gen, arraySection),
       ' repeatCount="indefinite"/><path fill="none" stroke-linecap="round" stroke="',
-      getRGBA(generator[id], arraySection, "0.90"),
+      getRGBA(gen, arraySection, "0.90"),
       '" stroke-width="9px"',
       sfad.getLinesPath(),
       getLinesTransform(arraySection),
       '/></g>',
-      IS_TESTNET ? renderTestnetColourPatch(id, arraySection) : ''
+      IS_TESTNET ? renderTestnetColourPatch(gen, arraySection) : ''
     ));
   }
 
-  function renderDiskAndLines(uint256 id) internal view returns (string memory) {
+  function renderDiskAndLines(uint256 gen) internal view returns (string memory) {
     return string(abi.encodePacked(
-      renderDisk(id),
-      renderLines(id, 0, "-270"),
-      renderLines(id, 1, "270"),
-      renderLines(id, 2, "-180"),
-      renderLines(id, 3, "180")
+      renderDisk(gen),
+      renderLines(gen, 0, "-270"),
+      renderLines(gen, 1, "270"),
+      renderLines(gen, 2, "-180"),
+      renderLines(gen, 3, "180")
     ));
   }
 
@@ -365,7 +365,7 @@ contract MergeFractal is ERC721, Ownable {
   function renderTokenById(uint256 id) public view returns (string memory) {
     uint256 gen = generator[id];
     return string(abi.encodePacked(
-      renderDiskAndLines(id),
+      renderDiskAndLines(gen),
       renderBorder(gen),
       renderText(id),
       renderEthereum(gen)
