@@ -98,6 +98,7 @@ contract FractalStrings {
       ')"/>'
     ));
   }
+
   // Defines `it_N_i` in terms of `it_[N-1]_i`
   function defineIterationN(uint8 sideIdx, uint8 iteration) internal view returns (string memory) {
     // sideIdx should be 0 (left) or 1 (right)
@@ -153,5 +154,4 @@ contract FractalStrings {
       renderEthereum(1, RENDER_ITERATION, 275)
     ));
   }
-
 }
