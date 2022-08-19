@@ -90,6 +90,11 @@ contract FractalStrings {
 
   function getIterationNItem(uint8 sideIdx, uint8 iteration, string memory x, string memory y) internal view returns (string memory) {
     return string(abi.encodePacked(
+      '<g>',
+      // '<animateTransform attributeName="transform" attributeType="XML" type="rotate"',
+      // sfad.calcValues(90, 0),
+      // ANIM_DUR,
+      // ' repeatCount="indefinite"/>',
       '<use href="#it_',
       sfad.uint2str(iteration-1),
       '_',
@@ -98,7 +103,7 @@ contract FractalStrings {
       x,
       ',',
       y,
-      ')"/>'
+      ')"/></g>'
     ));
   }
 
@@ -121,23 +126,20 @@ contract FractalStrings {
 
   function renderEthereum(uint8 sideIdx, uint8 iteration, int16 translate) public view returns (string memory) {
     return string(abi.encodePacked(
-      '<g>',
-      '<animateTransform attributeName="transform" attributeType="XML" type="translate"',
+      '<g><animateTransform attributeName="transform" attributeType="XML" type="translate"',
       sfad.calcValues(0, 200 - translate),
       ANIM_DUR,
-      ' repeatCount="indefinite" additive="sum"/>',
-      '<use href="#it_',
+      ' repeatCount="indefinite" additive="sum"/><use href="#it_',
       sfad.uint2str(iteration),
       '_',
       sfad.uint2str(sideIdx),
       '" transform="translate(',
       sfad.int2str(translate),
-      ', 200) scale(95, 170) rotate(45)"/>',
-      '</g>'
+      ', 200) scale(95, 170) rotate(45)"/></g>'
     ));
   }
 
-  uint8 internal constant RENDER_ITERATION = 4;
+  uint8 internal constant RENDER_ITERATION = 3;
   string internal constant ANIM_DUR = ' dur="10s"';
 
   function renderEthereums(uint256 gen) public view returns (string memory) {
@@ -150,8 +152,8 @@ contract FractalStrings {
       defineIterationN(1, 2),
       defineIterationN(0, 3),
       defineIterationN(1, 3),
-      defineIterationN(0, 4),
-      defineIterationN(1, 4), // up to iteration 4 can be rendered
+      // defineIterationN(0, 4),
+      // defineIterationN(1, 4), // up to iteration 4 can be rendered
       '</defs>',
       renderEthereum(0, RENDER_ITERATION, 125),
       renderEthereum(1, RENDER_ITERATION, 275)
