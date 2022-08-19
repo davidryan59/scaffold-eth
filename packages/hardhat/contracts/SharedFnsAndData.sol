@@ -135,10 +135,10 @@ contract SharedFnsAndData {
         prefix,
         int2str((b * startVal + a * endVal) / 10000),
         suffix,
-        ';'
+        idx == INTERP_LEN - 1 ? '"' : ';'
       ));      
     }
-    return string(abi.encodePacked(result, '"'));
+    return result;
   }
 
   // Typical output: ' values=" 0 ; 360 ;"' (with a lot more than 2 entries)
