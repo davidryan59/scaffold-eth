@@ -30,7 +30,6 @@ contract MergeFractal is ERC721, Ownable {
   // string internal constant NETWORK = 'Optimism';  // etc
   // ----------------------------------------------
 
-  uint8[8] internal masks8 = [1, 3, 7, 15, 31, 63, 127, 255];
   uint16[32] internal durations = [31,53,73,103,137,167,197,233,37,59,79,107,139,173,199,239,41,61,83,109,149,179,211,241,43,67,89,113,151,181,223,251];
 
   // Control colours that are used in the NFT
@@ -93,7 +92,9 @@ contract MergeFractal is ERC721, Ownable {
 
   // Get up to 8 pseudorandom bits from the 256-bit pseudorandom generator
   function getUint8(uint256 id, uint8 startBit, uint8 bits) internal view returns (uint8) {
-    return uint8(generator[id] >> startBit) & masks8[bits - 1];
+    uint8 gen8bits = uint8(generator[id] >> startBit);
+    if (bits >= 8) return gen8bits;
+    return gen8bits % 2 ** bits;
   }
 
   function getRGBA(uint256 id, uint8 arraySection, string memory alpha) internal view returns (string memory) {
