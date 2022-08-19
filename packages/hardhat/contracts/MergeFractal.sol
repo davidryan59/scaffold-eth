@@ -226,14 +226,11 @@ contract MergeFractal is ERC721, Ownable {
   }
 
   function getCoreDevAndTeamText(uint256 id) internal view returns (string memory) {
-    string memory teamText = string(abi.encodePacked(' and ', getTeamName(id)));
-    if (getCoreDevIdx(id) == 0) { // Dev = Vitalik
-      teamText = string(abi.encodePacked(' for Ethereum'));
-    } else if (getTeamIdx(id) == 0) { // Team = Individual
+    string memory teamText = string(abi.encodePacked(' / ', getTeamName(id)));
+    if (getTeamIdx(id) == 0) { // If team = Individual, don't display team
       teamText = '';
     }
     return string(abi.encodePacked(
-      'Thank you ',
       getCoreDevName(id),
       teamText
     ));   
@@ -254,7 +251,7 @@ contract MergeFractal is ERC721, Ownable {
       sfad.uint2str(id),
       ' / ',
       getCoreDevAndTeamText(id),
-      '! / ',
+      ' / ',
       getSaying(id),
       ' / Minted by ',
       sfad.toHexString(uint160(mintooor[id]), 20),
