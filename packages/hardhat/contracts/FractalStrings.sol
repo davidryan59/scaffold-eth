@@ -64,7 +64,10 @@ contract FractalStrings {
     ));
   }
 
-  function getIterationNItem(uint8 sideIdx, uint8 iteration, string memory x, string memory y) internal view returns (string memory) {
+  string[4] internal xs = ['-0.25','-0.25',' 0.25',' 0.25'];
+  string[4] internal ys = ['-0.25',' 0.25','-0.25',' 0.25'];
+
+  function getIterationNItem(uint256 gen, uint8 iteration, uint8 sideIdx, uint8 itemIdx) internal view returns (string memory) {
     return string(abi.encodePacked(
       '<g>',
       // '<animateTransform attributeName="transform" attributeType="XML" type="rotate"',
@@ -75,16 +78,23 @@ contract FractalStrings {
       sfad.uint2str(iteration-1),
       '_',
       sfad.uint2str(sideIdx),
-      '" transform="scale(0.5) translate(',
-      x,
+      '" transform="',
+      ' translate(',
+      xs[itemIdx],
       ',',
-      y,
-      ')"/></g>'
+      ys[itemIdx],
+      ')',
+      ' scale(',
+      sfad.getUint8(gen, 13 + itemIdx * 2, 1) == 0 ? '-0.5' : '0.5',
+      ' ',
+      sfad.getUint8(gen, 14 + itemIdx * 2, 1) == 0 ? '-0.5' : '0.5',
+      ')',
+      '"/></g>'
     ));
   }
 
   // Defines `it_N_i` in terms of `it_[N-1]_i`
-  function defineIterationN(uint8 sideIdx, uint8 iteration) internal view returns (string memory) {
+  function defineIterationN(uint256 gen, uint8 sideIdx, uint8 iteration) internal view returns (string memory) {
     // sideIdx should be 0 (left) or 1 (right)
     return string(abi.encodePacked(
       '<g id="it_',
@@ -92,10 +102,10 @@ contract FractalStrings {
       '_',
       sfad.uint2str(sideIdx),
       '">',
-      getIterationNItem(sideIdx, iteration, "-0.5", "-0.5"),
-      getIterationNItem(sideIdx, iteration, " 0.5", "-0.5"),
-      getIterationNItem(sideIdx, iteration, "-0.5", " 0.5"),
-      getIterationNItem(sideIdx, iteration, " 0.5", " 0.5"),
+      getIterationNItem(gen, iteration, sideIdx, 0),
+      getIterationNItem(gen, iteration, sideIdx, 1),
+      getIterationNItem(gen, iteration, sideIdx, 2),
+      getIterationNItem(gen, iteration, sideIdx, 3),
       '</g>'
     ));
   }
@@ -111,12 +121,12 @@ contract FractalStrings {
       sfad.uint2str(sideIdx),
       '" transform="translate(',
       sfad.int2str(translate),
-      ', 200) scale(95, 170) rotate(45)"/></g>'
+      ', 200) scale(95, 190) rotate(45)"/></g>'
     ));
   }
 
   uint8 internal constant RENDER_ITERATION = 4;
-  string internal constant ANIM_DUR = ' dur="5s"';
+  string internal constant ANIM_DUR = ' dur="15s"';
 
   function renderEthereums(uint256 gen) public view returns (string memory) {
     return string(abi.encodePacked(
@@ -124,12 +134,12 @@ contract FractalStrings {
       defineAllShapes(gen),
       defineIteration1(0),
       defineIteration1(1),
-      defineIterationN(0, 2),
-      defineIterationN(1, 2),
-      defineIterationN(0, 3),
-      defineIterationN(1, 3),
-      defineIterationN(0, 4),
-      defineIterationN(1, 4), // up to iteration 4 can be rendered
+      defineIterationN(gen, 0, 2),
+      defineIterationN(gen, 1, 2),
+      defineIterationN(gen, 0, 3),
+      defineIterationN(gen, 1, 3),
+      defineIterationN(gen, 0, 4),
+      defineIterationN(gen, 1, 4), // up to iteration 4 can be rendered
       '</defs>',
       renderEthereum(0, RENDER_ITERATION, 125),
       renderEthereum(1, RENDER_ITERATION, 275)
