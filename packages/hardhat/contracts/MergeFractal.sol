@@ -171,7 +171,7 @@ contract MergeFractal is ERC721, Ownable {
     ));
   }
 
-  function generateSVGofTokenById(uint256 id) internal view returns (string memory) {
+  function generateSVGofTokenById(uint256 id) public view returns (string memory) {
     return string(abi.encodePacked(
       '<svg width="400" height="400" xmlns="http://www.w3.org/2000/svg">',
         renderTokenById(id),
@@ -369,7 +369,6 @@ contract MergeFractal is ERC721, Ownable {
     ));
   }
 
-  // Function visibility is `public` to enable it being called by other contracts for composition.
   function renderTokenById(uint256 id) public view returns (string memory) {
     uint256 gen = generator[id];
     return string(abi.encodePacked(
