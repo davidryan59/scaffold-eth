@@ -34,17 +34,17 @@ contract FractalStrings {
     ));
   }
 
-  // Defines shape0, shape1, shape2...
+  // Defines shapes 0 to 7
   function defineAllShapes(uint256 gen) public view returns (string memory) {
     return string(abi.encodePacked(
       defineShape(gen, 0, 1, 0),
-      defineShape(gen, 1, 1, 1)
-      // defineShape(gen, 2, 1, 2),
-      // defineShape(gen, 3, 1, 3),
-      // defineShape(gen, 4, 2, 0),
-      // defineShape(gen, 5, 2, 1),
-      // defineShape(gen, 6, 2, 2),
-      // defineShape(gen, 7, 2, 3)
+      defineShape(gen, 1, 1, 1),
+      defineShape(gen, 2, 1, 2),
+      defineShape(gen, 3, 1, 3),
+      defineShape(gen, 4, 2, 0),
+      defineShape(gen, 5, 2, 1),
+      defineShape(gen, 6, 2, 2),
+      defineShape(gen, 7, 2, 3)
     ));
   }
 
@@ -59,7 +59,7 @@ contract FractalStrings {
       '</g>',
       '<g>',
       '<animateTransform attributeName="transform" attributeType="XML" type="translate" values="0; -37.5; -75; 0" dur="10s" repeatCount="indefinite"/>',
-      '<use href="#shape1" transform="translate(275, 200) scale(95, 170) rotate(45)"/>',
+      '<use href="#shape7" transform="translate(275, 200) scale(95, 170) rotate(45)"/>',
       '</g>'
     ));
   }
