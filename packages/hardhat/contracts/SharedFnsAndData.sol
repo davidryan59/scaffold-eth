@@ -131,9 +131,7 @@ contract SharedFnsAndData {
       result = string(abi.encodePacked(
         result,
         prefix,
-        ' ',
         int2str((b * startVal + a * endVal) / 10000),
-        ' ',
         suffix,
         ';'
       ));      

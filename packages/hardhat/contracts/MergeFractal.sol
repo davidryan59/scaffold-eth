@@ -265,7 +265,7 @@ contract MergeFractal is ERC721, Ownable {
       renderDiskAndLines(gen),
       renderBorder(gen),
       renderText(id),
-      fs.renderEthereum(gen)
+      fs.renderEthereums(gen)
     ));
   }
 }

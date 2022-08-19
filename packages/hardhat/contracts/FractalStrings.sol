@@ -78,25 +78,30 @@ contract FractalStrings {
     ));
   }
 
-  function renderEthereum(uint256 gen) public view returns (string memory) {
+  function renderEthereum(uint8 sideIdx, int16 translate) public view returns (string memory) {
+    return string(abi.encodePacked(
+      '<g>',
+      '<animateTransform attributeName="transform" attributeType="XML" type="translate"',
+      sfad.calcValues(0, 200 - translate),
+      ' dur="30s" repeatCount="indefinite" additive="sum"/>',
+      '<use href="#it_1_',
+      sfad.uint2str(sideIdx),
+      '" transform="translate(',
+      sfad.int2str(translate),
+      ', 200) scale(95, 170) rotate(45)"/>',
+      '</g>'
+    ));
+  }
+
+  function renderEthereums(uint256 gen) public view returns (string memory) {
     return string(abi.encodePacked(
       '<defs>',
       defineAllShapes(gen),
       defineIteration1(0),
       defineIteration1(1),
       '</defs>',
-      '<g>',
-      '<animateTransform attributeName="transform" attributeType="XML" type="translate"',
-      sfad.calcValues(0, 75),
-      ' dur="30s" repeatCount="indefinite"/>',
-      '<use href="#it_1_0" transform="translate(125, 200) scale(95, 170) rotate(45)"/>',
-      '</g>',
-      '<g>',
-      '<animateTransform attributeName="transform" attributeType="XML" type="translate"',
-      sfad.calcValues(0, -75),
-      ' dur="30s" repeatCount="indefinite"/>',
-      '<use href="#it_1_1" transform="translate(275, 200) scale(95, 170) rotate(45)"/>',
-      '</g>'
+      renderEthereum(0, 125),
+      renderEthereum(1, 275)
     ));
   }
 
