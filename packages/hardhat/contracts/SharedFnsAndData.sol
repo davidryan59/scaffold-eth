@@ -3,6 +3,10 @@ pragma solidity ^0.6.7;
 
 contract SharedFnsAndData {
 
+  // Divide by 10000 and use as an interpolation factor
+  uint8 internal constant INTERP_LEN = 31;
+  uint16[INTERP_LEN] internal interpolationCurve10k = [0,50,200,450,800,1250,1800,2450,3200,4050,5000,5950,6800,7550,8200,8750,9200,9550,9800,9950,10000,9992,9872,9352,7952,5000,2048,648,128,8,0];
+
   uint16[32] internal durations = [31,53,73,103,137,167,197,233,37,59,79,107,139,173,199,239,41,61,83,109,149,179,211,241,43,67,89,113,151,181,223,251];
 
   // Control how randomisation is generated via startBit
@@ -73,6 +77,14 @@ contract SharedFnsAndData {
     return string(bstr);
   }
 
+  function int2str(int _i) public pure returns (string memory _uintAsString) {
+    if (_i < 0) {
+      return string(abi.encodePacked('-', uint2str(uint(0 - _i))));
+    } else {
+      return uint2str(uint(_i));
+    }
+  }
+
   // Get up to 8 bits from the 256-bit pseudorandom number gen (= generator[id])
   function getUint8(uint256 gen, uint8 startBit, uint8 bits) public pure returns (uint8) {
     uint8 gen8bits = uint8(gen >> startBit);
@@ -108,12 +120,31 @@ contract SharedFnsAndData {
     ));
   }
 
-  // uint16[31] internal interpolationCurve10k = [0,50,200,450,800,1250,1800,2450,3200,4050,5000,5950,6800,7550,8200,8750,9200,9550,9800,9950,10000,9992,9872,9352,7952,5000,2048,648,128,8,0];
+  // Typical output: ' values="  0 200 200;  360 200 200;"' (with a lot more than 2 entries)
+  // In this example output, prefix = ' ' and suffix = ' 200 200'
+  // Note - this function only does whole-numbered interpolation
+  function calcValuesFull(int64 startVal, int64 endVal, string memory prefix, string memory suffix) public view returns (string memory) {
+    string memory result = ' values="';
+    for (uint8 idx = 0; idx < INTERP_LEN; idx++) {
+      int64 a = int64(interpolationCurve10k[idx]);
+      int64 b = 10000 - a;
+      result = string(abi.encodePacked(
+        result,
+        prefix,
+        ' ',
+        int2str((b * startVal + a * endVal) / 10000),
+        ' ',
+        suffix,
+        ';'
+      ));      
+    }
+    return string(abi.encodePacked(result, '"'));
+  }
 
-  // function calculateTransformValues(int64 startVal, int64 endVal) internal pure returns (string memory) {
-  //   string memory result = '';
-  //   return '0; 37; 75; 0';
-  // }
+  // Typical output: ' values=" 0 ; 360 ;"' (with a lot more than 2 entries)
+  function calcValues(int64 startVal, int64 endVal) public view returns (string memory) {
+    return calcValuesFull(startVal, endVal, '', '');
+  }
 
 }
 

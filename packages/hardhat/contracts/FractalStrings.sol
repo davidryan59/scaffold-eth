@@ -86,11 +86,15 @@ contract FractalStrings {
       defineIteration1(1),
       '</defs>',
       '<g>',
-      '<animateTransform attributeName="transform" attributeType="XML" type="translate" values="0; 37.5; 75; 0" dur="10s" repeatCount="indefinite"/>',
+      '<animateTransform attributeName="transform" attributeType="XML" type="translate"',
+      sfad.calcValues(0, 75),
+      ' dur="30s" repeatCount="indefinite"/>',
       '<use href="#it_1_0" transform="translate(125, 200) scale(95, 170) rotate(45)"/>',
       '</g>',
       '<g>',
-      '<animateTransform attributeName="transform" attributeType="XML" type="translate" values="0; -37.5; -75; 0" dur="10s" repeatCount="indefinite"/>',
+      '<animateTransform attributeName="transform" attributeType="XML" type="translate"',
+      sfad.calcValues(0, -75),
+      ' dur="30s" repeatCount="indefinite"/>',
       '<use href="#it_1_1" transform="translate(275, 200) scale(95, 170) rotate(45)"/>',
       '</g>'
     ));
