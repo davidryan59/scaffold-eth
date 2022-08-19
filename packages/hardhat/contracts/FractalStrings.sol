@@ -57,7 +57,8 @@ contract FractalStrings {
       '<g>',
       '<animateTransform attributeName="transform" attributeType="XML" type="scale"',
       sfad.calcValuesFull(5000, 2500, '0.', ' 0.5'),
-      ' dur="30s" repeatCount="indefinite"/>',
+      ANIM_DUR,
+      ' repeatCount="indefinite"/>',
       '<use href="#shape',
       sfad.uint2str(4 * sideIdx + itemIdx),
       '" transform="translate(',
@@ -119,7 +120,8 @@ contract FractalStrings {
       '<g>',
       '<animateTransform attributeName="transform" attributeType="XML" type="translate"',
       sfad.calcValues(0, 200 - translate),
-      ' dur="30s" repeatCount="indefinite" additive="sum"/>',
+      ANIM_DUR,
+      ' repeatCount="indefinite" additive="sum"/>',
       '<use href="#it_',
       sfad.uint2str(iteration),
       '_',
@@ -132,6 +134,7 @@ contract FractalStrings {
   }
 
   uint8 internal constant RENDER_ITERATION = 2;
+  string internal constant ANIM_DUR = ' dur="10s"';
 
   function renderEthereums(uint256 gen) public view returns (string memory) {
     return string(abi.encodePacked(
@@ -144,7 +147,7 @@ contract FractalStrings {
       defineIterationN(0, 3),
       defineIterationN(1, 3),
       defineIterationN(0, 4),
-      defineIterationN(1, 4),
+      defineIterationN(1, 4), // up to iteration 4 can be rendered
       '</defs>',
       renderEthereum(0, RENDER_ITERATION, 125),
       renderEthereum(1, RENDER_ITERATION, 275)
