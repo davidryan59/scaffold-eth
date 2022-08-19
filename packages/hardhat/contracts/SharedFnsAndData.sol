@@ -4,8 +4,8 @@ pragma solidity ^0.6.7;
 contract SharedFnsAndData {
 
   // Divide by 10000 and use as an interpolation factor
-  uint8 internal constant INTERP_LEN = 31;
-  uint16[INTERP_LEN] internal interpolationCurve10k = [0,50,200,450,800,1250,1800,2450,3200,4050,5000,5950,6800,7550,8200,8750,9200,9550,9800,9950,10000,9992,9872,9352,7952,5000,2048,648,128,8,0];
+  uint8 internal constant INTERP_LEN = 32;
+  uint16[INTERP_LEN] internal interpolationCurve10k = [0,0,150,450,800,1250,1800,2450,3200,4050,5000,5950,6800,7550,8200,8750,9200,9550,9800,9950,10000,10000,10000,10000,9872,9352,7952,5000,2048,648,128,0];
 
   uint16[32] internal durations = [31,53,73,103,137,167,197,233,37,59,79,107,139,173,199,239,41,61,83,109,149,179,211,241,43,67,89,113,151,181,223,251];
 

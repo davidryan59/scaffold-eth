@@ -5,7 +5,6 @@ import './SharedFnsAndData.sol';
 
 contract FractalStrings {
 
-
   // Paths are (approx) in a box [-50, -50] to [50, 50] so require scale 1/100 to fix in a unit box
   uint8 internal constant PATHS_LEN = 6;
   string[PATHS_LEN] internal pathData = [
@@ -31,10 +30,11 @@ contract FractalStrings {
       pathData[0],
       // pathData[sfad.getUint8(gen, sfad.getSectionShapesStartBits(shapeIdx), 4) % PATHS_LEN],
       '" fill="',
-      sfad.getRGBA(gen, colourIdxFill, "0.65"),
+      sfad.getRGBA(gen, colourIdxFill, "0.75"),
       '" stroke="',
-      sfad.getRGBA(gen, colourIdxLine, "0.80"),
-      '" stroke-width="6px" transform="scale(0.01 -0.01)" />'
+      sfad.getRGBA(gen, 0, "0.85"),
+      // sfad.getRGBA(gen, colourIdxLine, "0.80"),
+      '" stroke-width="3px" transform="scale(0.01 -0.01)" />'
     ));
   }
 
@@ -52,20 +52,23 @@ contract FractalStrings {
     ));
   }
 
-  function getIteration1Item(uint8 sideIdx, uint8 itemIdx) internal view returns (string memory) {
+  uint16[8] internal xStarts = [250, 750, 250, 750, 250, 750, 250, 750];
+  uint16[8] internal xEnds = [125, 375, 625, 875, 625, 875, 125, 375];
+  function getIteration1Item(uint8 sideIdx, uint8 itemIdx) private view returns (string memory) {
+    uint8 idx = 4 * sideIdx + itemIdx;
     return string(abi.encodePacked(
-      '<g>',
-      '<animateTransform attributeName="transform" attributeType="XML" type="scale"',
-      sfad.calcValuesFull(5000, 2500, '0.', ' 0.5'),
+      '<g transform="translate(-0.5, 0)">',
+      '<animateTransform attributeName="transform" attributeType="XML" type="translate"',
+      sfad.calcValuesFull(xStarts[idx], xEnds[idx], '0.', itemIdx > 1 ? " -0.25" : " 0.25"),
       ANIM_DUR,
-      ' repeatCount="indefinite"/>',
+      ' repeatCount="indefinite" additive="sum"/>',
+      '<animateTransform attributeName="transform" attributeType="XML" type="scale"',
+      sfad.calcValuesFull(500, 250, '0.', ' 0.5'),
+      ANIM_DUR,
+      ' repeatCount="indefinite" additive="sum"/>',
       '<use href="#shape',
-      sfad.uint2str(4 * sideIdx + itemIdx),
-      '" transform="translate(',
-      itemIdx % 2 == 0 ? "0.5" : "-0.5",
-      ', ',
-      itemIdx >> 1 == 0 ? "0.5" : "-0.5",
-      ')"/>',
+      sfad.uint2str(idx),
+      '"/>',
       '</g>'
     ));
   }
@@ -134,7 +137,7 @@ contract FractalStrings {
     ));
   }
 
-  uint8 internal constant RENDER_ITERATION = 2;
+  uint8 internal constant RENDER_ITERATION = 4;
   string internal constant ANIM_DUR = ' dur="10s"';
 
   function renderEthereums(uint256 gen) public view returns (string memory) {
