@@ -98,18 +98,11 @@ contract MergeFractal is ERC721, Ownable {
       return id;
   }
 
-  // Get up to 8 bits from the 256-bit pseudorandom number gen (= generator[id])
-  function getUint8(uint256 gen, uint8 startBit, uint8 bits) internal pure returns (uint8) {
-    uint8 gen8bits = uint8(gen >> startBit);
-    if (bits >= 8) return gen8bits;
-    return gen8bits % 2 ** bits;
-  }
-
   function getRGBA(uint256 gen, uint8 arraySection, string memory alpha) internal view returns (string memory) {
     uint8 startBit = sectionColStartBits[arraySection];
     // Array section values are 0, 1, 2 or 3 (0 is darkest, 3 is lightest)
     // These sections give colours 0-7, 8-15, 16-23, 24-31
-    uint8 idx = 8 * arraySection + getUint8(gen, startBit, 3); // 3 bits = 8 colour choices
+    uint8 idx = 8 * arraySection + sfad.getUint8(gen, startBit, 3); // 3 bits = 8 colour choices
     return string(abi.encodePacked(
       'rgba(',
       sfad.uint2str(colsR[idx]),
@@ -202,7 +195,7 @@ contract MergeFractal is ERC721, Ownable {
 
   function getDur(uint256 gen, uint8 arraySection) internal view returns (string memory) {
     uint8 startBitDur = sectionColStartBits[arraySection] + 3;
-    uint8 idx = 8 * arraySection + getUint8(gen, startBitDur, 3); // 3 bits = 8 duration choices
+    uint8 idx = 8 * arraySection + sfad.getUint8(gen, startBitDur, 3); // 3 bits = 8 duration choices
     return string(abi.encodePacked(
       ' dur="',
       sfad.uint2str(3 * durations[idx]), // It was rotating too fast! Extra factor here
@@ -265,7 +258,7 @@ contract MergeFractal is ERC721, Ownable {
   }
 
   function getCoreDevIdx(uint256 id) internal view returns (uint8 idx) {
-    return getUint8(generator[id], CORE_DEV_START_BIT, 8) % sfad.getCoreDevArrayLen();
+    return sfad.getUint8(generator[id], CORE_DEV_START_BIT, 8) % sfad.getCoreDevArrayLen();
   }
 
   function getTeamIdx(uint256 id) internal view returns (uint8 idx) {
@@ -295,7 +288,7 @@ contract MergeFractal is ERC721, Ownable {
   }
 
   function getSaying(uint256 id) internal view returns (string memory) {
-    return sayings[getUint8(generator[id], SAYING_START_BIT, 8) % SAYING_ARRAY_LEN];
+    return sayings[sfad.getUint8(generator[id], SAYING_START_BIT, 8) % SAYING_ARRAY_LEN];
   }
 
   function renderText(uint256 id) internal view returns (string memory) {
@@ -323,7 +316,7 @@ contract MergeFractal is ERC721, Ownable {
       '<path id="shape',
       sfad.uint2str(shapeIdx),
       '" d="',
-      pathData[getUint8(gen, sectionShapesStartBits[shapeIdx], 4) % PATHS_LEN],
+      pathData[sfad.getUint8(gen, sectionShapesStartBits[shapeIdx], 4) % PATHS_LEN],
       '" fill="',
       getRGBA(gen, colourIdxFill, "0.65"),
       '" stroke="',
