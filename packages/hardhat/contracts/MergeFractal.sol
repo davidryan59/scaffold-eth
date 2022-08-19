@@ -91,7 +91,7 @@ contract MergeFractal is ERC721, Ownable {
   }
 
   // Get up to 8 bits from the 256-bit pseudorandom number gen (= generator[id])
-  function getUint8(uint256 gen, uint8 startBit, uint8 bits) internal view returns (uint8) {
+  function getUint8(uint256 gen, uint8 startBit, uint8 bits) internal pure returns (uint8) {
     uint8 gen8bits = uint8(gen >> startBit);
     if (bits >= 8) return gen8bits;
     return gen8bits % 2 ** bits;
