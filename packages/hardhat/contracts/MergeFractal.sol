@@ -319,31 +319,31 @@ contract MergeFractal is ERC721, Ownable {
     ));  
   }
 
-  function defineShape(uint256 id, uint8 shapeIdx, uint8 colourIdxFill, uint8 colourIdxLine) internal view returns (string memory) {
+  function defineShape(uint256 gen, uint8 shapeIdx, uint8 colourIdxFill, uint8 colourIdxLine) internal view returns (string memory) {
     return string(abi.encodePacked(
       '<path id="shape',
       sfad.uint2str(shapeIdx),
       '" d="',
-      pathData[getUint8(generator[id], sectionShapesStartBits[shapeIdx], 4) % PATHS_LEN],
+      pathData[getUint8(gen, sectionShapesStartBits[shapeIdx], 4) % PATHS_LEN],
       '" fill="',
-      getRGBA(generator[id], colourIdxFill, "0.65"),
+      getRGBA(gen, colourIdxFill, "0.65"),
       '" stroke="',
-      getRGBA(generator[id], colourIdxLine, "0.80"),
+      getRGBA(gen, colourIdxLine, "0.80"),
       '" stroke-width="6px" transform="scale(0.01 -0.01)" />'
     ));
   }
 
   // Defines shape0, shape1, shape2...
-  function defineAllShapes(uint256 id) public view returns (string memory) {
+  function defineAllShapes(uint256 gen) public view returns (string memory) {
     return string(abi.encodePacked(
-      defineShape(id, 0, 1, 0),
-      defineShape(id, 1, 1, 1)
-      // defineShape(id, 2, 1, 2),
-      // defineShape(id, 3, 1, 3),
-      // defineShape(id, 4, 2, 0),
-      // defineShape(id, 5, 2, 1),
-      // defineShape(id, 6, 2, 2),
-      // defineShape(id, 7, 2, 3)
+      defineShape(gen, 0, 1, 0),
+      defineShape(gen, 1, 1, 1)
+      // defineShape(gen, 2, 1, 2),
+      // defineShape(gen, 3, 1, 3),
+      // defineShape(gen, 4, 2, 0),
+      // defineShape(gen, 5, 2, 1),
+      // defineShape(gen, 6, 2, 2),
+      // defineShape(gen, 7, 2, 3)
     ));
   }
 
@@ -354,10 +354,10 @@ contract MergeFractal is ERC721, Ownable {
   //   return '0; 37; 75; 0';
   // }
 
-  function renderEthereum(uint256 id) internal view returns (string memory) {
+  function renderEthereum(uint256 gen) internal view returns (string memory) {
     return string(abi.encodePacked(
       '<defs>',
-      defineAllShapes(id),
+      defineAllShapes(gen),
       '</defs>',
       '<g>',
       '<animateTransform attributeName="transform" attributeType="XML" type="translate" values="0; 37.5; 75; 0" dur="10s" repeatCount="indefinite"/>',
@@ -372,11 +372,12 @@ contract MergeFractal is ERC721, Ownable {
 
   // Function visibility is `public` to enable it being called by other contracts for composition.
   function renderTokenById(uint256 id) public view returns (string memory) {
+    uint256 gen = generator[id];
     return string(abi.encodePacked(
       renderDiskAndLines(id),
       renderBorder(id),
       renderText(id),
-      renderEthereum(id)
+      renderEthereum(gen)
     ));
   }
 }
