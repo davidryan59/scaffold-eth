@@ -66,7 +66,6 @@ contract FractalStrings {
 
   string[4] internal xs = ['-0.25','-0.25',' 0.25',' 0.25'];
   string[4] internal ys = ['-0.25',' 0.25','-0.25',' 0.25'];
-
   function getIterationNItem(uint256 gen, uint8 iteration, uint8 sideIdx, uint8 itemIdx) internal view returns (string memory) {
     return string(abi.encodePacked(
       '<g>',
@@ -84,10 +83,10 @@ contract FractalStrings {
       ',',
       ys[itemIdx],
       ')',
-      ' scale(',
-      sfad.getUint8(gen, 13 + itemIdx * 2, 1) == 0 ? '-0.5' : '0.5',
-      ' ',
-      sfad.getUint8(gen, 14 + itemIdx * 2, 1) == 0 ? '-0.5' : '0.5',
+      ' rotate(',
+      sfad.uint2str(90 * uint16(sfad.getUint8(gen, 13 + itemIdx * 2, 2))),
+      ') scale(0.5 ',
+      sfad.getUint8(gen, 21 + itemIdx, 1) == 0 ? '-0.5' : '0.5',
       ')',
       '"/></g>'
     ));
