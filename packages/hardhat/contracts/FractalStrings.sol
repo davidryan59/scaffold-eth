@@ -64,11 +64,17 @@ contract FractalStrings {
     ));
   }
 
+  function hasDropouts(uint256 gen) public view returns (bool result) {
+    return sfad.getUint8(gen, 187, 2) == 0;
+  }
+
   string[4] internal xs = ['-0.25','-0.25',' 0.25',' 0.25'];
   string[4] internal ys = ['-0.25',' 0.25','-0.25',' 0.25'];
   function getIterationNItem(uint256 gen, uint8 iteration, uint8 sideIdx, uint8 itemIdx) internal view returns (string memory) {
     return string(abi.encodePacked(
-      '<g><use href="#it_',
+      '<g>',
+      itemIdx == 0 && hasDropouts(gen) ? '<animateTransform attributeName="transform" attributeType="XML" type="scale" values="1;1;0;0;1;1;1;1;1" dur="3s" repeatCount="indefinite" />' : '',
+      '<use href="#it_',
       sfad.uint2str(iteration-1),
       '_',
       sfad.uint2str(sideIdx),

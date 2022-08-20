@@ -91,12 +91,14 @@ contract MergeFractal is ERC721, Ownable {
   }
 
   function getAllAttributes(uint256 id) public view returns (string memory) {
+    uint256 gen = generator[id];
     return string(abi.encodePacked(
       '[',
       getAttribute("Dev", getCoreDevName(id), ','),
       getAttribute("Team", getTeamName(id), ','),
       getAttribute("Saying", getSaying(id), ','),
-      getAttribute("Duration", sfad.uint2str(fs.getAnimDurS(generator[id])), ','),
+      getAttribute("Duration", sfad.uint2str(fs.getAnimDurS(gen)), ','),
+      getAttribute("Dropouts", fs.hasDropouts(gen) ? 'Yes' : 'No', ','),
       getAttribute("ContractId", sfad.uint2str(uint32(address(this))), ']')
     ));
   }
