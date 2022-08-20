@@ -205,8 +205,8 @@ function App(props) {
           const tokenId = await readContracts.MergeFractal.tokenOfOwnerByIndex(address, tokenIndex);
           console.log("tokenId", tokenId);
           const tokenURI = await readContracts.MergeFractal.tokenURI(tokenId);
-          const jsonManifestString = atob(tokenURI.substring(29))
-          console.log("jsonManifestString", jsonManifestString);
+          const jsonManifestString = atob(tokenURI.substring(29));
+          // console.log("jsonManifestString", jsonManifestString);
           // const ipfsHash = tokenURI.replace("https://ipfs.io/ipfs/", "");
           // console.log("ipfsHash", ipfsHash);
           // const jsonManifestBuffer = await getFromIPFS(ipfsHash);
@@ -452,11 +452,9 @@ function App(props) {
                 dataSource={yourMergeFractals}
                 renderItem={item => {
                   const id = item.id.toNumber();
-
-                  console.log("IMAGE",item.image)
-
+                  // console.log("IMAGE", item.image);
                   return (
-                    <List.Item key={id + "_" + item.uri + "_" + item.owner}>
+                    <List.Item key={"F" + id}>
                       <Card
                         title={
                           <div>
@@ -468,6 +466,10 @@ function App(props) {
                         <img src={item.image} style={{backgroundImage: `url(${tempImageBackground})`, backgroundSize: 'cover'}}/>
                         </a>
                         <div>{item.description}</div>
+                        <div>{item.attributes.reduce((acc, obj, idx) =>
+                          acc + obj.trait_type + ': ' + obj.value + ((idx === item.attributes.length - 1) ? '' : ', '),
+                          ''
+                        )}</div>
                       </Card>
 
                       <div>

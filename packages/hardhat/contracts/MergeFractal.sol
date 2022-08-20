@@ -79,25 +79,24 @@ contract MergeFractal is ERC721, Ownable {
       return id;
   }
 
-  function getTrait(string memory traitType, string memory traitValue) internal pure returns (string memory) {
+  function getTrait(string memory traitType, string memory traitValue, string memory suffix) internal pure returns (string memory) {
     return string(abi.encodePacked(
       '{"trait_type": "',
       traitType,
       '", "value": "',
       traitValue,
-      '"}'
+      '"}',
+      suffix
     ));
   }
 
   function getAllAttributes(uint256 id) public view returns (string memory) {
     return string(abi.encodePacked(
       '[',
-      getTrait("Dev", getCoreDevName(id)),
-      ',',
-      getTrait("Team", getTeamName(id)),
-      ',',
-      getTrait("Saying", getSaying(id)),
-      ']'
+      getTrait("Dev", getCoreDevName(id), ','),
+      getTrait("Team", getTeamName(id), ','),
+      getTrait("Saying", getSaying(id), ','),
+      getTrait("Duration", sfad.uint2str(fs.getAnimDurS(generator[id])), ']')
     ));
   }
 
@@ -107,9 +106,7 @@ contract MergeFractal is ERC721, Ownable {
     string memory description = string(abi.encodePacked(
       'This Merge Fractal is to thank ',
       getCoreDevName(id),
-      '! Duration ',
-      sfad.uint2str(fs.getAnimDurS(generator[id])),
-      's'
+      '!'
     ));
     string memory image = Base64.encode(bytes(generateSVGofTokenById(id)));
 
