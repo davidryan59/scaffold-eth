@@ -79,12 +79,12 @@ contract MergeFractal is ERC721, Ownable {
       return id;
   }
 
-  function getTrait(string memory traitType, string memory traitValue, string memory suffix) internal pure returns (string memory) {
+  function getAttribute(string memory attribType, string memory attribValue, string memory suffix) internal pure returns (string memory) {
     return string(abi.encodePacked(
       '{"trait_type": "',
-      traitType,
+      attribType,
       '", "value": "',
-      traitValue,
+      attribValue,
       '"}',
       suffix
     ));
@@ -93,11 +93,11 @@ contract MergeFractal is ERC721, Ownable {
   function getAllAttributes(uint256 id) public view returns (string memory) {
     return string(abi.encodePacked(
       '[',
-      getTrait("Dev", getCoreDevName(id), ','),
-      getTrait("Team", getTeamName(id), ','),
-      getTrait("Saying", getSaying(id), ','),
-      getTrait("Duration", sfad.uint2str(fs.getAnimDurS(generator[id])), ','),
-      getTrait("ContractId", sfad.uint2str(uint32(address(this))), ']')
+      getAttribute("Dev", getCoreDevName(id), ','),
+      getAttribute("Team", getTeamName(id), ','),
+      getAttribute("Saying", getSaying(id), ','),
+      getAttribute("Duration", sfad.uint2str(fs.getAnimDurS(generator[id])), ','),
+      getAttribute("ContractId", sfad.uint2str(uint32(address(this))), ']')
     ));
   }
 
