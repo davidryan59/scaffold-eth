@@ -123,26 +123,19 @@ contract SharedFnsAndData {
   // Typical output: ' values="  0 200 200;  360 200 200;"' (with a lot more than 2 entries)
   // In this example output, prefix = ' ' and suffix = ' 200 200'
   // Note - this function only does whole-numbered interpolation
-  function calcValuesFull(int64 startVal, int64 endVal, string memory prefix, string memory suffix) public view returns (string memory) {
+  function calcValues(int64 startVal, int64 endVal, string memory prefix, string memory suffix) public view returns (string memory) {
     string memory result = ' values="';
     for (uint8 idx = 0; idx < INTERP_LEN; idx++) {
       int64 a = int64(interpolationCurve10k[idx]);
-      int64 b = 10000 - a;
       result = string(abi.encodePacked(
         result,
         prefix,
-        int2str((b * startVal + a * endVal) / 10000),
+        int2str(((-a + 10000) * startVal + a * endVal) / 10000),
         suffix,
         idx == INTERP_LEN - 1 ? '"' : ';'
       ));      
     }
     return result;
   }
-
-  // Typical output: ' values=" 0 ; 360 ;"' (with a lot more than 2 entries)
-  function calcValues(int64 startVal, int64 endVal) public view returns (string memory) {
-    return calcValuesFull(startVal, endVal, '', '');
-  }
-
 }
 

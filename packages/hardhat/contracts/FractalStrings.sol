@@ -38,10 +38,10 @@ contract FractalStrings {
     uint8 idx = 4 * sideIdx + itemIdx;
     return string(abi.encodePacked(
       '<g transform="translate(-0.5, 0)"><animateTransform attributeName="transform" attributeType="XML" type="translate"',
-      sfad.calcValuesFull(xStarts[idx], xEnds[idx], '0.', itemIdx > 1 ? " -0.25" : " 0.25"),
+      sfad.calcValues(xStarts[idx], xEnds[idx], '0.', itemIdx > 1 ? " -0.25" : " 0.25"),
       ANIM_DUR,
       ' repeatCount="indefinite" additive="sum"/><animateTransform attributeName="transform" attributeType="XML" type="scale"',
-      sfad.calcValuesFull(500, 250, '0.', ' 0.5'),
+      sfad.calcValues(500, 250, '0.', ' 0.5'),
       ANIM_DUR,
       ' repeatCount="indefinite" additive="sum"/><use href="#shape',
       sfad.uint2str(sideIdx),
@@ -127,7 +127,7 @@ contract FractalStrings {
   function renderEthereum(uint8 sideIdx, uint8 iteration, int16 translate) public view returns (string memory) {
     return string(abi.encodePacked(
       '<g><animateTransform attributeName="transform" attributeType="XML" type="translate"',
-      sfad.calcValues(0, 200 - translate),
+      sfad.calcValues(0, 200 - translate, '', ''),
       ANIM_DUR,
       ' repeatCount="indefinite" additive="sum"/><use href="#it_',
       sfad.uint2str(iteration),
@@ -140,7 +140,7 @@ contract FractalStrings {
   }
 
   uint8 internal constant RENDER_ITERATION = 4;
-  string internal constant ANIM_DUR = ' dur="30s"';
+  string internal constant ANIM_DUR = ' dur="5s"';
 
   function renderEthereums(uint256 gen) public view returns (string memory) {
     return string(abi.encodePacked(
