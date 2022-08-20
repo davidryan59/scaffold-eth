@@ -104,7 +104,13 @@ contract MergeFractal is ERC721, Ownable {
   function tokenURI(uint256 id) public view override returns (string memory) {
     require(_exists(id), "not exist");
     string memory name = string(abi.encodePacked('Merge Fractal #',id.toString()));
-    string memory description = string(abi.encodePacked('This Merge Fractal is to thank ', getCoreDevName(id), '!'));
+    string memory description = string(abi.encodePacked(
+      'This Merge Fractal is to thank ',
+      getCoreDevName(id),
+      '! Duration ',
+      sfad.uint2str(fs.getAnimDurS(generator[id])),
+      's'
+    ));
     string memory image = Base64.encode(bytes(generateSVGofTokenById(id)));
 
     return string(abi.encodePacked(
