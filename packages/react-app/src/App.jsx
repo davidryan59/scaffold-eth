@@ -207,13 +207,9 @@ function App(props) {
           const tokenURI = await readContracts.MergeFractal.tokenURI(tokenId);
           const jsonManifestString = atob(tokenURI.substring(29))
           console.log("jsonManifestString", jsonManifestString);
-        /*
-          const ipfsHash = tokenURI.replace("https://ipfs.io/ipfs/", "");
-          console.log("ipfsHash", ipfsHash);
-
-          const jsonManifestBuffer = await getFromIPFS(ipfsHash);
-
-        */
+          // const ipfsHash = tokenURI.replace("https://ipfs.io/ipfs/", "");
+          // console.log("ipfsHash", ipfsHash);
+          // const jsonManifestBuffer = await getFromIPFS(ipfsHash);
           try {
             const jsonManifest = JSON.parse(jsonManifestString);
             console.log("jsonManifest", jsonManifest);
