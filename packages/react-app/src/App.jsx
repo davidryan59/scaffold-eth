@@ -201,13 +201,13 @@ function App(props) {
       const mergeFractalUpdate = [];
       for (let tokenIndex = 0; tokenIndex < balance; tokenIndex++) {
         try {
-          console.log("GEtting token index", tokenIndex);
+          console.log("Getting token index", tokenIndex);
           const tokenId = await readContracts.MergeFractal.tokenOfOwnerByIndex(address, tokenIndex);
           console.log("tokenId", tokenId);
           const tokenURI = await readContracts.MergeFractal.tokenURI(tokenId);
           const jsonManifestString = atob(tokenURI.substring(29))
           console.log("jsonManifestString", jsonManifestString);
-/*
+        /*
           const ipfsHash = tokenURI.replace("https://ipfs.io/ipfs/", "");
           console.log("ipfsHash", ipfsHash);
 

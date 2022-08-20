@@ -94,14 +94,14 @@ contract FractalStrings {
     '90;90;90;90;0;0;90',
     '-90;-90;-90;0;0;0;-90',
     '90;90;0;0;0;0;90',
-    '90;90;90;90;90;0;0;90',
-    '-90;-90;-90;-90;0;0;0;-90',
-    '90;90;90;0;0;0;0;90',
-    '-90;-90;-45;0;0;0;0;-90',
-    '90;90;90;90;90;0;0;0;90',
-    '-90;-90;-60;-30;0;0;0;0;-90',
-    '90;90;72;54;36;18;0;0;90',
-    '-90;-90;0;0;0;0;0;-90;-90'
+    '90;90;60;30;0;0;90',
+    '-90;-90;-90;-90;0;0;-45;-90',
+    '-90;-90;0;0;0;0;0;-90',
+    '90;90;45;0;0;0;0;90',
+    '90;90;60;30;0;0;90;90',
+    '-90;-90;-90;-90;-90;0;0;-90;-90',
+    '90;90;90;90;0;0;0;45;90',
+    '-90;-90;0;0;0;0;0;0;-90'
   ];
   // Defines `it_N_i` in terms of `it_[N-1]_i`
   function defineIterationN(uint256 gen, uint8 sideIdx, uint8 iteration) internal view returns (string memory) {
@@ -140,7 +140,7 @@ contract FractalStrings {
   }
 
   uint8 internal constant RENDER_ITERATION = 4;
-  string internal constant ANIM_DUR = ' dur="5s"';
+  string internal constant ANIM_DUR = ' dur="15s"';
 
   function renderEthereums(uint256 gen) public view returns (string memory) {
     return string(abi.encodePacked(
