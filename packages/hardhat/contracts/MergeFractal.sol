@@ -29,10 +29,17 @@ import './FractalStrings.sol';
 contract MergeFractal is ERC721, Ownable {
 
   // ----------------------------------------------
-  // Amend these when deploying to new networks  
-  bool internal constant IS_TESTNET = true;
+  // Amend these when deploying to new networks
+
   string internal constant NETWORK = 'TESTNET';
+  bool internal constant IS_TESTNET = true;
+  uint16 internal constant MINT_LIMIT = 3;
+  uint256 internal constant price = 5875000000000000; // 0.005875 ETH
+  //                                5875000000000000;
+
   // string internal constant NETWORK = 'GOERLI DEPLOYMENT 1';
+  // bool internal constant IS_TESTNET = false;
+  // uint16 internal constant MINT_LIMIT = 5875;
   // bool internal constant IS_TESTNET = false;
   // string internal constant NETWORK = 'Ethereum';
   // string internal constant NETWORK = 'Optimism';  // etc
@@ -64,19 +71,29 @@ contract MergeFractal is ERC721, Ownable {
 
   mapping (uint256 => uint256) internal generator;
   mapping (uint256 => address) internal mintooor;
-  uint256 mintDeadline = block.timestamp + 60 days;
 
   function mintItem()
       public
+      payable
       returns (uint256)
   {
-      require( block.timestamp < mintDeadline, "DONE MINTING");
+      require(msg.value == price, "NEED TO SEND ETH");
       _tokenIds.increment();
       uint256 id = _tokenIds.current();
+      require(id <= MINT_LIMIT, "MINT LIMIT REACHED"); 
       _mint(msg.sender, id);
       generator[id] = uint256(keccak256(abi.encodePacked( blockhash(block.number-1), msg.sender, address(this), id)));
       mintooor[id] = msg.sender;
       return id;
+  }
+
+  function getPrice() public pure returns (uint256) {
+    return price;
+  }
+
+  function withdraw() public onlyOwner {
+    (bool success, ) = msg.sender.call{value: address(this).balance}("");
+    require(success, "WITHDRAW FAILED");
   }
 
   function getAttribute(string memory attribType, string memory attribValue, string memory suffix) internal pure returns (string memory) {

@@ -65,7 +65,7 @@ contract FractalStrings {
   }
 
   // 16 bits total across 4 items
-  uint8 internal constant DROPOUT_BITS = 1;
+  uint8 internal constant DROPOUT_BITS = 3;
   function countDropout01(uint256 gen, uint8 itemIdx) public view returns (uint8 result) {
     return sfad.getUint8(gen, 187 + DROPOUT_BITS * itemIdx, DROPOUT_BITS) == 0 ? 1 : 0;
   }
