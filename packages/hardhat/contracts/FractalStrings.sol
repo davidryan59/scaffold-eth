@@ -64,8 +64,31 @@ contract FractalStrings {
     ));
   }
 
-  function hasDropouts(uint256 gen) public view returns (bool result) {
-    return sfad.getUint8(gen, 187, 2) == 0;
+  // 16 bits total across 4 items
+  uint8 internal constant DROPOUT_BITS = 1;
+  function countDropout01(uint256 gen, uint8 itemIdx) public view returns (uint8 result) {
+    return sfad.getUint8(gen, 187 + DROPOUT_BITS * itemIdx, DROPOUT_BITS) == 0 ? 1 : 0;
+  }
+
+  function getDropoutAttrTxt(uint256 gen) public view returns (string memory) {
+    return sfad.uint2str(countDropout01(gen, 0) + countDropout01(gen, 1) + countDropout01(gen, 2) + countDropout01(gen, 3));
+  }
+
+  string[4] internal dropoutAnimTxts = [
+    ' values="1;1;1;1;1;1;1;1;1;1;1;0;0;1" dur="4.236s"',
+    ' values="1;1;1;1;1;1;1;1;0;1;0;1" dur="8.618s"',
+    ' values="1;1;1;1;1;1;1;1;1;1;0.5;0.5;0;1" dur="5.618s"',
+    ' values="1;1;1;1;1;1;1;1;1.25;0.5;0.5;1" dur="6.854s"'
+  ];
+
+  function getDropoutAnimTxt(uint256 gen, uint8 itemIdx) internal view returns (string memory) {
+    uint8 countDrop01 = countDropout01(gen, itemIdx);
+    if (countDrop01 == 0) return '';
+    return string(abi.encodePacked(
+      '<animateTransform attributeName="transform" attributeType="XML" type="scale" ',
+      dropoutAnimTxts[itemIdx],
+      ' repeatCount="indefinite" />'
+    ));
   }
 
   string[4] internal xs = ['-0.25','-0.25',' 0.25',' 0.25'];
@@ -73,7 +96,7 @@ contract FractalStrings {
   function getIterationNItem(uint256 gen, uint8 iteration, uint8 sideIdx, uint8 itemIdx) internal view returns (string memory) {
     return string(abi.encodePacked(
       '<g>',
-      itemIdx == 0 && hasDropouts(gen) ? '<animateTransform attributeName="transform" attributeType="XML" type="scale" values="1;1;0;0;1;1;1;1;1" dur="3s" repeatCount="indefinite" />' : '',
+      iteration == RENDER_ITERATION ? '' : getDropoutAnimTxt(gen, itemIdx),
       '<use href="#it_',
       sfad.uint2str(iteration-1),
       '_',
