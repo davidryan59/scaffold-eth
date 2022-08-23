@@ -432,20 +432,20 @@ function App(props) {
             <div style={{ maxWidth: 820, margin: "auto", marginTop: 32, paddingBottom: 32 }}>
               {isSigner?(
                 <Button type={"primary"} onClick={async ()=>{
-                  const priceRightNow = await readContracts.MergeFractal.getPrice();
+                  const priceRightNow = await readContracts.MergeFractal.getPriceNext();
                   tx( writeContracts.MergeFractal.mintItem({ value: priceRightNow }) )
                 }}>MINT</Button>
               ):(
                 <div>
+
+
+                  {/* // TEMP This is for local testing only */}
                   <Button type={"primary"} onClick={async ()=>{
-
-
-                    // TEMP This is for local testing only
-
-
-                    const priceRightNow = await readContracts.MergeFractal.getPrice();
+                    const priceRightNow = await readContracts.MergeFractal.getPriceNext();
                     tx( writeContracts.MergeFractal.mintItem({ value: priceRightNow }) )
                   }}>MINT</Button>
+
+
                   <span> </span>
                   <Button type={"primary"} onClick={loadWeb3Modal}>CONNECT WALLET</Button>
                 </div>
