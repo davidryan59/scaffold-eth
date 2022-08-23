@@ -29,20 +29,31 @@ import './FractalStrings.sol';
 contract MergeFractal is ERC721, Ownable {
 
   // ----------------------------------------------
-  // Amend these when deploying to new networks
 
+  // Local testnet setup
   string internal constant NETWORK = 'TESTNET';
-  bool internal constant IS_TESTNET = true;
-  uint16 internal constant MINT_LIMIT = 5;
-  uint256 internal constant price = 5875000000000000; // 0.005875 ETH
-  //                                5875000000000000;
+  uint256 internal constant INITIAL_PRICE = 20 * 1000000 * 1000000000; // 0.02 ETH
+  uint256 internal constant INCREMENT_PRICE = 10 * 1000000 * 1000000000; // 0.01 ETH
+  uint256 internal constant INCREMENT_STEP = 2; // increments at 3, 5, 7
+  uint16 internal constant MINT_LIMIT = 7;
+  bool internal constant DISPLAY_TEST_PATCHES = true;
 
+  // // Goerli test deployment(s)
   // string internal constant NETWORK = 'GOERLI DEPLOYMENT 1';
-  // bool internal constant IS_TESTNET = false;
-  // uint16 internal constant MINT_LIMIT = 5875;
-  // bool internal constant IS_TESTNET = false;
+  // uint256 internal constant INITIAL_PRICE = 200000 * 1000000000; // 0.0002 ETH
+  // uint256 internal constant INCREMENT_PRICE = 100000 * 1000000000; // 0.0001 ETH
+  // uint256 internal constant INCREMENT_STEP = 3; // increments at 4, 7, 10...
+  // uint16 internal constant MINT_LIMIT = 42;
+  // bool internal constant DISPLAY_TEST_PATCHES = false;
+
+  // // Mainnet deployment
   // string internal constant NETWORK = 'Ethereum';
-  // string internal constant NETWORK = 'Optimism';  // etc
+  // uint256 internal constant INITIAL_PRICE = 2000000 * 1000000000; // 0.002 ETH
+  // uint256 internal constant INCREMENT_PRICE = 1000000 * 1000000000; // 0.001 ETH
+  // uint256 internal constant INCREMENT_STEP = 100;
+  // uint16 internal constant MINT_LIMIT = 5875;
+  // bool internal constant DISPLAY_TEST_PATCHES = false;
+
   // ----------------------------------------------
 
   // Control placement of 4 sets of rotating lines
@@ -73,22 +84,28 @@ contract MergeFractal is ERC721, Ownable {
   mapping (uint256 => address) internal mintooor;
 
   function mintItem()
-      public
-      payable
-      returns (uint256)
+    public
+    payable
+    returns (uint256)
   {
-      require(msg.value == price, "NEED TO SEND ETH");
-      _tokenIds.increment();
-      uint256 id = _tokenIds.current();
-      require(id <= MINT_LIMIT, "MINT LIMIT REACHED"); 
-      _mint(msg.sender, id);
-      generator[id] = uint256(keccak256(abi.encodePacked( blockhash(block.number-1), msg.sender, address(this), id)));
-      mintooor[id] = msg.sender;
-      return id;
+    require(msg.value == getPriceNext(), "NEED TO SEND ETH");
+    _tokenIds.increment();
+    uint256 id = _tokenIds.current();
+    require(id <= MINT_LIMIT, "MINT LIMIT REACHED"); 
+    _mint(msg.sender, id);
+    generator[id] = uint256(keccak256(abi.encodePacked( blockhash(block.number-1), msg.sender, address(this), id)));
+    mintooor[id] = msg.sender;
+    return id;
   }
 
-  function getPrice() public pure returns (uint256) {
-    return price;
+  // Linear increments of mint price at certain ids
+  function getPriceById(uint256 id) public view returns (uint256) {
+    return INITIAL_PRICE + INCREMENT_PRICE * ((id - 1) / INCREMENT_STEP);
+  }
+
+  // Call this function before minting to get mint price
+  function getPriceNext() public view returns (uint256) {
+    return getPriceById(_tokenIds.current() + 1);
   }
 
   function withdraw() public onlyOwner {
@@ -204,7 +221,7 @@ contract MergeFractal is ERC721, Ownable {
       sfad.getLinesPath(),
       getLinesTransform(arraySection),
       '/></g>',
-      IS_TESTNET ? renderTestnetColourPatch(gen, arraySection) : ''
+      DISPLAY_TEST_PATCHES ? renderTestnetColourPatch(gen, arraySection) : ''
     ));
   }
 
