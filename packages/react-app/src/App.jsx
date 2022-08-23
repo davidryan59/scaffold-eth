@@ -186,6 +186,8 @@ function App(props) {
   const balance = useContractReader(readContracts, "MergeFractal", "balanceOf", [address]);
   console.log("🤗 balance:", balance);
 
+  const nextMintPrice = useContractReader(readContracts, "MergeFractal", "getPriceNext");
+
   // 📟 Listen for broadcast events
   const transferEvents = useEventListener(readContracts, "MergeFractal", "Transfer", localProvider, 1);
   console.log("📟 Transfer events:", transferEvents);
@@ -434,16 +436,16 @@ function App(props) {
                 <Button type={"primary"} onClick={async ()=>{
                   const priceRightNow = await readContracts.MergeFractal.getPriceNext();
                   tx( writeContracts.MergeFractal.mintItem({ value: priceRightNow }) )
-                }}>MINT</Button>
+                }}>MINT{nextMintPrice ? ` for ${formatEther(nextMintPrice)} Ξ` : ''}</Button>
               ):(
                 <div>
 
 
-                  {/* // TEMP This is for local testing only */}
+                  {/* // TEMP This is for local testing only, remove for other networks */}
                   <Button type={"primary"} onClick={async ()=>{
                     const priceRightNow = await readContracts.MergeFractal.getPriceNext();
                     tx( writeContracts.MergeFractal.mintItem({ value: priceRightNow }) )
-                  }}>MINT</Button>
+                  }}>MINT{nextMintPrice ? ` for ${formatEther(nextMintPrice)} Ξ` : ''}</Button>
                   <span> </span>
 
 
