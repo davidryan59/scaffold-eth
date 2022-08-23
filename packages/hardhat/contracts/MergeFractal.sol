@@ -33,7 +33,7 @@ contract MergeFractal is ERC721, Ownable {
 
   string internal constant NETWORK = 'TESTNET';
   bool internal constant IS_TESTNET = true;
-  uint16 internal constant MINT_LIMIT = 3;
+  uint16 internal constant MINT_LIMIT = 5;
   uint256 internal constant price = 5875000000000000; // 0.005875 ETH
   //                                5875000000000000;
 
