@@ -444,9 +444,9 @@ function App(props) {
                     const priceRightNow = await readContracts.MergeFractal.getPriceNext();
                     tx( writeContracts.MergeFractal.mintItem({ value: priceRightNow }) )
                   }}>MINT</Button>
-
-
                   <span> </span>
+
+
                   <Button type={"primary"} onClick={loadWeb3Modal}>CONNECT WALLET</Button>
                 </div>
               )}
