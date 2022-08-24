@@ -134,7 +134,7 @@ contract FractalStrings {
       '_',
       sfad.uint2str(sideIdx),
       '"><animateTransform attributeName="transform" attributeType="XML" type="rotate" values="',
-      rotates[sfad.getUint8(gen, 155 + 4 * sideIdx + 8 * iteration, 4)],
+      rotates[sfad.getUint8(gen, 155 + 4 * sideIdx + 8 * (iteration - 2), 4)], // called on iteration = 2, 3, 4
       '" ',
       getAnimDurTxt(gen),
       ' repeatCount="indefinite" />',
