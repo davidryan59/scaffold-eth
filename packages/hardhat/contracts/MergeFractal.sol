@@ -61,11 +61,61 @@ contract MergeFractal is ERC721, Ownable {
 
   // Random core dev and team to thank
   uint8 internal constant TEAM_ARRAY_LEN = 25;
-  string[TEAM_ARRAY_LEN] internal teams = ['Independent','0xSplits','Akula','EF DevOps','EF Geth','EF Ipsilon','EF JavaScript','EF Portal','EF Protocol Support','EF Research','EF Robust Incentives Group','EF Security','EF Solidity','EF Testing','Erigon','Ethereum Cat Herders','Hyperledger Besu','Lighthouse','Lodestar','Nethermind','Prysmatic','Quilt','Status','Teku','TXRX'];
+  string[TEAM_ARRAY_LEN] internal teams = [
+    'Independent',
+    '0xSplits',
+    'Akula',
+    'EF DevOps',
+    'EF Geth',
+    'EF Ipsilon',
+    'EF JavaScript',
+    'EF Portal',
+    'EF Protocol Support',
+    'EF Research',
+    'EF Robust Incentives Group',
+    'EF Security',
+    'EF Solidity',
+    'EF Testing',
+    'Erigon',
+    'Ethereum Cat Herders',
+    'Hyperledger Besu',
+    'Lighthouse',
+    'Lodestar',
+    'Nethermind',
+    'Prysmatic',
+    'Quilt',
+    'Status',
+    'Teku',
+    'TXRX'
+  ];
 
   // Random saying
-  uint8 internal constant SAYING_ARRAY_LEN = 19;
-  string[SAYING_ARRAY_LEN] internal sayings = ['PoS > PoW','Environmentally friendly at last','The Flippening','Decentralise Everything','Energy consumption -99.95%','Unstoppable smart contracts','Run your own node','TTD 58750000000000000000000','TTD 5.875 * 10^22','TTD 2^19 * 5^22 * 47','Validate with 32 ETH','Validators > Miners','Sustainable and secure','Proof-of-stake consensus','World Computer','Permissionless','Vitalik is clapping','Vitalik is dancing','Anthony Sassano is dancing'];
+  uint8 internal constant SAYING_ARRAY_LEN = 23;
+  string[SAYING_ARRAY_LEN] internal sayings = [
+    'Ethereum Merge September 2022',
+    'TTD 58750000000000000000000',
+    'Proof-of-stake consensus',
+    'Environmentally friendly',
+    'Unstoppable smart contracts',
+    'Sustainable and secure',
+    'Global settlement layer',
+    'Energy consumption -99.95%',
+    'World Computer',
+    'Run your own node',
+    'Permissionless',
+    'TTD 5.875 * 10^22',
+    'Run your own validator',
+    'Neutral settlement layer',
+    'Validators > Miners',
+    'Decentralise Everything',
+    'PoS > PoW',
+    'TTD 2^19 * 5^22 * 47',
+    'Validate with 32 ETH',
+    'The Flippening',
+    'Vitalik is clapping',
+    'Vitalik is dancing',
+    'Anthony Sassano is dancing'
+  ];
 
   using Strings for uint256;
   using Counters for Counters.Counter;
@@ -97,7 +147,7 @@ contract MergeFractal is ERC721, Ownable {
   }
 
   // Linear increments of mint price at certain ids
-  function getPriceById(uint256 id) public view returns (uint256) {
+  function getPriceById(uint256 id) public pure returns (uint256) {
     return INITIAL_PRICE + INCREMENT_PRICE * ((id - 1) / INCREMENT_STEP);
   }
 
