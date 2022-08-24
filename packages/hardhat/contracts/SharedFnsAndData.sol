@@ -9,9 +9,8 @@ contract SharedFnsAndData {
 
   uint16[32] internal durations = [31,53,73,103,137,167,197,233,37,59,79,107,139,173,199,239,41,61,83,109,149,179,211,241,43,67,89,113,151,181,223,251];
 
-  // Control how randomisation is generated via startBit
+  // Control colour randomisations (4 colours are used throughout)
   uint8[4] internal sectionColStartBits = [50, 56, 62, 68]; // 4 sections, each uses 3 bits for colour, 3 bits for duration
-  uint8[8] internal sectionShapesStartBits = [74, 78, 82, 86, 90, 94, 98, 102]; // 8 shapes, each uses 4 bits for shape selection
 
   // Control colours that are used in the NFT
   uint8[32] internal colsR = [0,128,96,64,0,0,0,64,85,255,191,128,0,0,0,128,170,0,64,127,255,255,255,127,255,127,191,255,255,255,191,255];
@@ -38,10 +37,6 @@ contract SharedFnsAndData {
 
   function getCoreDevTeamIndex(uint8 idx) public view returns (uint8) {
     return coreDevTeamIndices[idx % CORE_DEV_ARRAY_LEN];
-  }
-
-  function getSectionShapesStartBits(uint8 idx) public view returns (uint8) {
-    return sectionShapesStartBits[idx % 8];
   }
 
   function toHexString(uint256 value, uint256 length) public pure returns (string memory) {
