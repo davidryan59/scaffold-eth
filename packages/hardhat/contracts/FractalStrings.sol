@@ -65,9 +65,9 @@ contract FractalStrings {
   }
 
   // There are 4 potential dropouts, each has probability 2^(-DROPOUT_BITS)
-  uint8 internal constant DROPOUT_BITS = 3; // Prob of 0, 1, 2, 3, 4 dropouts is 59%, 33%, 7%, 0.69%, 0.024%
+  // uint8 internal constant DROPOUT_BITS = 3; // Prob of 0, 1, 2, 3, 4 dropouts is 59%, 33%, 7%, 0.69%, 0.024%
   function countDropout01(uint256 gen, uint8 itemIdx) public view returns (uint8 result) {
-    return sfad.getUint8(gen, 187 + DROPOUT_BITS * itemIdx, DROPOUT_BITS) == 0 ? 1 : 0;
+    return sfad.getUint8(gen, 60 + 3 * itemIdx, 3) == 0 ? 1 : 0;
   }
 
   function getDropoutAttrTxt(uint256 gen) public view returns (string memory) {
@@ -79,7 +79,7 @@ contract FractalStrings {
     if (countDrop01 == 0) return '';
     return string(abi.encodePacked(
       '<animateTransform attributeName="transform" attributeType="XML" type="scale" values="1;1;0;0;0;0;1;1;1;1;1;1;1;1;1" dur="',
-      sfad.uint2str(uint8(4 + itemIdx + 4 * sfad.getUint8(gen, 234 + itemIdx, 1))),  // Dropout cycle between 4 and 11 seconds
+      sfad.uint2str(uint8(4 + itemIdx + 4 * sfad.getUint8(gen, 56 + itemIdx, 1))),  // Dropout cycle between 4 and 11 seconds, 1 bit random
       '.618s" repeatCount="indefinite" />'
     ));
   }
@@ -99,9 +99,9 @@ contract FractalStrings {
       ',',
       ys[itemIdx],
       ') rotate(',
-      sfad.uint2str(90 * uint16(sfad.getUint8(gen, 13 + itemIdx * 2, 2))),
+      sfad.uint2str(90 * uint16(sfad.getUint8(gen, 48 + itemIdx * 2, 2))),
       ') scale(0.5 ',
-      sfad.getUint8(gen, 21 + itemIdx, 1) == 0 ? '-0.5' : '0.5',
+      sfad.getUint8(gen, 72 + itemIdx, 1) == 0 ? '-0.5' : '0.5',
       ')"/></g>'
     ));
   }
@@ -134,7 +134,7 @@ contract FractalStrings {
       '_',
       sfad.uint2str(sideIdx),
       '"><animateTransform attributeName="transform" attributeType="XML" type="rotate" values="',
-      rotates[sfad.getUint8(gen, 155 + 4 * sideIdx + 8 * (iteration - 2), 4)], // called on iteration = 2, 3, 4
+      rotates[sfad.getUint8(gen, 76 + 4 * sideIdx + 8 * (iteration - 2), 4)], // called on iteration = 2, 3, 4
       '" ',
       getAnimDurTxt(gen),
       ' repeatCount="indefinite" />',
