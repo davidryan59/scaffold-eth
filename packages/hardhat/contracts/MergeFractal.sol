@@ -90,7 +90,7 @@ contract MergeFractal is ERC721, Ownable {
   ];
 
   // Random saying
-  uint8 internal constant SAYING_ARRAY_LEN = 23;
+  uint8 internal constant SAYING_ARRAY_LEN = 25;
   string[SAYING_ARRAY_LEN] internal sayings = [
     'Ethereum Merge September 2022',
     'TTD 58750000000000000000000',
@@ -98,8 +98,8 @@ contract MergeFractal is ERC721, Ownable {
     'Environmentally friendly',
     'Unstoppable smart contracts',
     'Sustainable and secure',
-    'Global settlement layer',
     'Energy consumption -99.95%',
+    'Global settlement layer',
     'World Computer',
     'Run your own node',
     'Permissionless',
@@ -111,7 +111,9 @@ contract MergeFractal is ERC721, Ownable {
     'PoS > PoW',
     'TTD 2^19 * 5^22 * 47',
     'Validate with 32 ETH',
+    'Build on Scaffold Eth',
     'The Flippening',
+    'Austin Griffith is Buidling',
     'Vitalik is clapping',
     'Vitalik is dancing',
     'Anthony Sassano is dancing'
