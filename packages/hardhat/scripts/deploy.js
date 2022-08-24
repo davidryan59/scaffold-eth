@@ -21,7 +21,7 @@ const main = async () => {
   }
   console.log(" \n")*/
 
-  const ownerAddress = "0x8c8B07C2501b3A3b034202ba11f270cfE5F11c27" // dryan.eth
+  const ownerAddress = "0x7349d6e55cB3F737249FbAa047C16b826559B127" // drcoder.eth
 
   // deploy the contracts
   const sharedFnsAndData = await deploy("SharedFnsAndData"/*,[ bytes32Array ]*/) // <-- add in constructor args like line 19 vvvv
@@ -43,7 +43,7 @@ const main = async () => {
   //If you want to send value to an address from the deployer
   const deployerWallet = ethers.provider.getSigner()
   await deployerWallet.sendTransaction({
-    to: "0x8c8B07C2501b3A3b034202ba11f270cfE5F11c27",
+    to: "0x7349d6e55cB3F737249FbAa047C16b826559B127",
     value: ethers.utils.parseEther("0.001")
   })
   */

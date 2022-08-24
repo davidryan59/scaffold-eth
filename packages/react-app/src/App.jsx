@@ -179,7 +179,7 @@ function App(props) {
   // Then read your DAI balance like:
   /*
   const myMainnetDAIBalance = useContractReader({ DAI: mainnetDAIContract }, "DAI", "balanceOf", [
-    "0x8c8B07C2501b3A3b034202ba11f270cfE5F11c27",
+    "0x7349d6e55cB3F737249FbAa047C16b826559B127",
   ]);*/
 
   // keep track of a variable from the contract in the local React state:
@@ -230,8 +230,8 @@ function App(props) {
   }, [address, yourBalance]);
 
   /*
-  const addressFromENS = useResolveName(mainnetProvider, "dryan.eth");
-  console.log("🏷 Resolved dryan.eth as:",addressFromENS)
+  const addressFromENS = useResolveName(mainnetProvider, "drcoder.eth");
+  console.log("🏷 Resolved drcoder.eth as:",addressFromENS)
   */
 
   //
