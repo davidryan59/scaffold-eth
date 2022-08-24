@@ -10,7 +10,7 @@ contract SharedFnsAndData {
   uint16[32] internal durations = [31,53,73,103,137,167,197,233,37,59,79,107,139,173,199,239,41,61,83,109,149,179,211,241,43,67,89,113,151,181,223,251];
 
   // Control colour randomisations (4 colours are used throughout)
-  uint8[4] internal sectionColStartBits = [50, 56, 62, 68]; // 4 sections, each uses 3 bits for colour, 3 bits for duration
+  uint8[4] internal sectionColStartBits = [24, 30, 36, 42]; // 4 sections, each uses 3 bits for colour, 3 bits for duration
 
   // Control colours that are used in the NFT
   uint8[32] internal colsR = [0,128,96,64,0,0,0,64,85,255,191,128,0,0,0,128,170,0,64,127,255,255,255,127,255,127,191,255,255,255,191,255];
@@ -88,10 +88,9 @@ contract SharedFnsAndData {
   }
 
   function getRGBA(uint256 gen, uint8 arraySection, string memory alpha) public view returns (string memory) {
-    uint8 startBit = sectionColStartBits[arraySection];
     // Array section values are 0, 1, 2 or 3 (0 is darkest, 3 is lightest)
     // These sections give colours 0-7, 8-15, 16-23, 24-31
-    uint8 idx = 8 * arraySection + getUint8(gen, startBit, 3); // 3 bits = 8 colour choices
+    uint8 idx = 8 * arraySection + getUint8(gen, sectionColStartBits[arraySection], 3); // 3 bits = 8 colour choices
     return string(abi.encodePacked(
       'rgba(',
       uint2str(colsR[idx]),
@@ -106,8 +105,7 @@ contract SharedFnsAndData {
   }
 
   function getDurText(uint256 gen, uint8 arraySection) public view returns (string memory) {
-    uint8 startBitDur = sectionColStartBits[arraySection] + 3;
-    uint8 idx = 8 * arraySection + getUint8(gen, startBitDur, 3); // 3 bits = 8 duration choices
+    uint8 idx = 8 * arraySection + getUint8(gen, sectionColStartBits[arraySection] + 3, 3); // 3 bits = 8 duration choices
     return string(abi.encodePacked(
       ' dur="',
       uint2str(3 * durations[idx]), // It was rotating too fast! Extra factor here

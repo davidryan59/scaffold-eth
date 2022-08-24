@@ -60,12 +60,10 @@ contract MergeFractal is ERC721, Ownable {
   uint8[4] internal sectionLineTranslates = [2, 4, 36, 38];
 
   // Random core dev and team to thank
-  uint8 internal constant CORE_DEV_START_BIT = 0; // Uses 8 bits
   uint8 internal constant TEAM_ARRAY_LEN = 25;
   string[TEAM_ARRAY_LEN] internal teams = ['Independent','0xSplits','Akula','EF DevOps','EF Geth','EF Ipsilon','EF JavaScript','EF Portal','EF Protocol Support','EF Research','EF Robust Incentives Group','EF Security','EF Solidity','EF Testing','Erigon','Ethereum Cat Herders','Hyperledger Besu','Lighthouse','Lodestar','Nethermind','Prysmatic','Quilt','Status','Teku','TXRX'];
 
   // Random saying
-  uint8 internal constant SAYING_START_BIT = 8; // Uses 8 bits
   uint8 internal constant SAYING_ARRAY_LEN = 19;
   string[SAYING_ARRAY_LEN] internal sayings = ['PoS > PoW','Environmentally friendly at last','The Flippening','Decentralise Everything','Energy consumption -99.95%','Unstoppable smart contracts','Run your own node','TTD 58750000000000000000000','TTD 5.875 * 10^22','TTD 2^19 * 5^22 * 47','Validate with 32 ETH','Validators > Miners','Sustainable and secure','Proof-of-stake consensus','World Computer','Permissionless','Vitalik is clapping','Vitalik is dancing','Anthony Sassano is dancing'];
 
@@ -249,7 +247,7 @@ contract MergeFractal is ERC721, Ownable {
   }
 
   function getCoreDevIdx(uint256 id) internal view returns (uint8 idx) {
-    return sfad.getUint8(generator[id], CORE_DEV_START_BIT, 8) % sfad.getCoreDevArrayLen();
+    return sfad.getUint8(generator[id], 0, 8) % sfad.getCoreDevArrayLen();
   }
 
   function getTeamIdx(uint256 id) internal view returns (uint8 idx) {
@@ -276,7 +274,7 @@ contract MergeFractal is ERC721, Ownable {
   }
 
   function getSaying(uint256 id) internal view returns (string memory) {
-    return sayings[sfad.getUint8(generator[id], SAYING_START_BIT, 8) % SAYING_ARRAY_LEN];
+    return sayings[sfad.getUint8(generator[id], 8, 8) % SAYING_ARRAY_LEN];
   }
 
   function renderText(uint256 id) internal view returns (string memory) {
