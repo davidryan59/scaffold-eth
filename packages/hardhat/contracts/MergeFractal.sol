@@ -16,7 +16,6 @@ pragma solidity ^0.6.7;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
-import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import 'base64-sol/base64.sol';
 // Learn more: https://docs.openzeppelin.com/contracts/3.x/erc721
@@ -26,7 +25,7 @@ import './FractalStrings.sol';
 
 // GET LISTED ON OPENSEA: https://testnets.opensea.io/get-listed/step-two
 
-contract MergeFractal is ERC721, Ownable {
+contract MergeFractal is ERC721 {
 
   // all ETH from NFT sales goes to donations.0xSplits.eth
   address payable public constant recipient =
