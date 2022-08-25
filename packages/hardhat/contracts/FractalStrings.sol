@@ -96,20 +96,6 @@ contract FractalStrings {
     return sfad.getUint8(gen, 48 + 2 * itemIdx, 2);
   }
 
-  // Calmness is rough measure of distance of static square transformations from the identity.
-  // Award 2 points for each identity, 1 point for a 180' rotation, otherwise 0
-  function getCalmnessItem(uint256 gen, uint8 itemIdx) internal view returns (uint8) {
-    uint8 rotNum = getRotationNum(gen, itemIdx);
-    if (getReflectionNum(gen, itemIdx) == 1) return 0; // Reflections are not calm!
-    if (rotNum % 2 == 1) return 0; // 90 degree rotations are not calm!
-    if (rotNum == 2) return 1; // 180 degree rotations are slightly calm
-    return 2; // Identity tsfm is immensely chill
-  }
-
-  function getCalmness(uint256 gen) public view returns (uint8) {
-    return getCalmnessItem(gen, 0) + getCalmnessItem(gen, 1) + getCalmnessItem(gen, 2) + getCalmnessItem(gen, 3);
-  }
-
   string[4] internal xs = ['-0.25','-0.25',' 0.25',' 0.25'];
   string[4] internal ys = ['-0.25',' 0.25','-0.25',' 0.25'];
   function getIterationNItem(uint256 gen, uint8 iteration, uint8 sideIdx, uint8 itemIdx) internal view returns (string memory) {
