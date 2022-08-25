@@ -28,6 +28,10 @@ import './FractalStrings.sol';
 
 contract MergeFractal is ERC721, Ownable {
 
+  // all ETH from NFT sales goes to donations.0xSplits.eth
+  address payable public constant recipient =
+    payable(0xF8843981e7846945960f53243cA2Fd42a579f719); // donations.0xSplits.eth
+
   // ----------------------------------------------
 
   // Local testnet setup
@@ -145,6 +149,9 @@ contract MergeFractal is ERC721, Ownable {
     _mint(msg.sender, id);
     generator[id] = uint256(keccak256(abi.encodePacked( blockhash(block.number-1), msg.sender, address(this), id)));
     mintooor[id] = msg.sender;
+    // Send proceeds of NFT sales to fixed recipient
+    (bool success, ) = recipient.call{value: msg.value}("");
+    require(success, "ETH TO RECIPIENT FAIL");
     return id;
   }
 
@@ -156,11 +163,6 @@ contract MergeFractal is ERC721, Ownable {
   // Call this function before minting to get mint price
   function getPriceNext() public view returns (uint256) {
     return getPriceById(_tokenIds.current() + 1);
-  }
-
-  function withdraw() public onlyOwner {
-    (bool success, ) = msg.sender.call{value: address(this).balance}("");
-    require(success, "WITHDRAW FAILED");
   }
 
   function getAttribute(string memory attribType, string memory attribValue, string memory suffix) internal pure returns (string memory) {
