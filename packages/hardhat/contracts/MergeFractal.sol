@@ -89,16 +89,16 @@ contract MergeFractal is ERC721 {
     'TXRX'
   ];
 
-  // Random saying
-  uint8 internal constant SAYING_ARRAY_LEN = 25;
-  string[SAYING_ARRAY_LEN] internal sayings = [
+  // Random subtitle
+  uint8 internal constant SUBTITLE_ARRAY_LEN = 29;
+  string[SUBTITLE_ARRAY_LEN] internal subtitles = [
     'Ethereum Merge September 2022',
     'TTD 58750000000000000000000',
     'Proof-of-stake consensus',
     'Environmentally friendly',
+    'Energy consumption -99.95%',
     'Unstoppable smart contracts',
     'Sustainable and secure',
-    'Energy consumption -99.95%',
     'Global settlement layer',
     'World Computer',
     'Run your own node',
@@ -111,9 +111,13 @@ contract MergeFractal is ERC721 {
     'PoS > PoW',
     'TTD 2^19 * 5^22 * 47',
     'Validate with 32 ETH',
-    'Build on Scaffold Eth',
     'The Flippening',
+    'Build on Scaffold Eth',
+    'Build with the Buidl Guidl',
     'Austin Griffith is Buidling',
+    'Owocki and Gitcoin are coordinating',
+    'Superphiz has decentralised everything',
+    'Bankless is trustless',
     'Vitalik is clapping',
     'Vitalik is dancing',
     'Anthony Sassano is dancing'
@@ -178,7 +182,7 @@ contract MergeFractal is ERC721 {
       '[',
       getAttribute("Dev", getCoreDevName(id), ','),
       getAttribute("Team", getTeamName(id), ','),
-      getAttribute("Saying", getSaying(id), ','),
+      getAttribute("Subtitle", getSubtitle(gen), ','),
       getAttribute("Duration", sfad.uint2str(fs.getAnimDurS(gen)), ','),
       getAttribute("Dropouts", fs.getDropoutAttrTxt(gen), ','),
       getAttribute("Twists", sfad.uint2str(fs.getTwistiness(gen)), ','),
@@ -311,18 +315,19 @@ contract MergeFractal is ERC721 {
     ));   
   }
 
-  // Earlier sayings in the array are common. Later ones are increasingly rare.
-  function getSaying(uint256 id) internal view returns (string memory) {
-    uint8 rand1 = sfad.getUint8(generator[id], 172, 5) % SAYING_ARRAY_LEN;
-    uint8 rand2 = sfad.getUint8(generator[id], 177, 5) % SAYING_ARRAY_LEN; // Bits 16, 17 in use elsewhere, ought to reshuffle all!
+  // Earlier subtitles in the array are common. Later ones are increasingly rare.
+  function getSubtitle(uint256 gen) internal view returns (string memory) {
+    uint8 rand1 = sfad.getUint8(gen, 172, 5) % SUBTITLE_ARRAY_LEN;
+    uint8 rand2 = sfad.getUint8(gen, 177, 5) % SUBTITLE_ARRAY_LEN; // Bits 16, 17 in use elsewhere, ought to reshuffle all!
     uint8 idx = (rand1 < rand2) ? rand1 : rand2; // min function 
-    return sayings[idx];
+    return subtitles[idx];
   }
 
   function renderText(uint256 id) internal view returns (string memory) {
+    uint256 gen = generator[id];
     return string(abi.encodePacked(
       '<defs><style>text{font-size:15px;font-family:Helvetica,sans-serif;font-weight:900;fill:',
-      sfad.getRGBA(generator[id], 0, "1"),
+      sfad.getRGBA(gen, 0, "1"),
       ';letter-spacing:1px}</style><path id="textcircle" fill="none" stroke="rgba(255,0,0,0.5)" d="M 196 375 A 175 175 270 1 1 375 200 A 175 175 90 0 1 204 375" /></defs>',
       '<g><animateTransform attributeName="transform" attributeType="XML" type="rotate" values="0 200 200; 360 200 200" dur="120s" repeatCount="indefinite"/><text><textPath href="#textcircle">/ ',
       NETWORK,
@@ -331,7 +336,7 @@ contract MergeFractal is ERC721 {
       ' / ',
       getCoreDevAndTeamText(id),
       ' / ',
-      getSaying(id),
+      getSubtitle(gen),
       ' / Minted by ',
       sfad.toHexString(uint160(mintooor[id]), 20),
       '♦♢♦♢♦♢♦♢♦♢♦♢♦♢♦♢♦♢♦♢♦♢♦♢♦♢♦♢♦♢♦♢♦♢♦♢♦♢♦♢♦♢♦♢♦</textPath></text></g>'
