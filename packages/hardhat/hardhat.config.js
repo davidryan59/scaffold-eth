@@ -7,6 +7,9 @@ require("@tenderly/hardhat-tenderly")
 
 require("@nomiclabs/hardhat-etherscan");
 
+const DEBUG = false;
+// const DEBUG = true;
+
 const { isAddress, getAddress, formatUnits, parseUnits } = utils;
 
 /*
@@ -45,7 +48,7 @@ module.exports = {
   networks: {
     localhost: {
       url: "http://localhost:8545",
-      gasPrice: 1_000_000_000,//you can adjust gasPrice locally to see how much it will cost on production
+      gasPrice: 1_000_000_000,  // you can adjust gasPrice locally to see how much it will cost on production
       /*
         notice no mnemonic here? it will just use account 0 of the hardhat node to deploy
         (you can put in a mnemonic here to set the deployer locally)
@@ -126,8 +129,6 @@ module.exports = {
     apiKey: "PSW8C433Q667DVEX5BCRMGNAH9FSGFZ7Q8"
   }
 };
-
-const DEBUG = false;
 
 function debug(text) {
   if (DEBUG) {
