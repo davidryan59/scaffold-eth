@@ -8,9 +8,9 @@
 // (ASCII art font: Double, via https://patorjk.com/software/taag)
 
 // Merge Fractal NFT developed for the Ethereum Merge event
-// by David Ryan (@davidryan59 on Twitter)
+// by David Ryan (drcoder.eth, @davidryan59 on Twitter)
 // Check out some more of my fractal art at Nifty Ink!
-// Artist page for niftymaestro.eth: https://nifty.ink/artist/0xbFAc61D1e22EFA9d37Fc3Ff36B9dff9655131F52
+// My artist page for niftymaestro.eth: https://nifty.ink/artist/0xbFAc61D1e22EFA9d37Fc3Ff36B9dff9655131F52
 
 pragma solidity ^0.6.7;
 
