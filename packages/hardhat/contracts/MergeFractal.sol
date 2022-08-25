@@ -328,8 +328,8 @@ contract MergeFractal is ERC721, Ownable {
 
   // Earlier sayings in the array are common. Later ones are increasingly rare.
   function getSaying(uint256 id) internal view returns (string memory) {
-    uint8 rand1 = sfad.getUint8(generator[id], 8, 5) % SAYING_ARRAY_LEN;
-    uint8 rand2 = sfad.getUint8(generator[id], 250, 5) % SAYING_ARRAY_LEN; // Bits 16, 17 in use elsewhere, ought to reshuffle all!
+    uint8 rand1 = sfad.getUint8(generator[id], 172, 5) % SAYING_ARRAY_LEN;
+    uint8 rand2 = sfad.getUint8(generator[id], 177, 5) % SAYING_ARRAY_LEN; // Bits 16, 17 in use elsewhere, ought to reshuffle all!
     uint8 idx = (rand1 < rand2) ? rand1 : rand2; // min function 
     return sayings[idx];
   }
