@@ -186,6 +186,7 @@ contract MergeFractal is ERC721 {
       getAttribute("Dropouts", fs.getDropoutAttrTxt(gen), ','),
       getAttribute("Twists", sfad.uint2str(fs.getTwistiness(gen)), ','),
       getAttribute("Calmness", sfad.uint2str(fs.getCalmness(gen)), ','),
+      getAttribute("Monochrome", sfad.isMonochrome(gen) ? 'Yes' : 'No', ','),
       getAttribute("ContractId", sfad.uint2str(uint32(address(this))), ']')
     ));
   }
