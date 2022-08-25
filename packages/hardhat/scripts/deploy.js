@@ -21,17 +21,11 @@ const main = async () => {
   }
   console.log(" \n")*/
 
-  const ownerAddress = "0x7349d6e55cB3F737249FbAa047C16b826559B127" // drcoder.eth
-
   // deploy the contracts
   const sharedFnsAndData = await deploy("SharedFnsAndData"/*,[ bytes32Array ]*/) // <-- add in constructor args like line 19 vvvv
   const fractalStrings = await deploy("FractalStrings", [sharedFnsAndData.address])
   const mergeFractal = await deploy("MergeFractal", [sharedFnsAndData.address, fractalStrings.address])
 
-  // console.log(`Transferring ownership...`);
-  // await mergeFractal.transferOwnership(ownerAddress);
-  // console.log(`Contract is now owned by ${await mergeFractal.owner()}`);
-  
   //const yourContract = await ethers.getContractAt('YourContract', "0xaAC799eC2d00C013f1F11c37E654e59B0429DF6A") //<-- if you want to instantiate a version of a contract at a specific address!
   //const secondContract = await deploy("SecondContract")
 
