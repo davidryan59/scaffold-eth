@@ -84,6 +84,32 @@ contract FractalStrings {
     ));
   }
 
+  // Returns 0 or 1
+  // 1 will introduce a scale of -0.5 in one direction (a reflection)
+  function getReflectionNum(uint256 gen, uint8 itemIdx) internal view returns (uint8) {
+    return sfad.getUint8(gen, 72 + itemIdx, 1);
+  }
+
+  // Returns 0, 1, 2, or 3
+  // Multiply by 90 to get a rotation angle
+  function getRotationNum(uint256 gen, uint8 itemIdx) internal view returns (uint8) {
+    return sfad.getUint8(gen, 48 + 2 * itemIdx, 2);
+  }
+
+  // Calmness is rough measure of distance of static square transformations from the identity.
+  // Award 2 points for each identity, 1 point for a 180' rotation, otherwise 0
+  function getCalmnessItem(uint256 gen, uint8 itemIdx) internal view returns (uint8) {
+    uint8 rotNum = getRotationNum(gen, itemIdx);
+    if (getReflectionNum(gen, itemIdx) == 1) return 0; // Reflections are not calm!
+    if (rotNum % 2 == 1) return 0; // 90 degree rotations are not calm!
+    if (rotNum == 2) return 1; // 180 degree rotations are slightly calm
+    return 2; // Identity tsfm is immensely chill
+  }
+
+  function getCalmness(uint256 gen) public view returns (uint8) {
+    return getCalmnessItem(gen, 0) + getCalmnessItem(gen, 1) + getCalmnessItem(gen, 2) + getCalmnessItem(gen, 3);
+  }
+
   string[4] internal xs = ['-0.25','-0.25',' 0.25',' 0.25'];
   string[4] internal ys = ['-0.25',' 0.25','-0.25',' 0.25'];
   function getIterationNItem(uint256 gen, uint8 iteration, uint8 sideIdx, uint8 itemIdx) internal view returns (string memory) {
@@ -99,9 +125,9 @@ contract FractalStrings {
       ',',
       ys[itemIdx],
       ') rotate(',
-      sfad.uint2str(90 * uint16(sfad.getUint8(gen, 48 + itemIdx * 2, 2))),
+      sfad.uint2str(90 * uint16(getRotationNum(gen, itemIdx))),
       ') scale(0.5 ',
-      sfad.getUint8(gen, 72 + itemIdx, 1) == 0 ? '-0.5' : '0.5',
+      getReflectionNum(gen, itemIdx) == 1 ? '-0.5' : '0.5',
       ')"/></g>'
     ));
   }
@@ -113,7 +139,7 @@ contract FractalStrings {
 
   // Rotation at each level is at slightly different times to the overall movement
   uint8[16] internal twistCounts = [0,0,0,0,0 , 1,1,1,1,1,1,1,1,1,1,1];
-  function getTwistCount(uint256 gen) public view returns (uint8) {
+  function getTwistiness(uint256 gen) public view returns (uint8) {
     return twistCounts[getTwistIdx(gen, 0, 2)]
     + twistCounts[getTwistIdx(gen, 1, 2)]
     + twistCounts[getTwistIdx(gen, 0, 3)]
