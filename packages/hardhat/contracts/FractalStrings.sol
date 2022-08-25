@@ -107,7 +107,17 @@ contract FractalStrings {
   }
 
   // Rotation at each level is at slightly different times to the overall movement
-  string [16] internal rotates = [
+  uint8[16] internal rotateCounts = [0,0,0,0,0 , 1,1,1,1,1,1,1,1,1,1,1];
+  function getTotalRotationCount(uint256 gen) public view returns (uint8) {
+    return 0
+    + rotateCounts[sfad.getUint8(gen, 76 + 4 * 0 + 8 * (2 - 2), 4)]
+    + rotateCounts[sfad.getUint8(gen, 76 + 4 * 1 + 8 * (2 - 2), 4)]
+    + rotateCounts[sfad.getUint8(gen, 76 + 4 * 0 + 8 * (3 - 2), 4)]
+    + rotateCounts[sfad.getUint8(gen, 76 + 4 * 1 + 8 * (3 - 2), 4)]
+    + rotateCounts[sfad.getUint8(gen, 76 + 4 * 0 + 8 * (4 - 2), 4)]
+    + rotateCounts[sfad.getUint8(gen, 76 + 4 * 1 + 8 * (4 - 2), 4)];
+  }
+  string[16] internal rotates = [
     '0;0',
     '0;0',
     '0;0',
