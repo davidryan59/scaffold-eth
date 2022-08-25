@@ -106,18 +106,22 @@ contract FractalStrings {
     ));
   }
 
-  // Rotation at each level is at slightly different times to the overall movement
-  uint8[16] internal rotateCounts = [0,0,0,0,0 , 1,1,1,1,1,1,1,1,1,1,1];
-  function getTotalRotationCount(uint256 gen) public view returns (uint8) {
-    return 0
-    + rotateCounts[sfad.getUint8(gen, 76 + 4 * 0 + 8 * (2 - 2), 4)]
-    + rotateCounts[sfad.getUint8(gen, 76 + 4 * 1 + 8 * (2 - 2), 4)]
-    + rotateCounts[sfad.getUint8(gen, 76 + 4 * 0 + 8 * (3 - 2), 4)]
-    + rotateCounts[sfad.getUint8(gen, 76 + 4 * 1 + 8 * (3 - 2), 4)]
-    + rotateCounts[sfad.getUint8(gen, 76 + 4 * 0 + 8 * (4 - 2), 4)]
-    + rotateCounts[sfad.getUint8(gen, 76 + 4 * 1 + 8 * (4 - 2), 4)];
+  // side = 0, 1; iteration = 2, 3, 4; this uses 24 bits of randomness
+  function getTwistIdx(uint256 gen, uint8 sideIdx, uint8 iteration) internal view returns (uint8) {
+    return sfad.getUint8(gen, 76 + 4 * sideIdx + 8 * (iteration - 2), 4);
   }
-  string[16] internal rotates = [
+
+  // Rotation at each level is at slightly different times to the overall movement
+  uint8[16] internal twistCounts = [0,0,0,0,0 , 1,1,1,1,1,1,1,1,1,1,1];
+  function getTwistCount(uint256 gen) public view returns (uint8) {
+    return twistCounts[getTwistIdx(gen, 0, 2)]
+    + twistCounts[getTwistIdx(gen, 1, 2)]
+    + twistCounts[getTwistIdx(gen, 0, 3)]
+    + twistCounts[getTwistIdx(gen, 1, 3)]
+    + twistCounts[getTwistIdx(gen, 0, 4)]
+    + twistCounts[getTwistIdx(gen, 1, 4)];
+  }
+  string[16] internal twistValues = [
     '0;0',
     '0;0',
     '0;0',
@@ -144,7 +148,7 @@ contract FractalStrings {
       '_',
       sfad.uint2str(sideIdx),
       '"><animateTransform attributeName="transform" attributeType="XML" type="rotate" values="',
-      rotates[sfad.getUint8(gen, 76 + 4 * sideIdx + 8 * (iteration - 2), 4)], // called on iteration = 2, 3, 4
+      twistValues[getTwistIdx(gen, sideIdx, iteration)],
       '" ',
       getAnimDurTxt(gen),
       ' repeatCount="indefinite" />',

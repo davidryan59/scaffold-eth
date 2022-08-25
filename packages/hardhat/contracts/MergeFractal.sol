@@ -183,7 +183,7 @@ contract MergeFractal is ERC721, Ownable {
       getAttribute("Saying", getSaying(id), ','),
       getAttribute("Duration", sfad.uint2str(fs.getAnimDurS(gen)), ','),
       getAttribute("Dropouts", fs.getDropoutAttrTxt(gen), ','),
-      getAttribute("Twists", sfad.uint2str(fs.getTotalRotationCount(gen)), ','),
+      getAttribute("Twists", sfad.uint2str(fs.getTwistCount(gen)), ','),
       getAttribute("ContractId", sfad.uint2str(uint32(address(this))), ']')
     ));
   }
