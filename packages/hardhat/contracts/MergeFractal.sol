@@ -39,7 +39,6 @@ contract MergeFractal is ERC721 {
   uint256 internal constant INCREMENT_PRICE = 10 * 1000000 * 1000000000; // 0.01 ETH
   uint256 internal constant INCREMENT_STEP = 2; // increments at 3, 5, 7
   uint16 internal constant MINT_LIMIT = 7;
-  bool internal constant DISPLAY_TEST_PATCHES = true;
 
   // // Goerli test deployment(s)
   // string internal constant NETWORK = 'GOERLI DEPLOYMENT 1';
@@ -47,7 +46,6 @@ contract MergeFractal is ERC721 {
   // uint256 internal constant INCREMENT_PRICE = 100000 * 1000000000; // 0.0001 ETH
   // uint256 internal constant INCREMENT_STEP = 3; // increments at 4, 7, 10...
   // uint16 internal constant MINT_LIMIT = 42;
-  // bool internal constant DISPLAY_TEST_PATCHES = false;
 
   // // Mainnet deployment
   // string internal constant NETWORK = 'Ethereum';
@@ -55,7 +53,6 @@ contract MergeFractal is ERC721 {
   // uint256 internal constant INCREMENT_PRICE = 1000000 * 1000000000; // 0.001 ETH
   // uint256 internal constant INCREMENT_STEP = 100;
   // uint16 internal constant MINT_LIMIT = 5875;
-  // bool internal constant DISPLAY_TEST_PATCHES = false;
 
   // ----------------------------------------------
 
@@ -248,18 +245,6 @@ contract MergeFractal is ERC721 {
     ));
   }
 
-  function renderTestnetColourPatch(uint256 gen, uint8 arraySection) internal view returns (string memory) {
-    return string(abi.encodePacked(
-      '<rect x="',
-      sfad.uint2str(arraySection >> 1 == 0 ? 0 : 350),
-      '" y="',
-      sfad.uint2str(arraySection % 2 == 1 ? 0 : 350),
-      '" width="50" height="50" rx="15" fill="',
-      sfad.getRGBA(gen, arraySection, "1"),
-      '"/>'
-    ));
-  }
-
   // Uses 6 random bits per line set / section
   function renderLines(uint256 gen, uint8 arraySection, string memory maxAngleText) internal view returns (string memory) {
     return string(abi.encodePacked(
@@ -272,8 +257,7 @@ contract MergeFractal is ERC721 {
       '" stroke-width="9px"',
       sfad.getLinesPath(),
       getLinesTransform(arraySection),
-      '/></g>',
-      DISPLAY_TEST_PATCHES ? renderTestnetColourPatch(gen, arraySection) : ''
+      '/></g>'
     ));
   }
 

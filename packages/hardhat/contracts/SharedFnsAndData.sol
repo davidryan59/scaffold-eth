@@ -87,7 +87,7 @@ contract SharedFnsAndData {
     return gen8bits % 2 ** bits;
   }
 
-  function isMonochrome(uint256 gen) public view returns (bool) {
+  function isMonochrome(uint256 gen) public pure returns (bool) {
     return getUint8(gen, 182, 4) == 0;
   }
 
