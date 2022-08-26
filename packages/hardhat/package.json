@@ -28,7 +28,7 @@
   },
   "scripts": {
     "chain": "hardhat node",
-    "fork": "hardhat node --fork https://mainnet.infura.io/v3/460f40a260564ac4a4f4b3fffb032dad",
+    "fork": "hardhat node --fork https://mainnet.infura.io/v3/7088fc5f088446808dc2d398131d0d5d",
     "test": "hardhat test --network hardhat",
     "compile": "hardhat compile",
     "deploy": "hardhat run scripts/deploy.js",
