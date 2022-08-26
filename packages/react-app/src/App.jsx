@@ -183,7 +183,9 @@ function App(props) {
   const balance = useContractReader(readContracts, "MergeFractal", "balanceOf", [address]);
   console.log("🤗 balance:", balance);
 
-  const nextMintPrice = useContractReader(readContracts, "MergeFractal", "getPriceNext");
+  const mintCountCR = useContractReader(readContracts, "MergeFractal", "mintCount");
+  const isMintingAllowedCR = useContractReader(readContracts, "MergeFractal", "isMintingAllowed");
+  const getPriceNextCR = useContractReader(readContracts, "MergeFractal", "getPriceNext");
 
   // 📟 Listen for broadcast events
   const transferEvents = useEventListener(readContracts, "MergeFractal", "Transfer", localProvider, 1);
@@ -429,23 +431,28 @@ function App(props) {
             */}
 
             <div style={{ maxWidth: 820, margin: "auto", marginTop: 32, paddingBottom: 32 }}>
-              {isSigner?(
+              {isSigner ? (
                 <Button type={"primary"} onClick={async ()=>{
+                  const isMintingAllowed = await readContracts.MergeFractal.isMintingAllowed();
                   const priceRightNow = await readContracts.MergeFractal.getPriceNext();
-                  tx( writeContracts.MergeFractal.mintItem({ value: priceRightNow }) )
-                }}>MINT{nextMintPrice ? ` for ${formatEther(nextMintPrice)} Ξ` : ''}</Button>
-              ):(
-                <div>
-
-
-                  {/* // TEMP This is for local testing only, remove for other networks */}
-                  <Button type={"primary"} onClick={async ()=>{
-                    const priceRightNow = await readContracts.MergeFractal.getPriceNext();
+                  if (isMintingAllowed) {
                     tx( writeContracts.MergeFractal.mintItem({ value: priceRightNow }) )
-                  }}>MINT{nextMintPrice ? ` for ${formatEther(nextMintPrice)} Ξ` : ''}</Button>
-                  <span> </span>
-
-
+                  }
+                }}>
+                  {
+                    mintCountCR === undefined
+                    ? 'Loading...'
+                    : isMintingAllowedCR
+                    ? (
+                        getPriceNextCR
+                        ? `MINT #${1 + mintCountCR} for ${formatEther(getPriceNextCR)} Ξ`
+                        : 'Awaiting price...'
+                      )
+                    : `All ${mintCountCR} Merge Fractals have been minted already!`
+                  }
+                </Button>
+              ) : (
+                <div>
                   <Button type={"primary"} onClick={loadWeb3Modal}>CONNECT WALLET</Button>
                 </div>
               )}

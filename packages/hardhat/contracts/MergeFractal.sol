@@ -37,8 +37,8 @@ contract MergeFractal is ERC721 {
   string internal constant NETWORK = 'TESTNET';
   uint256 internal constant INITIAL_PRICE = 20 * 1000000 * 1000000000; // 0.02 ETH
   uint256 internal constant INCREMENT_PRICE = 10 * 1000000 * 1000000000; // 0.01 ETH
-  uint256 internal constant INCREMENT_STEP = 2; // increments at 3, 5, 7
-  uint16 internal constant MINT_LIMIT = 7;
+  uint256 internal constant INCREMENT_STEP = 1; // increments at 3, 5, 7
+  uint16 internal constant MINT_LIMIT = 2;
 
   // // Goerli test deployment(s)
   // string internal constant NETWORK = 'GOERLI TEST 2';
@@ -142,10 +142,10 @@ contract MergeFractal is ERC721 {
     payable
     returns (uint256)
   {
+    require(isMintingAllowed(), "MINT LIMIT REACHED"); 
     require(msg.value == getPriceNext(), "NEED TO SEND ETH");
     _tokenIds.increment();
-    uint256 id = _tokenIds.current();
-    require(id <= MINT_LIMIT, "MINT LIMIT REACHED"); 
+    uint256 id = _tokenIds.current(); // previous mintCount + 1
     _mint(msg.sender, id);
     generator[id] = uint256(keccak256(abi.encodePacked( blockhash(block.number-1), msg.sender, address(this), id)));
     mintooor[id] = msg.sender;
@@ -153,6 +153,16 @@ contract MergeFractal is ERC721 {
     (bool success, ) = recipient.call{value: msg.value}("");
     require(success, "ETH TO RECIPIENT FAIL");
     return id;
+  }
+
+  // Query the current mint count
+  function mintCount() public view returns (uint24) {
+    return uint24(_tokenIds.current());
+  }
+
+  // Check if minting is allowed, and has not finished
+  function isMintingAllowed() public view returns (bool) {
+    return _tokenIds.current() < MINT_LIMIT;
   }
 
   // Linear increments of mint price at certain ids
