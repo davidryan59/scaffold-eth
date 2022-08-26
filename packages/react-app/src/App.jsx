@@ -206,15 +206,31 @@ function App(props) {
   const yourBalance = balance && balance.toNumber && balance.toNumber();
   const [yourMergeFractals, setYourMergeFractals] = useState();
 
+  const getTokenURI = async (contractAddress, tokenId) => {
+    let result = "";
+    const localStorageKey = `MRGFRC_${contractAddress.slice(2, 8)}_id${tokenId}_tokenURI`;
+    const existingData = window.localStorage.getItem(localStorageKey);
+    if (!existingData) {
+      console.log(`Get Token URI: getting new data for ${localStorageKey}`);
+      result = await readContracts.MergeFractal.tokenURI(tokenId);
+      window.localStorage.setItem(localStorageKey, result);
+    } else {
+      console.log(`Get Token URI: found existing data for ${localStorageKey}`);
+      result = existingData;
+    }
+    return result;
+  }
+
   useEffect(() => {
     const updateYourMergeFractals = async () => {
       const mergeFractalUpdate = [];
       for (let tokenIndex = 0; tokenIndex < balance; tokenIndex++) {
         try {
           console.log("Getting token index", tokenIndex);
+          const contractAddress = await readContracts.MergeFractal.address;
           const tokenId = await readContracts.MergeFractal.tokenOfOwnerByIndex(address, tokenIndex);
           console.log("tokenId", tokenId);
-          const tokenURI = await readContracts.MergeFractal.tokenURI(tokenId);
+          const tokenURI = await getTokenURI(contractAddress, tokenId);
           const jsonManifestString = atob(tokenURI.substring(29));
           // console.log("jsonManifestString", jsonManifestString);
           // const ipfsHash = tokenURI.replace("https://ipfs.io/ipfs/", "");
