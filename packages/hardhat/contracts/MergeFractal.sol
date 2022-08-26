@@ -129,7 +129,7 @@ contract MergeFractal is ERC721 {
 
   SharedFnsAndData sfad;
   FractalStrings fs;
-  constructor(address sfadAddress, address fsAddress) public ERC721("MergeFractals", "MERGFR") {
+  constructor(address sfadAddress, address fsAddress) public ERC721("MergeFractals", "MERGFRAC") {
     sfad = SharedFnsAndData(sfadAddress);
     fs = FractalStrings(fsAddress);
   }
