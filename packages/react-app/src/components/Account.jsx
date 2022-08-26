@@ -85,10 +85,10 @@ export default function Account({
   const { currentTheme } = useThemeSwitcher();
 
   // // Deployment
-  // const display = minimized || !isSigner ? (
+  const display = minimized || !isSigner ? (
 
   // // TEMP Local testing
-  const display = minimized ? (
+  // const display = minimized ? (
     ""
   ) : (
     <span>
