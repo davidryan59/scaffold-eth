@@ -3,11 +3,11 @@ import React from "react";
 
 // displays a page header
 
-export default function Header() {
+export default function Header({networkName}) {
   return (
     <a href="/">
       <PageHeader
-        title="🟢 Merge Fractal NFTs"
+        title={`🟢 ${networkName} Merge Fractals`}
         subTitle=""
         style={{ cursor: "pointer" }}
       />

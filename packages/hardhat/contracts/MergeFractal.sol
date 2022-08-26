@@ -33,25 +33,25 @@ contract MergeFractal is ERC721 {
 
   // ----------------------------------------------
 
-  // Local testnet setup
-  string internal constant NETWORK = 'TESTNET';
-  uint256 internal constant INITIAL_PRICE = 20 * 1000000 * 1000000000; // 0.02 ETH
-  uint256 internal constant INCREMENT_PRICE = 10 * 1000000 * 1000000000; // 0.01 ETH
-  uint256 internal constant INCREMENT_STEP = 2; // increments at 3, 5, 7
-  uint24 internal constant MINT_LIMIT = 5;
+  // // Local testnet setup
+  // string internal constant NETWORK = 'TESTNET';
+  // uint256 internal constant INITIAL_PRICE = 2000000 * 1000000000; // 0.002 ETH
+  // uint256 internal constant INCREMENT_PRICE = 1000000 * 1000000000; // 0.001 ETH
+  // uint256 internal constant INCREMENT_STEP = 2; // increments at 3, 5, 7
+  // uint24 internal constant MINT_LIMIT = 5;
 
-  // // Goerli test deployment(s)
-  // string internal constant NETWORK = 'GOERLI TEST 2';
-  // uint256 internal constant INITIAL_PRICE = 200000 * 1000000000; // 0.0002 ETH
-  // uint256 internal constant INCREMENT_PRICE = 100000 * 1000000000; // 0.0001 ETH
-  // uint256 internal constant INCREMENT_STEP = 3; // increments at 4, 7, 10...
-  // uint24 internal constant MINT_LIMIT = 42;
+  // Goerli test deployment(s)
+  string internal constant NETWORK = 'GOERLI TEST 3';
+  uint256 internal constant INITIAL_PRICE = 2000000 * 1000000000; // 0.002 ETH
+  uint256 internal constant INCREMENT_PRICE = 1000000 * 1000000000; // 0.001 ETH
+  uint256 internal constant INCREMENT_STEP = 3; // increments at 4, 7, 10...
+  uint24 internal constant MINT_LIMIT = 10;
 
   // // Mainnet deployment
   // string internal constant NETWORK = 'Ethereum';
   // uint256 internal constant INITIAL_PRICE = 2000000 * 1000000000; // 0.002 ETH
   // uint256 internal constant INCREMENT_PRICE = 1000000 * 1000000000; // 0.001 ETH
-  // uint256 internal constant INCREMENT_STEP = 100;
+  // uint256 internal constant INCREMENT_STEP = 100; // increments at 101, 201, 301...
   // uint24 internal constant MINT_LIMIT = 5875;
 
   // ----------------------------------------------
@@ -156,7 +156,7 @@ contract MergeFractal is ERC721 {
   }
 
   // Query the current mint count
-  function mintLimit() public view returns (uint24) {
+  function mintLimit() public pure returns (uint24) {
     return MINT_LIMIT;
   }
 
@@ -207,9 +207,11 @@ contract MergeFractal is ERC721 {
 
   function tokenURI(uint256 id) public view override returns (string memory) {
     require(_exists(id), "not exist");
-    string memory name = string(abi.encodePacked('Merge Fractal #',id.toString()));
+    string memory name = string(abi.encodePacked(NETWORK, ' Merge Fractal #',id.toString()));
     string memory description = string(abi.encodePacked(
-      'This Merge Fractal is to thank ',
+      'This ',
+      NETWORK,
+      ' Merge Fractal is to thank ',
       getCoreDevName(id),
       '!'
     ));

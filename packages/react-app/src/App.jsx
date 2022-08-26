@@ -56,10 +56,18 @@ const ipfs = ipfsAPI({ host: "ipfs.infura.io", port: "5001", protocol: "https" }
     (and then use the `useExternalContractLoader()` hook!)
 */
 
+
 // // 📡 What chain are your contracts deployed to?
-const targetNetwork = NETWORKS.localhost;
-// const targetNetwork = NETWORKS.goerli;
+
+// const targetNetwork = NETWORKS.localhost;
+// const networkName = 'TESTNET';
+
+const targetNetwork = NETWORKS.goerli;
+const networkName = 'Goerli_TEST_3';
+
 // const targetNetwork = NETWORKS.mainnet;
+// const networkName = 'Ethereum';
+
 
 // 😬 Sorry for all the console logging
 const DEBUG = true;
@@ -396,7 +404,7 @@ function App(props) {
   return (
     <div className="App">
       {/* ✏️ Edit the header and change the title to your project name */}
-      <Header />
+      <Header networkName={networkName} />
       {networkDisplay}
 
       <BrowserRouter>
@@ -408,7 +416,7 @@ function App(props) {
               }}
               to="/"
             >
-              Your Merge Fractal NFTs
+              Your {networkName} Merge Fractals
             </Link>
           </Menu.Item>
           <Menu.Item key="/debug">
@@ -446,10 +454,10 @@ function App(props) {
                     : isMintingAllowedCR
                     ? (
                         getPriceNextCR
-                        ? `Mint Merge Fractal ${1 + mintCountCR} of ${mintLimitCR} for ${formatEther(getPriceNextCR)} Ξ`
+                        ? `${networkName} Merge Fractal #${1 + mintCountCR} of ${mintLimitCR} – MINT for ${formatEther(getPriceNextCR)} Ξ`
                         : 'Awaiting price...'
                       )
-                    : `All ${mintLimitCR} Merge Fractals have been minted already!`
+                    : `All ${mintLimitCR} ${networkName} Merge Fractals have been minted already!`
                   }
                 </Button>
               ) : (
