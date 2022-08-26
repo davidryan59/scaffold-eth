@@ -49,6 +49,7 @@ module.exports = {
   // (you will need to restart the `yarn run start` dev server after editing the .env)
 
   networks: {
+    
     localhost: {
       url: "http://localhost:8545",
       gasPrice: 3_000_000_000,  // you can adjust gasPrice locally to see how much it will cost on production
@@ -57,6 +58,21 @@ module.exports = {
         (you can put in a mnemonic here to set the deployer locally)
       */
     },
+    goerli: {
+      url: "https://goerli.infura.io/v3/7088fc5f088446808dc2d398131d0d5d", //<---- YOUR INFURA ID! (or it won't work)
+      accounts: {
+        mnemonic: mnemonic(),
+      },
+      gasPrice: 1_500_000_000 // 1.5 gwei should be OK for Goerli
+    },
+    mainnet: {
+      url: "https://mainnet.infura.io/v3/7088fc5f088446808dc2d398131d0d5d", //<---- YOUR INFURA ID! (or it won't work)
+      accounts: {
+        mnemonic: mnemonic(),
+      },
+      gasPrice: 3_000_000_000 // Try and deploy when gas is under 3 gwei! (Aug 2022)
+    },
+
     rinkeby: {
       url: "https://rinkeby.infura.io/v3/7088fc5f088446808dc2d398131d0d5d", //<---- YOUR INFURA ID! (or it won't work)
       accounts: {
@@ -69,25 +85,11 @@ module.exports = {
         mnemonic: mnemonic(),
       },
     },
-    mainnet: {
-      url: "https://mainnet.infura.io/v3/7088fc5f088446808dc2d398131d0d5d", //<---- YOUR INFURA ID! (or it won't work)
-      accounts: {
-        mnemonic: mnemonic(),
-      },
-      gasPrice: 3_000_000_000
-    },
     ropsten: {
       url: "https://ropsten.infura.io/v3/7088fc5f088446808dc2d398131d0d5d", //<---- YOUR INFURA ID! (or it won't work)
       accounts: {
         mnemonic: mnemonic(),
       },
-    },
-    goerli: {
-      url: "https://goerli.infura.io/v3/7088fc5f088446808dc2d398131d0d5d", //<---- YOUR INFURA ID! (or it won't work)
-      accounts: {
-        mnemonic: mnemonic(),
-      },
-      gasPrice: 2_000_000_000
     },
     xdai: {
       url: 'https://rpc.xdaichain.com/',
