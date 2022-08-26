@@ -183,9 +183,10 @@ function App(props) {
   const balance = useContractReader(readContracts, "MergeFractal", "balanceOf", [address]);
   console.log("🤗 balance:", balance);
 
-  const mintCountCR = useContractReader(readContracts, "MergeFractal", "mintCount");
   const isMintingAllowedCR = useContractReader(readContracts, "MergeFractal", "isMintingAllowed");
   const getPriceNextCR = useContractReader(readContracts, "MergeFractal", "getPriceNext");
+  const mintCountCR = useContractReader(readContracts, "MergeFractal", "mintCount");
+  const mintLimitCR = useContractReader(readContracts, "MergeFractal", "mintLimit");
 
   // 📟 Listen for broadcast events
   const transferEvents = useEventListener(readContracts, "MergeFractal", "Transfer", localProvider, 1);
@@ -440,15 +441,15 @@ function App(props) {
                   }
                 }}>
                   {
-                    mintCountCR === undefined
+                    mintLimitCR === undefined
                     ? 'Loading...'
                     : isMintingAllowedCR
                     ? (
                         getPriceNextCR
-                        ? `MINT #${1 + mintCountCR} for ${formatEther(getPriceNextCR)} Ξ`
+                        ? `Mint Merge Fractal ${1 + mintCountCR} of ${mintLimitCR} for ${formatEther(getPriceNextCR)} Ξ`
                         : 'Awaiting price...'
                       )
-                    : `All ${mintCountCR} Merge Fractals have been minted already!`
+                    : `All ${mintLimitCR} Merge Fractals have been minted already!`
                   }
                 </Button>
               ) : (

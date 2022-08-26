@@ -38,21 +38,21 @@ contract MergeFractal is ERC721 {
   uint256 internal constant INITIAL_PRICE = 20 * 1000000 * 1000000000; // 0.02 ETH
   uint256 internal constant INCREMENT_PRICE = 10 * 1000000 * 1000000000; // 0.01 ETH
   uint256 internal constant INCREMENT_STEP = 2; // increments at 3, 5, 7
-  uint16 internal constant MINT_LIMIT = 5;
+  uint24 internal constant MINT_LIMIT = 5;
 
   // // Goerli test deployment(s)
   // string internal constant NETWORK = 'GOERLI TEST 2';
   // uint256 internal constant INITIAL_PRICE = 200000 * 1000000000; // 0.0002 ETH
   // uint256 internal constant INCREMENT_PRICE = 100000 * 1000000000; // 0.0001 ETH
   // uint256 internal constant INCREMENT_STEP = 3; // increments at 4, 7, 10...
-  // uint16 internal constant MINT_LIMIT = 42;
+  // uint24 internal constant MINT_LIMIT = 42;
 
   // // Mainnet deployment
   // string internal constant NETWORK = 'Ethereum';
   // uint256 internal constant INITIAL_PRICE = 2000000 * 1000000000; // 0.002 ETH
   // uint256 internal constant INCREMENT_PRICE = 1000000 * 1000000000; // 0.001 ETH
   // uint256 internal constant INCREMENT_STEP = 100;
-  // uint16 internal constant MINT_LIMIT = 5875;
+  // uint24 internal constant MINT_LIMIT = 5875;
 
   // ----------------------------------------------
 
@@ -153,6 +153,11 @@ contract MergeFractal is ERC721 {
     (bool success, ) = recipient.call{value: msg.value}("");
     require(success, "ETH TO RECIPIENT FAIL");
     return id;
+  }
+
+  // Query the current mint count
+  function mintLimit() public view returns (uint24) {
+    return MINT_LIMIT;
   }
 
   // Query the current mint count
