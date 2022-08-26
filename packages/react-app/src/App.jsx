@@ -206,6 +206,7 @@ function App(props) {
   const yourBalance = balance && balance.toNumber && balance.toNumber();
   const [yourMergeFractals, setYourMergeFractals] = useState();
 
+  // At the moment tokens do not update over time. If they did, would want to refresh this cache after say 1 day.
   const getTokenURI = async (contractAddress, tokenId) => {
     let result = "";
     const localStorageKey = `MRGFRC_${contractAddress.slice(2, 8)}_id${tokenId}_tokenURI`;
