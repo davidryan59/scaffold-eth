@@ -44,3 +44,5 @@ yarn-error.log*
 networks.json
 temp*
 .eslintcache
+
+flat.txt
