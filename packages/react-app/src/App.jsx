@@ -63,7 +63,7 @@ const ipfs = ipfsAPI({ host: "ipfs.infura.io", port: "5001", protocol: "https" }
 // const networkName = 'TESTNET';
 
 const targetNetwork = NETWORKS.goerli;
-const networkName = 'Goerli_TEST_3';
+const networkName = 'Goerli (test 4)';
 
 // const targetNetwork = NETWORKS.mainnet;
 // const networkName = 'Ethereum';
