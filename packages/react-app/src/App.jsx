@@ -56,8 +56,10 @@ const ipfs = ipfsAPI({ host: "ipfs.infura.io", port: "5001", protocol: "https" }
     (and then use the `useExternalContractLoader()` hook!)
 */
 
-/// 📡 What chain are your contracts deployed to?
-const targetNetwork = NETWORKS.localhost; // <------- select your target frontend network (localhost, rinkeby, xdai, mainnet)
+// // 📡 What chain are your contracts deployed to?
+const targetNetwork = NETWORKS.localhost;
+// const targetNetwork = NETWORKS.goerli;
+// const targetNetwork = NETWORKS.mainnet;
 
 // 😬 Sorry for all the console logging
 const DEBUG = true;

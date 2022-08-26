@@ -21,10 +21,13 @@ const { isAddress, getAddress, formatUnits, parseUnits } = utils;
       plus it will use *.args for constructor args
 */
 
-//
-// Select the network you want to deploy to here:
-//
+
+// // Select the network you want to deploy to here:
 const defaultNetwork = "localhost";
+// const defaultNetwork = "goerli";
+// const defaultNetwork = "mainnet";
+
+console.log(`USING NETWORK "${defaultNetwork}"`);
 
 function mnemonic() {
   try {
