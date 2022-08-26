@@ -6,6 +6,10 @@ const { utils } = require("ethers");
 const R = require("ramda");
 
 
+const VERIFY_CONTRACTS = false; // localhost
+// const VERIFY_CONTRACTS = true;  // mainnet, goerli
+
+
 const main = async () => {
 
   console.log("\n\n 📡 Deploying...\n");
@@ -69,13 +73,17 @@ const main = async () => {
   */
 
   // If you want to verify your contract on etherscan
-  /*
-  console.log(chalk.blue('verifying on etherscan'))
-  await run("verify:verify", {
-    address: yourContract.address,
-    // constructorArguments: args // If your contract has constructor arguments, you can pass them as an array
-  })
-  */
+  if (VERIFY_CONTRACTS) {
+    try {
+      console.log(chalk.blue('Attempting verification on etherscan'))
+      await run("verify:verify", {
+        address: sharedFnsAndData.address,
+        // constructorArguments: args // If your contract has constructor arguments, you can pass them as an array
+      })      
+    } catch (e) {
+      console.log('There was an error with verification');
+    }
+  }
 
   console.log(
     " 💾  Artifacts (address, abi, and args) saved to: ",
