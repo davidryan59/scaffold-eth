@@ -27,9 +27,9 @@ import './FractalStrings.sol';
 
 contract MergeFractal is ERC721 {
 
-  // all ETH from NFT sales goes to donations.0xSplits.eth
+  // all ETH from NFT sales goes to https://app.0xsplits.xyz/accounts/0xF29Ff96aaEa6C9A1fBa851f74737f3c069d4f1a9/
   address payable public constant recipient =
-    payable(0xF8843981e7846945960f53243cA2Fd42a579f719); // donations.0xSplits.eth
+    payable(0xF29Ff96aaEa6C9A1fBa851f74737f3c069d4f1a9);
 
   // ----------------------------------------------
 
@@ -62,8 +62,8 @@ contract MergeFractal is ERC721 {
   // Random core dev and team to thank
   uint8 internal constant TEAM_ARRAY_LEN = 25;
   string[TEAM_ARRAY_LEN] internal teams = [
-    'Independent',
-    '0xSplits',
+    'Independent', // hidden
+    '0xSplits', // hidden
     'Akula',
     'EF DevOps',
     'EF Geth',
@@ -306,7 +306,7 @@ contract MergeFractal is ERC721 {
 
   function getCoreDevAndTeamText(uint256 id) internal view returns (string memory) {
     string memory teamText = string(abi.encodePacked(' / ', getTeamName(id)));
-    if (getTeamIdx(id) == 0) { // If team = Individual, don't display team
+    if (getTeamIdx(id) < 2) { // If team = Individual or 0xSplits, don't display team
       teamText = '';
     }
     return string(abi.encodePacked(
