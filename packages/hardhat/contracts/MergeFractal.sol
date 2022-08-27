@@ -37,14 +37,14 @@ contract MergeFractal is ERC721 {
   // string internal constant NETWORK = 'TESTNET';
   // uint256 internal constant INITIAL_PRICE = 2000000 * 1000000000; // 0.002 ETH
   // uint256 internal constant INCREMENT_PRICE = 1000000 * 1000000000; // 0.001 ETH
-  // uint256 internal constant INCREMENT_STEP = 2; // increments at 3, 5, 7
+  // uint256 internal constant INCREMENT_STEP = 2;
   // uint24 internal constant MINT_LIMIT = 5;
 
   // Goerli test deployment(s)
   string internal constant NETWORK = 'GOERLI TEST 4';
   uint256 internal constant INITIAL_PRICE = 2000000 * 1000000000; // 0.002 ETH
   uint256 internal constant INCREMENT_PRICE = 1000000 * 1000000000; // 0.001 ETH
-  uint256 internal constant INCREMENT_STEP = 4; // increments at 4, 7, 10...
+  uint256 internal constant INCREMENT_STEP = 4;
   uint24 internal constant MINT_LIMIT = 42;
 
   // // Mainnet deployment
