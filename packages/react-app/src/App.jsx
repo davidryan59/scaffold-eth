@@ -35,6 +35,8 @@ const networkName = 'Goerli (test 4)';
 // const networkName = 'Ethereum';
 
 
+const RECENT_DISPLAY_COUNT = 12;
+
 // 😬 Sorry for all the console logging
 const DEBUG = true;
 // const DEBUG = false;
@@ -164,16 +166,15 @@ function App() {
   }
 
   useEffect(() => {
-    
 
-    const TEMP_HARD_CODED_COUNT = 10;
-
-
-    const updateRecentMergeFractals = async () => {
+    const updateRecentFractals = async () => {
       try {
         const contractAddress = await readContracts.MergeFractal.address;
-        const mergeFractalUpdate = [];
-        for (let allTokensIdx = 0; allTokensIdx < TEMP_HARD_CODED_COUNT; allTokensIdx++) {
+        const mintCount = await readContracts.MergeFractal.mintCount();
+        const endIdx = mintCount - 1; // the indices are 0, 1 ... mintCount-1
+        const startIdx = Math.max(0, mintCount - RECENT_DISPLAY_COUNT);
+        const recentFractals = [];
+        for (let allTokensIdx = startIdx; allTokensIdx <= endIdx; allTokensIdx++) {
           try {
             console.log("Recent fractals: getting token index", allTokensIdx);
             const tokenId = await readContracts.MergeFractal.tokenByIndex(allTokensIdx);
@@ -183,7 +184,7 @@ function App() {
             try {
               const jsonManifest = JSON.parse(jsonManifestString);
               console.log("jsonManifest", jsonManifest);
-              mergeFractalUpdate.push({ id: tokenId, uri: tokenURI, owner: address, ...jsonManifest });
+              recentFractals.push({ id: tokenId, uri: tokenURI, owner: address, ...jsonManifest });
             } catch (e) {
               console.log(e);
             }
@@ -191,17 +192,17 @@ function App() {
             console.log(e);
           }
         }
-        setRecentMergeFractals(mergeFractalUpdate.reverse());
+        setRecentMergeFractals(recentFractals.reverse());
       } catch (e) {
         console.log(e);
       }
     };
-    updateRecentMergeFractals();
+    updateRecentFractals();
 
-    const updateYourMergeFractals = async () => {
+    const updateYourFractals = async () => {
       try {
         const contractAddress = await readContracts.MergeFractal.address;
-        const mergeFractalUpdate = [];
+        const yourFractals = [];
         for (let myTokenIdx = 0; myTokenIdx < balance; myTokenIdx++) {
           try {
             console.log("Your fractals: getting token index", myTokenIdx);
@@ -212,7 +213,7 @@ function App() {
             try {
               const jsonManifest = JSON.parse(jsonManifestString);
               console.log("jsonManifest", jsonManifest);
-              mergeFractalUpdate.push({ id: tokenId, uri: tokenURI, owner: address, ...jsonManifest });
+              yourFractals.push({ id: tokenId, uri: tokenURI, owner: address, ...jsonManifest });
             } catch (e) {
               console.log(e);
             }
@@ -220,12 +221,12 @@ function App() {
             console.log(e);
           }
         }
-        setYourMergeFractals(mergeFractalUpdate.reverse());
+        setYourMergeFractals(yourFractals.reverse());
       } catch (e) {
         console.log(e);
       }
     };
-    updateYourMergeFractals();
+    updateYourFractals();
 
   }, [address, yourBalance]);
 
@@ -431,7 +432,7 @@ function App() {
               }}
               to="/"
             >
-              Recent Merge Fractals
+              Last {RECENT_DISPLAY_COUNT} mints
             </Link>
           </Menu.Item>
           <Menu.Item key="/yourfractals">
@@ -441,7 +442,7 @@ function App() {
               }}
               to="/yourfractals"
             >
-              Your Merge Fractals
+              Your mints
             </Link>
           </Menu.Item>
           <Menu.Item key="/debug">
