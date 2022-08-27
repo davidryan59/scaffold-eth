@@ -305,6 +305,74 @@ function App() {
     </Button>
   );
 
+  const mintButtonDiv = () => (
+    <div style={{ maxWidth: 820, margin: "auto", marginTop: 32, paddingBottom: 32 }}>
+      {isSigner ? mintButton() : (<div><Button type={"primary"} onClick={loadWeb3Modal}>CONNECT WALLET</Button></div>)}
+    </div>
+  );
+
+  const renderFractalListItem = item => {
+    const id = item.id.toNumber();
+    return (
+      <List.Item key={"F" + id}>
+        <Card
+          title={
+            <div>
+              <span style={{ fontSize: 18, marginRight: 8 }}>{item.name}</span>
+            </div>
+          }
+        >
+          <a href={"https://opensea.io/assets/"+(readContracts && readContracts.MergeFractal && readContracts.MergeFractal.address)+"/"+item.id} target="_blank">
+          <img src={item.image} style={{background: '#292929'}}/>
+          </a>
+          <div>{item.description}</div>
+          <div>{item.attributes.reduce((acc, obj, idx) =>
+            acc + obj.trait_type + ': ' + obj.value + ((idx === item.attributes.length - 1) ? '' : ', '),
+            ''
+          )}</div>
+        </Card>
+
+        <div>
+          owner:{" "}
+          <Address
+            address={item.owner}
+            ensProvider={mainnetProvider}
+            blockExplorer={blockExplorer}
+            fontSize={16}
+          />
+          <AddressInput
+            ensProvider={mainnetProvider}
+            placeholder="transfer to address"
+            value={transferToAddresses[id]}
+            onChange={newValue => {
+              const update = {};
+              update[id] = newValue;
+              setTransferToAddresses({ ...transferToAddresses, ...update });
+            }}
+          />
+          <Button
+            onClick={() => {
+              console.log("writeContracts", writeContracts);
+              tx(writeContracts.MergeFractal.transferFrom(address, transferToAddresses[id], id));
+            }}
+          >
+            Transfer
+          </Button>
+        </div>
+      </List.Item>
+    );
+  };
+
+  const renderFractalList = fractalDataSource => (
+    <div style={{ width: 820, margin: "auto", paddingBottom: 256 }}>
+      <List
+        bordered
+        dataSource={fractalDataSource}
+        renderItem={renderFractalListItem}
+      />
+    </div>
+  );
+
   return (
     <div className="App">
       {/* ✏️ Edit the header and change the title to your project name */}
@@ -337,68 +405,8 @@ function App() {
 
         <Switch>
           <Route exact path="/">
-            <div style={{ maxWidth: 820, margin: "auto", marginTop: 32, paddingBottom: 32 }}>
-              {isSigner ? mintButton() : (<div><Button type={"primary"} onClick={loadWeb3Modal}>CONNECT WALLET</Button></div>)}
-            </div>
-
-            <div style={{ width: 820, margin: "auto", paddingBottom: 256 }}>
-              <List
-                bordered
-                dataSource={yourMergeFractals}
-                renderItem={item => {
-                  const id = item.id.toNumber();
-                  // console.log("IMAGE", item.image);
-                  return (
-                    <List.Item key={"F" + id}>
-                      <Card
-                        title={
-                          <div>
-                            <span style={{ fontSize: 18, marginRight: 8 }}>{item.name}</span>
-                          </div>
-                        }
-                      >
-                        <a href={"https://opensea.io/assets/"+(readContracts && readContracts.MergeFractal && readContracts.MergeFractal.address)+"/"+item.id} target="_blank">
-                        <img src={item.image} style={{background: '#292929'}}/>
-                        </a>
-                        <div>{item.description}</div>
-                        <div>{item.attributes.reduce((acc, obj, idx) =>
-                          acc + obj.trait_type + ': ' + obj.value + ((idx === item.attributes.length - 1) ? '' : ', '),
-                          ''
-                        )}</div>
-                      </Card>
-
-                      <div>
-                        owner:{" "}
-                        <Address
-                          address={item.owner}
-                          ensProvider={mainnetProvider}
-                          blockExplorer={blockExplorer}
-                          fontSize={16}
-                        />
-                        <AddressInput
-                          ensProvider={mainnetProvider}
-                          placeholder="transfer to address"
-                          value={transferToAddresses[id]}
-                          onChange={newValue => {
-                            const update = {};
-                            update[id] = newValue;
-                            setTransferToAddresses({ ...transferToAddresses, ...update });
-                          }}
-                        />
-                        <Button
-                          onClick={() => {
-                            console.log("writeContracts", writeContracts);
-                            tx(writeContracts.MergeFractal.transferFrom(address, transferToAddresses[id], id));
-                          }}
-                        >
-                          Transfer
-                        </Button>
-                      </div>
-                    </List.Item>
-                  );
-                }}
-              />
-            </div>
+            {mintButtonDiv()}
+            {renderFractalList(yourMergeFractals)}
           </Route>
           <Route path="/debug">
 
