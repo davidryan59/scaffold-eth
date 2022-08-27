@@ -253,7 +253,6 @@ function App() {
   }, [setRoute]);
 
   let faucetHint = "";
-  const faucetAvailable = localProvider && localProvider.connection && targetNetwork.name === "localhost";
 
   const [faucetClicked, setFaucetClicked] = useState(false);
   if (
@@ -283,6 +282,28 @@ function App() {
   }
 
   const [transferToAddresses, setTransferToAddresses] = useState({});
+
+  const mintButton = () => (
+    <Button type={"primary"} onClick={async ()=>{
+      const isMintingAllowed = await readContracts.MergeFractal.isMintingAllowed();
+      const priceRightNow = await readContracts.MergeFractal.getPriceNext();
+      if (isMintingAllowed) {
+        tx( writeContracts.MergeFractal.mintItem({ value: priceRightNow }) )
+      }
+    }}>
+      {
+        mintLimitCR === undefined
+        ? 'Loading...'
+        : isMintingAllowedCR
+        ? (
+            getPriceNextCR
+            ? `${networkName} Merge Fractal #${1 + mintCountCR} of ${mintLimitCR} – MINT for ${formatEther(getPriceNextCR)} Ξ`
+            : 'Awaiting price...'
+          )
+        : `All ${mintLimitCR} ${networkName} Merge Fractals have been minted already!`
+      }
+    </Button>
+  );
 
   return (
     <div className="App">
@@ -316,39 +337,8 @@ function App() {
 
         <Switch>
           <Route exact path="/">
-            {/*
-                🎛 this scaffolding is full of commonly used components
-                this <Contract/> component will automatically parse your ABI
-                and give you a form to interact with it locally
-            */}
-
             <div style={{ maxWidth: 820, margin: "auto", marginTop: 32, paddingBottom: 32 }}>
-              {isSigner ? (
-                <Button type={"primary"} onClick={async ()=>{
-                  const isMintingAllowed = await readContracts.MergeFractal.isMintingAllowed();
-                  const priceRightNow = await readContracts.MergeFractal.getPriceNext();
-                  if (isMintingAllowed) {
-                    tx( writeContracts.MergeFractal.mintItem({ value: priceRightNow }) )
-                  }
-                }}>
-                  {
-                    mintLimitCR === undefined
-                    ? 'Loading...'
-                    : isMintingAllowedCR
-                    ? (
-                        getPriceNextCR
-                        ? `${networkName} Merge Fractal #${1 + mintCountCR} of ${mintLimitCR} – MINT for ${formatEther(getPriceNextCR)} Ξ`
-                        : 'Awaiting price...'
-                      )
-                    : `All ${mintLimitCR} ${networkName} Merge Fractals have been minted already!`
-                  }
-                </Button>
-              ) : (
-                <div>
-                  <Button type={"primary"} onClick={loadWeb3Modal}>CONNECT WALLET</Button>
-                </div>
-              )}
-
+              {isSigner ? mintButton() : (<div><Button type={"primary"} onClick={loadWeb3Modal}>CONNECT WALLET</Button></div>)}
             </div>
 
             <div style={{ width: 820, margin: "auto", paddingBottom: 256 }}>
@@ -409,12 +399,6 @@ function App() {
                 }}
               />
             </div>
-            {(targetNetwork !== NETWORKS.localhost) ? '' : (
-              <div style={{ maxWidth: 820, margin: "auto", marginTop: 32, paddingBottom: 256 }}>
-                🛠 built with <a href="https://github.com/austintgriffith/scaffold-eth" target="_blank">🏗 scaffold-eth</a>
-                🍴 <a href="https://github.com/austintgriffith/scaffold-eth" target="_blank">Fork this repo</a> and build a cool SVG NFT!
-              </div>
-            )}
           </Route>
           <Route path="/debug">
 
@@ -465,48 +449,6 @@ function App() {
         />
         {faucetHint}
       </div>
-
-      {(targetNetwork !== NETWORKS.localhost) ? '' : (
-        <div style={{ position: "fixed", textAlign: "left", left: 0, bottom: 20, padding: 10 }}>
-          {/* 🗺 Extra UI like gas price, eth price, faucet, and support: */}
-          <Row align="middle" gutter={[4, 4]}>
-            <Col span={8}>
-              <Ramp price={price} address={address} networks={NETWORKS} />
-            </Col>
-  
-            <Col span={8} style={{ textAlign: "center", opacity: 0.8 }}>
-              <GasGauge gasPrice={gasPrice} />
-            </Col>
-            <Col span={8} style={{ textAlign: "center", opacity: 1 }}>
-              <Button
-                onClick={() => {
-                  window.open("https://t.me/joinchat/KByvmRe5wkR-8F_zz6AjpA");
-                }}
-                size="large"
-                shape="round"
-              >
-                <span style={{ marginRight: 8 }} role="img" aria-label="support">
-                  💬
-                </span>
-                Support
-              </Button>
-            </Col>
-          </Row>
-  
-          <Row align="middle" gutter={[4, 4]}>
-            <Col span={24}>
-              {
-                /*  if the local provider has a signer, let's show the faucet:  */
-                faucetAvailable ? (
-                  <Faucet localProvider={localProvider} price={price} ensProvider={mainnetProvider} />
-                ) : (
-                  ""
-                )
-              }
-            </Col>
-          </Row>
-        </div>
-      )}
     </div>
   );
 }
