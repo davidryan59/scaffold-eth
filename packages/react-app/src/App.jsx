@@ -365,15 +365,17 @@ function App() {
     );
   };
 
-  const renderFractalList = fractalDataSource => (
-    <div style={{ width: 820, margin: "auto", paddingBottom: 256 }}>
-      <List
-        bordered
-        dataSource={fractalDataSource}
-        renderItem={renderFractalListItem}
-      />
-    </div>
-  );
+  function FractalList({dataSource}) {
+    return (
+      <div style={{ width: 820, margin: "auto", paddingBottom: 256 }}>
+        <List
+          bordered
+          dataSource={dataSource}
+          renderItem={renderFractalListItem}
+        />
+      </div>
+    );
+  }
 
   return (
     <div className="App">
@@ -408,7 +410,7 @@ function App() {
         <Switch>
           <Route exact path="/">
             <MintButtonRow />
-            {renderFractalList(yourMergeFractals)}
+            <FractalList dataSource={yourMergeFractals} />
           </Route>
           <Route path="/debug">
 
