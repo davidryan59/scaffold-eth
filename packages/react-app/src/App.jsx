@@ -1,20 +1,15 @@
-import { LinkOutlined } from "@ant-design/icons";
 import { StaticJsonRpcProvider, Web3Provider } from "@ethersproject/providers";
 import { formatEther, parseEther } from "@ethersproject/units";
 import WalletConnectProvider from "@walletconnect/web3-provider";
-import { Alert, Button, Card, Col, Input, List, Menu, Row } from "antd";
+import { Alert, Button, Card, Col, List, Menu, Row } from "antd";
 import "antd/dist/antd.css";
 import { useUserAddress } from "eth-hooks";
-import { utils } from "ethers";
 import React, { useCallback, useEffect, useState } from "react";
-import ReactJson from "react-json-view";
 import { BrowserRouter, Link, Route, Switch } from "react-router-dom";
-import StackGrid from "react-stack-grid";
 import Web3Modal from "web3modal";
 import "./App.css";
-//import assets from "./assets.js";
 import { Account, Address, AddressInput, Contract, Faucet, GasGauge, Header, Ramp, ThemeSwitch } from "./components";
-import { DAI_ABI, DAI_ADDRESS, INFURA_ID, NETWORK, NETWORKS } from "./constants";
+import { INFURA_ID, NETWORK, NETWORKS } from "./constants";
 import { Transactor } from "./helpers";
 import {
   useBalance,
@@ -22,42 +17,13 @@ import {
   useContractReader,
   useEventListener,
   useExchangePrice,
-  useExternalContractLoader,
   useGasPrice,
   useOnBlock,
   useUserProvider,
 } from "./hooks";
-import { BlockPicker } from 'react-color'
-
-const { BufferList } = require("bl");
-// https://www.npmjs.com/package/ipfs-http-client
-const ipfsAPI = require("ipfs-http-client");
-
-const ipfs = ipfsAPI({ host: "ipfs.infura.io", port: "5001", protocol: "https" });
-
-//console.log("📦 Assets: ", assets);
-
-/*
-    Welcome to 🏗 scaffold-eth !
-
-    Code:
-    https://github.com/austintgriffith/scaffold-eth
-
-    Support:
-    https://t.me/joinchat/KByvmRe5wkR-8F_zz6AjpA
-    or DM @austingriffith on twitter or telegram
-
-    You should get your own Infura.io ID and put it in `constants.js`
-    (this is your connection to the main Ethereum network for ENS etc.)
 
 
-    🌏 EXTERNAL CONTRACTS:
-    You can also bring in contract artifacts in `constants.js`
-    (and then use the `useExternalContractLoader()` hook!)
-*/
-
-
-// // 📡 What chain are your contracts deployed to?
+// 📡 What chain are your contracts deployed to?
 
 // const targetNetwork = NETWORKS.localhost;
 // const networkName = 'TESTNET';
@@ -71,27 +37,10 @@ const networkName = 'Goerli (test 4)';
 
 // 😬 Sorry for all the console logging
 const DEBUG = true;
+// const DEBUG = false;
 
-// helper function to "Get" from IPFS
-// you usually go content.toString() after this...
-const getFromIPFS = async hashToGet => {
-  for await (const file of ipfs.get(hashToGet)) {
-    console.log(file.path);
-    if (!file.content) continue;
-    const content = new BufferList();
-    for await (const chunk of file.content) {
-      content.append(chunk);
-    }
-    console.log(content);
-    return content;
-  }
-};
 
 // 🛰 providers
-if (DEBUG) console.log("📡 Connecting to Mainnet Ethereum");
-// const mainnetProvider = getDefaultProvider("mainnet", { infura: INFURA_ID, etherscan: ETHERSCAN_KEY, quorum: 1 });
-// const mainnetProvider = new InfuraProvider("mainnet",INFURA_ID);
-//
 // attempt to connect to our own scaffold eth rpc and if that fails fall back to infura...
 // Using StaticJsonRpcProvider as the chainId won't change see https://github.com/ethers-io/ethers.js/issues/901
 const scaffoldEthProvider = new StaticJsonRpcProvider("https://rpc.scaffoldeth.io:48544");
@@ -124,7 +73,7 @@ const web3Modal = new Web3Modal({
   },
 });
 
-function App(props) {
+function App() {
   const mainnetProvider = scaffoldEthProvider && scaffoldEthProvider._network ? scaffoldEthProvider : mainnetInfura;
 
   const logoutOfWeb3Modal = async () => {
@@ -162,9 +111,6 @@ function App(props) {
   // 🏗 scaffold-eth is full of handy hooks like this one to get your balance:
   const yourLocalBalance = useBalance(localProvider, address);
 
-  // Just plug in different 🛰 providers to get your balance on different chains:
-  const yourMainnetBalance = useBalance(mainnetProvider, address);
-
   // Load in your local 📝 contract and read a value from it:
   const readContracts = useContractLoader(localProvider);
 
@@ -180,12 +126,6 @@ function App(props) {
   useOnBlock(mainnetProvider, () => {
     console.log(`⛓ A new mainnet block is here: ${mainnetProvider._lastBlockNumber}`);
   });
-
-  // Then read your DAI balance like:
-  /*
-  const myMainnetDAIBalance = useContractReader({ DAI: mainnetDAIContract }, "DAI", "balanceOf", [
-    "0x7349d6e55cB3F737249FbAa047C16b826559B127",
-  ]);*/
 
   // keep track of a variable from the contract in the local React state:
   const balance = useContractReader(readContracts, "MergeFractal", "balanceOf", [address]);
@@ -233,10 +173,6 @@ function App(props) {
           console.log("tokenId", tokenId);
           const tokenURI = await getTokenURI(contractAddress, tokenId);
           const jsonManifestString = atob(tokenURI.substring(29));
-          // console.log("jsonManifestString", jsonManifestString);
-          // const ipfsHash = tokenURI.replace("https://ipfs.io/ipfs/", "");
-          // console.log("ipfsHash", ipfsHash);
-          // const jsonManifestBuffer = await getFromIPFS(ipfsHash);
           try {
             const jsonManifest = JSON.parse(jsonManifestString);
             console.log("jsonManifest", jsonManifest);
@@ -253,45 +189,6 @@ function App(props) {
     };
     updateYourMergeFractals();
   }, [address, yourBalance]);
-
-  /*
-  const addressFromENS = useResolveName(mainnetProvider, "drcoder.eth");
-  console.log("🏷 Resolved drcoder.eth as:",addressFromENS)
-  */
-
-  //
-  // 🧫 DEBUG 👨🏻‍🔬
-  //
-  useEffect(() => {
-    if (
-      DEBUG &&
-      mainnetProvider &&
-      address &&
-      selectedChainId &&
-      yourLocalBalance &&
-      yourMainnetBalance &&
-      readContracts &&
-      writeContracts
-    ) {
-      console.log("_____________________________________ 🏗 scaffold-eth _____________________________________");
-      console.log("🌎 mainnetProvider", mainnetProvider);
-      console.log("🏠 localChainId", localChainId);
-      console.log("👩‍💼 selected address:", address);
-      console.log("🕵🏻‍♂️ selectedChainId:", selectedChainId);
-      console.log("💵 yourLocalBalance", yourLocalBalance ? formatEther(yourLocalBalance) : "...");
-      console.log("💵 yourMainnetBalance", yourMainnetBalance ? formatEther(yourMainnetBalance) : "...");
-      console.log("📝 readContracts", readContracts);
-      console.log("🔐 writeContracts", writeContracts);
-    }
-  }, [
-    mainnetProvider,
-    address,
-    selectedChainId,
-    yourLocalBalance,
-    yourMainnetBalance,
-    readContracts,
-    writeContracts,
-  ]);
 
   let networkDisplay = "";
   if (localChainId && selectedChainId && localChainId !== selectedChainId) {
@@ -385,38 +282,7 @@ function App(props) {
     );
   }
 
-  const [sending, setSending] = useState();
-  const [ipfsHash, setIpfsHash] = useState();
-  const [ipfsDownHash, setIpfsDownHash] = useState();
-
-  const [downloading, setDownloading] = useState();
-  const [ipfsContent, setIpfsContent] = useState();
-
   const [transferToAddresses, setTransferToAddresses] = useState({});
-
-  const [loadedAssets, setLoadedAssets] = useState();
-  /*useEffect(() => {
-    const updateYourMergeFractals = async () => {
-      const assetUpdate = [];
-      for (const a in assets) {
-        try {
-          const forSale = await readContracts.MergeFractal.forSale(utils.id(a));
-          let owner;
-          if (!forSale) {
-            const tokenId = await readContracts.MergeFractal.uriToTokenId(utils.id(a));
-            owner = await readContracts.MergeFractal.ownerOf(tokenId);
-          }
-          assetUpdate.push({ id: a, ...assets[a], forSale, owner });
-        } catch (e) {
-          console.log(e);
-        }
-      }
-      setLoadedAssets(assetUpdate);
-    };
-    if (readContracts && readContracts.MergeFractal) updateYourMergeFractals();
-  }, [assets, readContracts, transferEvents]);*/
-
-  const galleryList = [];
 
   return (
     <div className="App">
