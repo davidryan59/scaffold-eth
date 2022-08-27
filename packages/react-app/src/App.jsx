@@ -305,11 +305,13 @@ function App() {
     </Button>
   );
 
-  const mintButtonDiv = () => (
-    <div style={{ maxWidth: 820, margin: "auto", marginTop: 32, paddingBottom: 32 }}>
-      {isSigner ? mintButton() : (<div><Button type={"primary"} onClick={loadWeb3Modal}>CONNECT WALLET</Button></div>)}
-    </div>
-  );
+  function MintButtonRow() {
+    return (
+      <div style={{ maxWidth: 820, margin: "auto", marginTop: 32, paddingBottom: 32 }}>
+        {isSigner ? mintButton() : (<div><Button type={"primary"} onClick={loadWeb3Modal}>CONNECT WALLET</Button></div>)}
+      </div>
+    );
+  }
 
   const renderFractalListItem = item => {
     const id = item.id.toNumber();
@@ -405,7 +407,7 @@ function App() {
 
         <Switch>
           <Route exact path="/">
-            {mintButtonDiv()}
+            <MintButtonRow />
             {renderFractalList(yourMergeFractals)}
           </Route>
           <Route path="/debug">
