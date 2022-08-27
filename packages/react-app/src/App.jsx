@@ -392,7 +392,17 @@ function App() {
               }}
               to="/"
             >
-              Your {networkName} Merge Fractals
+              Recent Merge Fractals
+            </Link>
+          </Menu.Item>
+          <Menu.Item key="/yourfractals">
+            <Link
+              onClick={() => {
+                setRoute("/yourfractals");
+              }}
+              to="/yourfractals"
+            >
+              Your Merge Fractals
             </Link>
           </Menu.Item>
           <Menu.Item key="/debug">
@@ -409,6 +419,10 @@ function App() {
 
         <Switch>
           <Route exact path="/">
+            <MintButtonRow />
+            <FractalList dataSource={yourMergeFractals} />
+          </Route>
+          <Route exact path="/yourfractals">
             <MintButtonRow />
             <FractalList dataSource={yourMergeFractals} />
           </Route>
