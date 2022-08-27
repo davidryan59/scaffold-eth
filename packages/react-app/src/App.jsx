@@ -144,6 +144,7 @@ function App() {
   // 🧠 This effect will update yourMergeFractals by polling when your balance changes
   //
   const yourBalance = balance && balance.toNumber && balance.toNumber();
+  const [recentMergeFractals, setRecentMergeFractals] = useState();
   const [yourMergeFractals, setYourMergeFractals] = useState();
 
   // At the moment tokens do not update over time. If they did, would want to refresh this cache after say 1 day.
@@ -163,31 +164,69 @@ function App() {
   }
 
   useEffect(() => {
-    const updateYourMergeFractals = async () => {
-      const mergeFractalUpdate = [];
-      for (let tokenIndex = 0; tokenIndex < balance; tokenIndex++) {
-        try {
-          console.log("Getting token index", tokenIndex);
-          const contractAddress = await readContracts.MergeFractal.address;
-          const tokenId = await readContracts.MergeFractal.tokenOfOwnerByIndex(address, tokenIndex);
-          console.log("tokenId", tokenId);
-          const tokenURI = await getTokenURI(contractAddress, tokenId);
-          const jsonManifestString = atob(tokenURI.substring(29));
+    
+
+    const TEMP_HARD_CODED_COUNT = 10;
+
+
+    const updateRecentMergeFractals = async () => {
+      try {
+        const contractAddress = await readContracts.MergeFractal.address;
+        const mergeFractalUpdate = [];
+        for (let allTokensIdx = 0; allTokensIdx < TEMP_HARD_CODED_COUNT; allTokensIdx++) {
           try {
-            const jsonManifest = JSON.parse(jsonManifestString);
-            console.log("jsonManifest", jsonManifest);
-            mergeFractalUpdate.push({ id: tokenId, uri: tokenURI, owner: address, ...jsonManifest });
+            console.log("Recent fractals: getting token index", allTokensIdx);
+            const tokenId = await readContracts.MergeFractal.tokenByIndex(allTokensIdx);
+            console.log("tokenId", tokenId);
+            const tokenURI = await getTokenURI(contractAddress, tokenId);
+            const jsonManifestString = atob(tokenURI.substring(29));
+            try {
+              const jsonManifest = JSON.parse(jsonManifestString);
+              console.log("jsonManifest", jsonManifest);
+              mergeFractalUpdate.push({ id: tokenId, uri: tokenURI, owner: address, ...jsonManifest });
+            } catch (e) {
+              console.log(e);
+            }
           } catch (e) {
             console.log(e);
           }
-
-        } catch (e) {
-          console.log(e);
         }
+        setRecentMergeFractals(mergeFractalUpdate.reverse());
+      } catch (e) {
+        console.log(e);
       }
-      setYourMergeFractals(mergeFractalUpdate.reverse());
+    };
+    updateRecentMergeFractals();
+
+    const updateYourMergeFractals = async () => {
+      try {
+        const contractAddress = await readContracts.MergeFractal.address;
+        const mergeFractalUpdate = [];
+        for (let myTokenIdx = 0; myTokenIdx < balance; myTokenIdx++) {
+          try {
+            console.log("Your fractals: getting token index", myTokenIdx);
+            const tokenId = await readContracts.MergeFractal.tokenOfOwnerByIndex(address, myTokenIdx);
+            console.log("tokenId", tokenId);
+            const tokenURI = await getTokenURI(contractAddress, tokenId);
+            const jsonManifestString = atob(tokenURI.substring(29));
+            try {
+              const jsonManifest = JSON.parse(jsonManifestString);
+              console.log("jsonManifest", jsonManifest);
+              mergeFractalUpdate.push({ id: tokenId, uri: tokenURI, owner: address, ...jsonManifest });
+            } catch (e) {
+              console.log(e);
+            }
+          } catch (e) {
+            console.log(e);
+          }
+        }
+        setYourMergeFractals(mergeFractalUpdate.reverse());
+      } catch (e) {
+        console.log(e);
+      }
     };
     updateYourMergeFractals();
+
   }, [address, yourBalance]);
 
   let networkDisplay = "";
@@ -420,7 +459,7 @@ function App() {
         <Switch>
           <Route exact path="/">
             <MintButtonRow />
-            <FractalList dataSource={yourMergeFractals} />
+            <FractalList dataSource={recentMergeFractals} />
           </Route>
           <Route exact path="/yourfractals">
             <MintButtonRow />
