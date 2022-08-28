@@ -224,7 +224,7 @@ contract MergeFractal is ERC721 {
         name,
         '", "description":"',
         description,
-        '", "external_url":"https://burnyboys.com/token/',
+        '", "external_url":"https://ethereum-merge-fractals.surge.sh/',
         id.toString(),
         '", "attributes": ',
         getAllAttributes(id),
