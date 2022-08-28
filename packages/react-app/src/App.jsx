@@ -405,12 +405,13 @@ function App() {
     );
   };
 
-  function FractalList({dataSource}) {
+  function FractalList({maxCount, dataSource}) {
+    const filteredDataSource = dataSource ? dataSource.slice(0, maxCount || dataSource.length) : [];
     return (
       <div style={{ width: 820, margin: "auto", paddingBottom: 256 }}>
         <List
           bordered
-          dataSource={dataSource}
+          dataSource={filteredDataSource}
           renderItem={renderFractalListItem}
         />
       </div>
@@ -432,7 +433,17 @@ function App() {
               }}
               to="/"
             >
-              Last {RECENT_DISPLAY_COUNT} mints
+              Home
+            </Link>
+          </Menu.Item>
+          <Menu.Item key="/recent">
+            <Link
+              onClick={() => {
+                setRoute("/recent");
+              }}
+              to="/recent"
+            >
+              Recent mints
             </Link>
           </Menu.Item>
           <Menu.Item key="/yourfractals">
@@ -445,20 +456,32 @@ function App() {
               Your mints
             </Link>
           </Menu.Item>
-          <Menu.Item key="/debug">
+          <Menu.Item key="/rarity">
             <Link
               onClick={() => {
-                setRoute("/debug");
+                setRoute("/rarity");
               }}
-              to="/debug"
+              to="/rarity"
             >
-              Smart Contract
+              Rarity
             </Link>
           </Menu.Item>
         </Menu>
 
         <Switch>
           <Route exact path="/">
+            <div>
+              <div>
+                Welome to {networkDisplay} Merge Fractal NFTs!
+              </div>
+              <div>
+                All proceeds of NFT sales go to Protocol Guild to support Ethereum core development.
+              </div>
+            </div>
+            <div>Latest mint:</div>
+            <FractalList maxCount={1} dataSource={recentMergeFractals} />
+          </Route>
+          <Route exact path="/recent">
             <MintButtonRow />
             <FractalList dataSource={recentMergeFractals} />
           </Route>
@@ -466,33 +489,10 @@ function App() {
             <MintButtonRow />
             <FractalList dataSource={yourMergeFractals} />
           </Route>
-          <Route path="/debug">
-
-            <div style={{padding:32}}>
-              <Address value={readContracts && readContracts.MergeFractal && readContracts.MergeFractal.address} />
+          <Route exact path="/rarity">
+            <div>
+              Some NFTs are rarer than others... More info coming!
             </div>
-
-            <Contract
-              name="MergeFractal"
-              signer={userProvider.getSigner()}
-              provider={localProvider}
-              address={address}
-              blockExplorer={blockExplorer}
-            />
-            <Contract
-              name="FractalStrings"
-              signer={userProvider.getSigner()}
-              provider={localProvider}
-              address={address}
-              blockExplorer={blockExplorer}
-            />
-            <Contract
-              name="SharedFnsAndData"
-              signer={userProvider.getSigner()}
-              provider={localProvider}
-              address={address}
-              blockExplorer={blockExplorer}
-            />
           </Route>
         </Switch>
       </BrowserRouter>
