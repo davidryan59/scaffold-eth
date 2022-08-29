@@ -198,9 +198,10 @@ contract MergeFractal is ERC721 {
       getAttribute("Dev", getCoreDevName(id), ','),
       getAttribute("Team", getTeamName(id), ','),
       getAttribute("Subtitle", getSubtitle(gen), ','),
-      getAttribute("Duration", sfad.uint2str(fs.getAnimDurS(gen)), ','),
-      getAttribute("Dropouts", fs.getDropoutAttrTxt(gen), ','),
+      getAttribute("Style", fs.styleText(gen), ','),
+      getAttribute("Dropouts", sfad.uint2str(fs.countDropouts(gen)), ','),
       getAttribute("Twists", sfad.uint2str(fs.getTwistiness(gen)), ','),
+      getAttribute("Duration", sfad.uint2str(fs.getAnimDurS(gen)), ','),
       getAttribute("Monochrome", sfad.isMonochrome(gen) ? 'Yes' : 'No', ']')
     ));
   }

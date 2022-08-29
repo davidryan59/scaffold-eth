@@ -70,8 +70,8 @@ contract FractalStrings {
     return sfad.getUint8(gen, 60 + 2 * itemIdx, 2) == 0 ? 1 : 0;
   }
 
-  function getDropoutAttrTxt(uint256 gen) public view returns (string memory) {
-    return sfad.uint2str(countDropout01(gen, 0) + countDropout01(gen, 1) + countDropout01(gen, 2) + countDropout01(gen, 3));
+  function countDropouts(uint256 gen) public view returns (uint8) {
+    return countDropout01(gen, 0) + countDropout01(gen, 1) + countDropout01(gen, 2) + countDropout01(gen, 3);
   }
 
   function getDropoutAnimTxt(uint256 gen, uint8 itemIdx) internal view returns (string memory) {
@@ -84,20 +84,56 @@ contract FractalStrings {
     ));
   }
 
-  // Returns 0 or 1
-  // 1 will introduce a scale of -0.5 in one direction (a reflection)
-  function getReflectionNum(uint256 gen, uint8 itemIdx) internal view returns (uint8) {
-    return sfad.getUint8(gen, 72 + itemIdx, 1);
+  // 16 in 128 of rotation style. 8 in 128 of reflection. Otherwise freestyle.
+  function styleText(uint256 gen) public view returns (string memory) {
+    if (countDropouts(gen) == 0) return 'Solid';
+    uint8 style = styleNumber(gen);
+    if (style < 16) return 'Spinner';
+    if (style < 24) return 'Reflective';
+    return 'Freestyle';
+  }
+
+  // If there are dropouts, 16 in 128 of rotation/spinner, 8 in 128 of reflective style
+  function styleNumber(uint256 gen) internal view returns (uint8) {
+    return sfad.getUint8(gen, 182, 7);  // free
+  }
+
+  // Returns 0 or 1. 0 scales by 0.5, 1 scales by -0.5
+  uint8[4] internal xc = [0, 0, 1, 1];
+  uint8[4] internal yc = [0, 1, 1, 0];
+  function getReflectionNum(uint256 gen, uint8 itemIdx, uint8 coordIdx) internal view returns (uint8) {
+    uint8 style = styleNumber(gen);
+    if (style < 16) return 0;
+    if (style < 24) {
+      uint8 style2 = style - 16;
+      uint8 x1 = style2 % 2;
+      uint8 x2 = (style2 >> 1) % 2;
+      uint8 y1 = (style2 >> 2) % 2;
+      uint8 y2 = (style2 >> 3) % 2;
+      if (coordIdx == 0) {
+        return (x1 + x2 * xc[itemIdx]) % 2;
+      } else {
+        return (y1 + y2 * yc[itemIdx]) * 2;
+      }
+    }
+    return sfad.getUint8(gen, 190 + coordIdx + 2 * itemIdx, 1);
   }
 
   // Returns 0, 1, 2, or 3
   // Multiply by 90 to get a rotation angle
   function getRotationNum(uint256 gen, uint8 itemIdx) internal view returns (uint8) {
+    uint8 style = styleNumber(gen);
+    if (style < 16) {
+      uint8 r1 = style % 4; // 0..3
+      uint8 r2 = style >> 2; // different 0..3
+      return (r1 + r2 * itemIdx) % 4;
+    }
+    if (style < 24) return 0;
     return sfad.getUint8(gen, 48 + 2 * itemIdx, 2);
   }
 
   string[4] internal xs = ['-0.25','-0.25',' 0.25',' 0.25'];
-  string[4] internal ys = ['-0.25',' 0.25','-0.25',' 0.25'];
+  string[4] internal ys = ['-0.25',' 0.25',' 0.25','-0.25'];
   function getIterationNItem(uint256 gen, uint8 iteration, uint8 sideIdx, uint8 itemIdx) internal view returns (string memory) {
     return string(abi.encodePacked(
       '<g>',
@@ -112,8 +148,10 @@ contract FractalStrings {
       ys[itemIdx],
       ') rotate(',
       sfad.uint2str(90 * uint16(getRotationNum(gen, itemIdx))),
-      ') scale(0.5 ',
-      getReflectionNum(gen, itemIdx) == 1 ? '-0.5' : '0.5',
+      ') scale(',
+      getReflectionNum(gen, itemIdx, 0) == 1 ? '-0.5' : '0.5',
+      ' ',
+      getReflectionNum(gen, itemIdx, 1) == 1 ? '-0.5' : '0.5',
       ')"/></g>'
     ));
   }
