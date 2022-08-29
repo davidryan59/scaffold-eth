@@ -1,7 +1,7 @@
 import { StaticJsonRpcProvider, Web3Provider } from "@ethersproject/providers";
 import { formatEther, parseEther } from "@ethersproject/units";
 import WalletConnectProvider from "@walletconnect/web3-provider";
-import { Alert, Button, Card, Col, List, Menu, Row } from "antd";
+import { Alert, Button, Card, Col, List, Menu, Row, Divider, Space } from "antd";
 import "antd/dist/antd.css";
 import { useUserAddress } from "eth-hooks";
 import React, { useCallback, useEffect, useState } from "react";
@@ -480,56 +480,55 @@ function App() {
 
         <Switch>
           <Route exact path="/">
-            <p></p>
-            <div>
-              <p><b>Welcome to {networkName} Merge Fractal NFTs!</b></p>
+            <Card title={`Welcome to ${networkName} Merge Fractal NFTs!`}>
               <p>To celebrate the Ethereum Merge in September 2022, these Merge Fractals are 5875 unique pieces of fully on-chain digital generative art.<br />The animated SVG images are generated entirely within the smart contract, without using external data sources such as IPFS.</p>
               <p>All proceeds of NFT sales go to the Protocol Guild to support Ethereum core development.<br />NFT attributes are randomly generated, some are a lot <a href="/rarity">rarer</a> than others.</p>
+              <Divider />
               <p>Latest mint:</p>
-            </div>
-            <FractalList maxCount={1} dataSource={recentMergeFractals} />
+              <FractalList maxCount={1} dataSource={recentMergeFractals} />
+            </Card>
           </Route>
           <Route exact path="/recent">
-            <p></p>
-            <FractalList dataSource={recentMergeFractals} />
+            <Card>
+              <p>Merge Fractals minted recently</p>
+              <FractalList dataSource={recentMergeFractals} />
+            </Card>
           </Route>
           <Route exact path="/yourfractals">
-            <p></p>
-            <FractalList dataSource={yourMergeFractals} />
+            <Card>
+              <p>Merge Fractals that you have minted</p>
+              <FractalList dataSource={yourMergeFractals} />
+            </Card>
           </Route>
           <Route exact path="/rarity">
-            <p></p>
-            <div>
-              <p><b>Rarities for {networkName} Merge Fractal NFTs</b></p>
-              <ul>
-                <li>Developer Name: there are 120 names, each is approximately equally likely.</li>
-                <li>Team depends on the dev. Teams are rarer if they have fewer devs.</li>
-                <li>Developers and Teams were obtained from <a href="https://protocol-guild.readthedocs.io/en/latest/9-membership.html">this list</a> in Aug 2022.</li>
-                <li>Subtitles: some are common, and a few are unusual.</li>
-                <li>Style: Solid and Freestyle are common. Spinner is 8.3%, Reflective is 4.1%.</li>
-                <li>Dropouts: probability of 0, 1, 2, 3, 4 dropouts is 31%, 42%, 21%, 4.6%, 0.3%.</li>
-                <li>Twists: between 0 and 6 twists, 0 is the rarest.</li>
-                <li>Duration: between 3 and 48 seconds – middle values (24s, 27s) common, extreme values rare</li>
-                <li>Monochrome: there is 6.2% chance of monochrome, so it is quite rare.</li>  
-                <li>Colours: all colours are equally likely.</li>  
-              </ul>
+            <Card title={`Rarities for ${networkName} Merge Fractal NFTs`}>
+              <List>
+                <List.Item>Developer Name: there are 120 names, each is approximately equally likely.</List.Item>
+                <List.Item>Team depends on the dev. Teams are rarer if they have fewer devs.</List.Item>
+                <List.Item>Developers and Teams were obtained from <a href="https://protocol-guild.readthedocs.io/en/latest/9-membership.html">this list</a> in Aug 2022.</List.Item>
+                <List.Item>Subtitles: some are common, and a few are unusual.</List.Item>
+                <List.Item>Style: Solid and Freestyle are common. Spinner is 8.3%, Reflective is 4.1%.</List.Item>
+                <List.Item>Dropouts: probability of 0, 1, 2, 3, 4 dropouts is 31%, 42%, 21%, 4.6%, 0.3%.</List.Item>
+                <List.Item>Twists: between 0 and 6 twists, 0 is the rarest.</List.Item>
+                <List.Item>Duration: between 3 and 48 seconds – middle values (24s, 27s) common, extreme values rare</List.Item>
+                <List.Item>Monochrome: there is 6.2% chance of monochrome, so it is quite rare.</List.Item>  
+                <List.Item>Colours: all colours are equally likely.</List.Item>  
+              </List>
               <p>Happy minting!</p>
-            </div>
+            </Card>
           </Route>
           <Route exact path="/about">
-            <p></p>
-            <div>
-              <p><b>About {networkName} Merge Fractal NFTs</b></p>
+            <Card title={`About ${networkName} Merge Fractal NFTs`}>
               <p>Where does the money go? 100% to Protocol Guild to fund core devs!<br />Here is their <a href={"https://etherscan.io/address/0xF29Ff96aaEa6C9A1fBa851f74737f3c069d4f1a9"} target="_blank">Ethereum address</a> on Etherscan, mint and see number go up.</p>
               <p>Ethereum mainnet contract for NFT: Awaiting Deployment</p>
               <p>Source code for NFT: <a href={"https://github.com/davidryan59/scaffold-eth/tree/merge-fractal"} target="_blank">GitHub repository for Merge Fractal</a></p>
-              <p style={{color: 'rgba(128,128,128,0.3)'}}>-----------------------------------------------------------------</p>
+              <Divider />
               <p>NFT author: David Ryan</p>
               <p>Twitter: <a href={"https://twitter.com/davidryan59"} target="_blank">@davidryan59</a></p>
               <p>Artist page on Nifty Ink: <a href={"https://nifty.ink/artist/0xbfac61d1e22efa9d37fc3ff36b9dff9655131f52"} target="_blank">niftymaestro.eth</a></p>
-              <p style={{color: 'rgba(128,128,128,0.3)'}}>-----------------------------------------------------------------</p>
+              <Divider />
               <p>Shout out to Stateful Works who continually support the Protocol Guild and Ethereum core development,<br/>and to Austin Griffith and the Buidl Guidl for the excellent Scaffold Eth framework that this project is built on.</p>
-            </div>
+            </Card>
           </Route>
         </Switch>
       </BrowserRouter>
