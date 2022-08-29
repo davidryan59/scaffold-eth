@@ -423,7 +423,7 @@ function App() {
       {/* ✏️ Edit the header and change the title to your project name */}
       <Header networkName={networkName} />
       {networkDisplay}
-
+      <MintButtonRow />
       <BrowserRouter>
         <Menu style={{ textAlign: "center" }} selectedKeys={[route]} mode="horizontal">
           <Menu.Item key="/">
@@ -480,39 +480,42 @@ function App() {
 
         <Switch>
           <Route exact path="/">
-            <MintButtonRow />
+            <p></p>
             <div>
-              <p>
-                Welome to {networkDisplay} Merge Fractal NFTs!
-              </p>
-              <p>
-                All proceeds of NFT sales go to Protocol Guild to support Ethereum core development.
-              </p>
+              <p><b>Welcome to {networkName} Merge Fractal NFTs!</b></p>
+              <p>To celebrate the Ethereum Merge in September 2022, these Merge Fractals are 5875 unique pieces of fully on-chain digital generative art.<br />The animated SVG images are generated entirely within the smart contract, without using external data sources such as IPFS.</p>
+              <p>All proceeds of NFT sales go to the Protocol Guild to support Ethereum core development.<br />NFT attributes are randomly generated, some are a lot <a href="/rarity">rarer</a> than others.</p>
+              <p>Latest mint:</p>
             </div>
-            <div>Latest mint:</div>
             <FractalList maxCount={1} dataSource={recentMergeFractals} />
           </Route>
           <Route exact path="/recent">
-            <MintButtonRow />
+            <p></p>
             <FractalList dataSource={recentMergeFractals} />
           </Route>
           <Route exact path="/yourfractals">
-            <MintButtonRow />
+            <p></p>
             <FractalList dataSource={yourMergeFractals} />
           </Route>
           <Route exact path="/rarity">
-            <MintButtonRow />
+            <p></p>
             <div>
               <p>Some NFTs are rarer than others... More info coming!</p>
             </div>
           </Route>
           <Route exact path="/about">
-            <MintButtonRow />
+            <p></p>
             <div>
-              <p>Author: David Ryan</p>
-              <p>Ethereum mainnet contract: Awaiting Deployment</p>
+              <p><b>About {networkName} Merge Fractal NFTs</b></p>
+              <p>Where does the money go? 100% to Protocol Guild to fund core devs!<br />Here is their <a href={"https://etherscan.io/address/0xF29Ff96aaEa6C9A1fBa851f74737f3c069d4f1a9"} target="_blank">Ethereum address</a> on Etherscan, mint and see number go up.</p>
+              <p>Ethereum mainnet contract for NFT: Awaiting Deployment</p>
+              <p>Source code for NFT: <a href={"https://github.com/davidryan59/scaffold-eth/tree/merge-fractal"} target="_blank">GitHub repository for Merge Fractal</a></p>
+              <p style={{color: 'rgba(128,128,128,0.3)'}}>-----------------------------------------------------------------</p>
+              <p>NFT author: David Ryan</p>
               <p>Twitter: <a href={"https://twitter.com/davidryan59"} target="_blank">@davidryan59</a></p>
-              <p>GitHub: <a href={"https://github.com/davidryan59/scaffold-eth/tree/merge-fractal"} target="_blank">Merge Fractal repo</a></p>
+              <p>Artist page on Nifty Ink: <a href={"https://nifty.ink/artist/0xbfac61d1e22efa9d37fc3ff36b9dff9655131f52"} target="_blank">niftymaestro.eth</a></p>
+              <p style={{color: 'rgba(128,128,128,0.3)'}}>-----------------------------------------------------------------</p>
+              <p>Shout out to Stateful Works who continually support the Protocol Guild and Ethereum core development,<br/>and to Austin Griffith and the Buidl Guidl for the excellent Scaffold Eth framework that this project is built on.</p>
             </div>
           </Route>
         </Switch>
