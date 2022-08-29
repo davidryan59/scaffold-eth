@@ -365,7 +365,7 @@ function App() {
           }
         >
           <a href={"https://opensea.io/assets/"+(readContracts && readContracts.MergeFractal && readContracts.MergeFractal.address)+"/"+item.id} target="_blank">
-          <img src={item.image} style={{background: '#292929'}}/>
+          <img src={item.image} style={{background: 'rgba(128,128,128,0.1)'}}/>
           </a>
           <div>{item.description}</div>
           <div>{item.attributes.reduce((acc, obj, idx) =>
