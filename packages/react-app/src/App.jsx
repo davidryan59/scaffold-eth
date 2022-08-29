@@ -500,7 +500,20 @@ function App() {
           <Route exact path="/rarity">
             <p></p>
             <div>
-              <p>Some NFTs are rarer than others... More info coming!</p>
+              <p><b>Rarities for {networkName} Merge Fractal NFTs</b></p>
+              <ul>
+                <li>Developer Name: there are 120 names, each is approximately equally likely.</li>
+                <li>Team depends on the dev. Teams are rarer if they have fewer devs.</li>
+                <li>Developers and Teams were obtained from <a href="https://protocol-guild.readthedocs.io/en/latest/9-membership.html">this list</a> in Aug 2022.</li>
+                <li>Subtitles: some are common, and a few are unusual.</li>
+                <li>Style: Solid and Freestyle are common. Spinner is 8.3%, Reflective is 4.1%.</li>
+                <li>Dropouts: probability of 0, 1, 2, 3, 4 dropouts is 31%, 42%, 21%, 4.6%, 0.3%.</li>
+                <li>Twists: between 0 and 6 twists, 0 is the rarest.</li>
+                <li>Duration: between 3 and 48 seconds – middle values (24s, 27s) common, extreme values rare</li>
+                <li>Monochrome: there is 6.2% chance of monochrome, so it is quite rare.</li>  
+                <li>Colours: all colours are equally likely.</li>  
+              </ul>
+              <p>Happy minting!</p>
             </div>
           </Route>
           <Route exact path="/about">
