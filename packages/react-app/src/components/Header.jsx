@@ -7,7 +7,7 @@ export default function Header({networkName}) {
   return (
     <a href="/">
       <PageHeader
-        title={`🟢 ${networkName} Merge Fractals`}
+        title={`♦ ${networkName} Merge Fractals`}
         subTitle=""
         style={{ cursor: "pointer" }}
       />
