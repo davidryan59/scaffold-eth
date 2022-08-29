@@ -23,8 +23,8 @@ const { isAddress, getAddress, formatUnits, parseUnits } = utils;
 
 
 // // Select the network you want to deploy to here:
-// const defaultNetwork = "localhost";
-const defaultNetwork = "goerli";
+const defaultNetwork = "localhost";
+// const defaultNetwork = "goerli";
 // const defaultNetwork = "mainnet";
 
 console.log(`USING NETWORK "${defaultNetwork}"`);
