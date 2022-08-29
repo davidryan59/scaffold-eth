@@ -65,9 +65,9 @@ contract FractalStrings {
   }
 
   // There are 4 potential dropouts, each has probability 2^(-DROPOUT_BITS)
-  // uint8 internal constant DROPOUT_BITS = 3; // Prob of 0, 1, 2, 3, 4 dropouts is 59%, 33%, 7%, 0.69%, 0.024%
+  // uint8 internal constant DROPOUT_BITS = 2; // Prob of 0, 1, 2, 3, 4 dropouts is 31%, 42%, 21%, 4.6%, 0.3%
   function countDropout01(uint256 gen, uint8 itemIdx) public view returns (uint8 result) {
-    return sfad.getUint8(gen, 60 + 3 * itemIdx, 3) == 0 ? 1 : 0;
+    return sfad.getUint8(gen, 60 + 2 * itemIdx, 2) == 0 ? 1 : 0;
   }
 
   function getDropoutAttrTxt(uint256 gen) public view returns (string memory) {
