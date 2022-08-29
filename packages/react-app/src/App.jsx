@@ -466,17 +466,28 @@ function App() {
               Rarity
             </Link>
           </Menu.Item>
+          <Menu.Item key="/about">
+            <Link
+              onClick={() => {
+                setRoute("/about");
+              }}
+              to="/about"
+            >
+              About
+            </Link>
+          </Menu.Item>
         </Menu>
 
         <Switch>
           <Route exact path="/">
+            <MintButtonRow />
             <div>
-              <div>
+              <p>
                 Welome to {networkDisplay} Merge Fractal NFTs!
-              </div>
-              <div>
+              </p>
+              <p>
                 All proceeds of NFT sales go to Protocol Guild to support Ethereum core development.
-              </div>
+              </p>
             </div>
             <div>Latest mint:</div>
             <FractalList maxCount={1} dataSource={recentMergeFractals} />
@@ -490,8 +501,18 @@ function App() {
             <FractalList dataSource={yourMergeFractals} />
           </Route>
           <Route exact path="/rarity">
+            <MintButtonRow />
             <div>
-              Some NFTs are rarer than others... More info coming!
+              <p>Some NFTs are rarer than others... More info coming!</p>
+            </div>
+          </Route>
+          <Route exact path="/about">
+            <MintButtonRow />
+            <div>
+              <p>Author: David Ryan</p>
+              <p>Ethereum mainnet contract: Awaiting Deployment</p>
+              <p>Twitter: <a href={"https://twitter.com/davidryan59"} target="_blank">@davidryan59</a></p>
+              <p>GitHub: <a href={"https://github.com/davidryan59/scaffold-eth/tree/merge-fractal"} target="_blank">Merge Fractal repo</a></p>
             </div>
           </Route>
         </Switch>
