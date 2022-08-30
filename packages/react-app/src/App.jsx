@@ -1,14 +1,14 @@
 import { StaticJsonRpcProvider, Web3Provider } from "@ethersproject/providers";
 import { formatEther, parseEther } from "@ethersproject/units";
 import WalletConnectProvider from "@walletconnect/web3-provider";
-import { Alert, Button, Card, Col, List, Menu, Row, Divider, Space } from "antd";
+import { Alert, Button, Card, Table, List, Menu, Divider, Typography } from "antd";
 import "antd/dist/antd.css";
 import { useUserAddress } from "eth-hooks";
 import React, { useCallback, useEffect, useState } from "react";
 import { BrowserRouter, Link, Route, Switch } from "react-router-dom";
 import Web3Modal from "web3modal";
 import "./App.css";
-import { Account, Address, AddressInput, Contract, Faucet, GasGauge, Header, Ramp, ThemeSwitch } from "./components";
+import { Account, Address, AddressInput, Header, ThemeSwitch } from "./components";
 import { INFURA_ID, NETWORK, NETWORKS } from "./constants";
 import { Transactor } from "./helpers";
 import {
@@ -21,7 +21,7 @@ import {
   useOnBlock,
   useUserProvider,
 } from "./hooks";
-
+const { Title, Paragraph, Text } = Typography;
 
 // 📡 What chain are your contracts deployed to?
 
@@ -418,6 +418,31 @@ function App() {
     );
   }
 
+  const raritiesDataSource = [
+    {key: 1, rarity: 'Developer Name', info: 'there are 120 names, each is approximately equally likely.'},
+    {key: 2, rarity: 'Team', info: `depends on the dev. Teams are rarer if they have fewer devs.`},
+    {key: 3, rarity: 'Subtitles', info: 'some are common, and a few are unusual.'},
+    {key: 4, rarity: 'Style', info: 'Solid and Freestyle are common. Spinner is 8.3%, Reflective is 4.1%.'},
+    {key: 5, rarity: 'Dropouts', info: 'probability of 0, 1, 2, 3, 4 dropouts is 31%, 42%, 21%, 4.6%, 0.3%.'},
+    {key: 6, rarity: 'Twists', info: 'between 0 and 6 twists, 0 is the rarest.'},
+    {key: 7, rarity: 'Duration', info: 'between 3 and 48 seconds – middle values (24s, 27s) common, extreme values rare'},
+    {key: 8, rarity: 'Monochrome', info: 'there is 6.2% chance of monochrome, so it is quite rare.'},
+    {key: 9, rarity: 'Colours', info: 'all colours are equally likely.'},
+  ];
+
+  const raritiesColumns = [
+    {
+      title: 'Rarity',
+      dataIndex: 'rarity',
+      key: 'rarity',
+    },
+    {
+      title: 'Information',
+      dataIndex: 'info',
+      key: 'info',
+    },
+  ];
+
   return (
     <div className="App">
       {/* ✏️ Edit the header and change the title to your project name */}
@@ -481,53 +506,45 @@ function App() {
         <Switch>
           <Route exact path="/">
             <Card title={`Welcome to ${networkName} Merge Fractal NFTs!`}>
-              <p>To celebrate the Ethereum Merge in September 2022, these Merge Fractals are 5875 unique pieces of fully on-chain digital generative art.<br />The animated SVG images are generated entirely within the smart contract, without using external data sources such as IPFS.</p>
-              <p>All proceeds of NFT sales go to the Protocol Guild to support Ethereum core development.<br />NFT attributes are randomly generated, some are a lot <a href="/rarity">rarer</a> than others.</p>
+              <Paragraph>To celebrate the Ethereum Merge in September 2022, these Merge Fractals are 5875 unique pieces of fully on-chain digital generative art.<br />The animated SVG images are generated entirely within the smart contract, without using external data sources such as IPFS.</Paragraph>
+              <Paragraph>All proceeds of NFT sales go to the Protocol Guild to support Ethereum core development.<br />NFT attributes are randomly generated, some are a lot <a href="/rarity">rarer</a> than others.</Paragraph>
               <Divider />
-              <p>Latest mint:</p>
+              <Paragraph>Latest mint:</Paragraph>
               <FractalList maxCount={1} dataSource={recentMergeFractals} />
             </Card>
           </Route>
           <Route exact path="/recent">
             <Card>
-              <p>Merge Fractals minted recently</p>
+              <Paragraph>Merge Fractals minted recently</Paragraph>
               <FractalList dataSource={recentMergeFractals} />
             </Card>
           </Route>
           <Route exact path="/yourfractals">
             <Card>
-              <p>Merge Fractals that you have minted</p>
+              <Paragraph>Merge Fractals that you have minted</Paragraph>
               <FractalList dataSource={yourMergeFractals} />
             </Card>
           </Route>
           <Route exact path="/rarity">
             <Card title={`Rarities for ${networkName} Merge Fractal NFTs`}>
-              <List>
-                <List.Item>Developer Name: there are 120 names, each is approximately equally likely.</List.Item>
-                <List.Item>Team depends on the dev. Teams are rarer if they have fewer devs.</List.Item>
-                <List.Item>Developers and Teams were obtained from <a href="https://protocol-guild.readthedocs.io/en/latest/9-membership.html">this list</a> in Aug 2022.</List.Item>
-                <List.Item>Subtitles: some are common, and a few are unusual.</List.Item>
-                <List.Item>Style: Solid and Freestyle are common. Spinner is 8.3%, Reflective is 4.1%.</List.Item>
-                <List.Item>Dropouts: probability of 0, 1, 2, 3, 4 dropouts is 31%, 42%, 21%, 4.6%, 0.3%.</List.Item>
-                <List.Item>Twists: between 0 and 6 twists, 0 is the rarest.</List.Item>
-                <List.Item>Duration: between 3 and 48 seconds – middle values (24s, 27s) common, extreme values rare</List.Item>
-                <List.Item>Monochrome: there is 6.2% chance of monochrome, so it is quite rare.</List.Item>  
-                <List.Item>Colours: all colours are equally likely.</List.Item>  
-              </List>
-              <p>Happy minting!</p>
+              <Table dataSource={raritiesDataSource} columns={raritiesColumns} />
+              <Typography>
+                <Paragraph>Developers and Teams were obtained from the {(<a href="https://protocol-guild.readthedocs.io/en/latest/9-membership.html">Protocol Guild list</a>)} in Aug 2022.</Paragraph>
+                <Paragraph>Happy minting!</Paragraph>
+              </Typography>
             </Card>
           </Route>
           <Route exact path="/about">
             <Card title={`About ${networkName} Merge Fractal NFTs`}>
-              <p>Where does the money go? 100% to Protocol Guild to fund core devs!<br />Here is their <a href={"https://etherscan.io/address/0xF29Ff96aaEa6C9A1fBa851f74737f3c069d4f1a9"} target="_blank">Ethereum address</a> on Etherscan, mint and see number go up.</p>
-              <p>Ethereum mainnet contract for NFT: Awaiting Deployment</p>
-              <p>Source code for NFT: <a href={"https://github.com/davidryan59/scaffold-eth/tree/merge-fractal"} target="_blank">GitHub repository for Merge Fractal</a></p>
+              <Paragraph>Where does the money go? 100% to Protocol Guild to fund core devs!<br />Here is their <a href={"https://etherscan.io/address/0xF29Ff96aaEa6C9A1fBa851f74737f3c069d4f1a9"} target="_blank">Ethereum address</a> on Etherscan, mint and see number go up.</Paragraph>
+              <Paragraph>Ethereum mainnet contract for NFT: Awaiting Deployment</Paragraph>
+              <Paragraph>Source code for NFT: <a href={"https://github.com/davidryan59/scaffold-eth/tree/merge-fractal"} target="_blank">GitHub repository for Merge Fractal</a></Paragraph>
               <Divider />
-              <p>NFT author: David Ryan</p>
-              <p>Twitter: <a href={"https://twitter.com/davidryan59"} target="_blank">@davidryan59</a></p>
-              <p>Artist page on Nifty Ink: <a href={"https://nifty.ink/artist/0xbfac61d1e22efa9d37fc3ff36b9dff9655131f52"} target="_blank">niftymaestro.eth</a></p>
+              <Paragraph>NFT author: David Ryan</Paragraph>
+              <Paragraph>Twitter: <a href={"https://twitter.com/davidryan59"} target="_blank">@davidryan59</a></Paragraph>
+              <Paragraph>Artist page on Nifty Ink: <a href={"https://nifty.ink/artist/0xbfac61d1e22efa9d37fc3ff36b9dff9655131f52"} target="_blank">niftymaestro.eth</a></Paragraph>
               <Divider />
-              <p>Shout out to Stateful Works who continually support the Protocol Guild and Ethereum core development,<br/>and to Austin Griffith and the Buidl Guidl for the excellent Scaffold Eth framework that this project is built on.</p>
+              <Paragraph>Shout out to Stateful Works who continually support the Protocol Guild and Ethereum core development,<br/>and to Austin Griffith and the Buidl Guidl for the excellent Scaffold Eth framework that this project is built on.</Paragraph>
             </Card>
           </Route>
         </Switch>
