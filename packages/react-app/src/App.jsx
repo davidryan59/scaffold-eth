@@ -507,7 +507,7 @@ function App() {
           <Route exact path="/">
             <Card title={`Welcome to ${networkName} Merge Fractal NFTs!`}>
               <Paragraph>To celebrate the Ethereum Merge in September 2022, these Merge Fractals are 5875 unique pieces of fully on-chain digital generative art.<br />The animated SVG images are generated entirely within the smart contract, without using external data sources such as IPFS.</Paragraph>
-              <Paragraph>All proceeds of NFT sales go to the Protocol Guild to support Ethereum core development.<br />NFT attributes are randomly generated, some are a lot <a href="/rarity">rarer</a> than others.</Paragraph>
+              <Paragraph>All proceeds of NFT sales go to the Protocol Guild to support Ethereum core development.<br />Minting starts at 0.001 Ξ, increasing by 0.0002 Ξ every 50 mints, so total raise is 75 Ξ.<br />NFT attributes are randomly generated, some are <a href="/rarity">rarer</a> than others.</Paragraph>
               <Divider />
               <Paragraph>Latest mint:</Paragraph>
               <FractalList maxCount={1} dataSource={recentMergeFractals} />
