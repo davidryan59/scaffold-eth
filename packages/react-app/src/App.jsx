@@ -353,8 +353,26 @@ function App() {
     );
   }
 
+  const attributesColumns = [
+    {
+      title: 'Attribute',
+      dataIndex: 'attribute',
+      key: 'attribute',
+    },
+    {
+      title: 'Value',
+      dataIndex: 'value',
+      key: 'value',
+    },
+  ];
+
   const renderFractalListItem = item => {
     const id = item.id.toNumber();
+    const attributesDataSource = item.attributes.map((obj, idx) => ({
+      key: idx,
+      attribute: obj.trait_type,
+      value: obj.value,
+    }));
     return (
       <List.Item key={"F" + id}>
         <Card
@@ -364,17 +382,15 @@ function App() {
             </div>
           }
         >
-          <a href={"https://opensea.io/assets/"+(readContracts && readContracts.MergeFractal && readContracts.MergeFractal.address)+"/"+item.id} target="_blank">
-          <img src={item.image} style={{background: 'rgba(128,128,128,0.1)'}}/>
+          {/* <a href={"https://opensea.io/assets/"+(readContracts && readContracts.MergeFractal && readContracts.MergeFractal.address)+"/"+item.id} target="_blank"> */}
+          <a href={`/token/${item.id}`}>
+            <img src={item.image} style={{background: 'rgba(128,128,128,0.1)'}}/>
           </a>
-          <div>{item.description}</div>
-          <div>{item.attributes.reduce((acc, obj, idx) =>
-            acc + obj.trait_type + ': ' + obj.value + ((idx === item.attributes.length - 1) ? '' : ', '),
-            ''
-          )}</div>
         </Card>
 
-        <div>
+        <div style={{width: "400px"}}>
+          <Table dataSource={attributesDataSource} columns={attributesColumns} size="small" pagination={false} /> 
+          <p></p>
           owner:{" "}
           <Address
             address={item.owner}
@@ -382,6 +398,7 @@ function App() {
             blockExplorer={blockExplorer}
             fontSize={16}
           />
+          <p></p>
           <AddressInput
             ensProvider={mainnetProvider}
             placeholder="transfer to address"
@@ -408,7 +425,7 @@ function App() {
   function FractalList({maxCount, dataSource}) {
     const filteredDataSource = dataSource ? dataSource.slice(0, maxCount || dataSource.length) : [];
     return (
-      <div style={{ width: 820, margin: "auto", paddingBottom: 256 }}>
+      <div style={{ width: "960px", margin: "auto", paddingBottom: 256 }}>
         <List
           bordered
           dataSource={filteredDataSource}
@@ -546,6 +563,9 @@ function App() {
               <Divider />
               <Paragraph>Shout out to Stateful Works who continually support the Protocol Guild and Ethereum core development,<br/>and to Austin Griffith and the Buidl Guidl for the excellent Scaffold Eth framework that this project is built upon.</Paragraph>
             </Card>
+          </Route>
+          <Route path="/token/:id">
+            TBC going to view the fractal here
           </Route>
         </Switch>
       </BrowserRouter>
