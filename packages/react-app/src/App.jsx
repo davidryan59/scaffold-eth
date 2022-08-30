@@ -419,15 +419,15 @@ function App() {
   }
 
   const raritiesDataSource = [
-    {key: 1, rarity: 'Developer Name', info: 'there are 120 names, each is approximately equally likely.'},
-    {key: 2, rarity: 'Team', info: `depends on the dev. Teams are rarer if they have fewer devs.`},
-    {key: 3, rarity: 'Subtitles', info: 'some are common, and a few are unusual.'},
-    {key: 4, rarity: 'Style', info: 'Solid and Freestyle are common. Spinner is 8.3%, Reflective is 4.1%.'},
-    {key: 5, rarity: 'Dropouts', info: 'probability of 0, 1, 2, 3, 4 dropouts is 31%, 42%, 21%, 4.6%, 0.3%.'},
-    {key: 6, rarity: 'Twists', info: 'between 0 and 6 twists, 0 is the rarest.'},
-    {key: 7, rarity: 'Duration', info: 'between 3 and 48 seconds – middle values (24s, 27s) common, extreme values rare'},
-    {key: 8, rarity: 'Monochrome', info: 'there is 6.2% chance of monochrome, so it is quite rare.'},
-    {key: 9, rarity: 'Colours', info: 'all colours are equally likely.'},
+    {key: 1, rarity: 'Developer Name', info: 'There are 120 core dev names, all are (roughly) equally likely.'},
+    {key: 2, rarity: 'Team', info: `The core dev determines the team, so teams are rarer if they have fewer core devs listed on the Protocol Guild list.`},
+    {key: 3, rarity: 'Style', info: 'Common: Freestyle 55%, Solid 32%. Rare: Spinner 9%, Reflective 4%.'},
+    {key: 4, rarity: 'Dropouts', info: 'Rarest is 4 dropouts. Probability of 0, 1, 2, 3, 4 dropouts is: 31%, 42%, 21%, 4.6%, 0.3%.'},
+    {key: 5, rarity: 'Twists', info: 'Rarest is 0 twists. Probability of 0, 1, 2, 3, 4, 5, 6 twists is: 0.093%, 1.2%, 6.8%, 20%, 33%, 29%, 11%.'},
+    {key: 6, rarity: 'Duration', info: 'Between 3 and 39 seconds, with 21 seconds most common at 17%, and both 3 and 39 seconds rarest at 0.39%. 6 and 36 seconds are next rarest at 1.6%.'},
+    {key: 7, rarity: 'Monochrome', info: 'Monochrome is quite rare, it occurs 1 in 16 times (6.2% probability).'},
+    {key: 8, rarity: 'Subtitles', info: 'The commonest subtitles are Ethereum Merge September 2022 and TTD 58750000000000000000000. Some are really rare, up to 0.3% or even 0.1%. They cannot be mentioned here since they were written into the immutable smart contract by the intern, who has since been fired.'},
+    {key: 9, rarity: 'Colours', info: 'Surprise! All colours are equally likely.'},
   ];
 
   const raritiesColumns = [
@@ -481,14 +481,14 @@ function App() {
               Your mints
             </Link>
           </Menu.Item>
-          <Menu.Item key="/rarity">
+          <Menu.Item key="/rarities">
             <Link
               onClick={() => {
-                setRoute("/rarity");
+                setRoute("/rarities");
               }}
-              to="/rarity"
+              to="/rarities"
             >
-              Rarity
+              Rarities
             </Link>
           </Menu.Item>
           <Menu.Item key="/about">
@@ -507,7 +507,7 @@ function App() {
           <Route exact path="/">
             <Card title={`Welcome to ${networkName} Merge Fractal NFTs!`}>
               <Paragraph>To celebrate the Ethereum Merge in September 2022, these Merge Fractals are 5875 unique pieces of fully on-chain digital generative art.<br />The animated SVG images are generated entirely within the smart contract, without using external data sources such as IPFS.</Paragraph>
-              <Paragraph>All proceeds of NFT sales go to the Protocol Guild to support Ethereum core development.<br />Minting starts at 0.001 Ξ, increasing by 0.0002 Ξ every 50 mints, so total raise is 75 Ξ.<br />NFT attributes are randomly generated, some are <a href="/rarity">rarer</a> than others.</Paragraph>
+              <Paragraph>All proceeds of NFT sales go to the Protocol Guild to support Ethereum core development.<br />Minting starts at 0.001 Ξ, increasing by 0.0002 Ξ every 50 mints, so total raise is 75 Ξ.<br />NFT attributes are randomly generated, some are <a href="/rarities">rarer</a> than others.</Paragraph>
               <Divider />
               <Paragraph>Latest mint:</Paragraph>
               <FractalList maxCount={1} dataSource={recentMergeFractals} />
@@ -525,7 +525,7 @@ function App() {
               <FractalList dataSource={yourMergeFractals} />
             </Card>
           </Route>
-          <Route exact path="/rarity">
+          <Route exact path="/rarities">
             <Card title={`Rarities for ${networkName} Merge Fractal NFTs`}>
               <Table dataSource={raritiesDataSource} columns={raritiesColumns} />
               <Typography>
@@ -544,7 +544,7 @@ function App() {
               <Paragraph>Twitter: <a href={"https://twitter.com/davidryan59"} target="_blank">@davidryan59</a></Paragraph>
               <Paragraph>Artist page on Nifty Ink: <a href={"https://nifty.ink/artist/0xbfac61d1e22efa9d37fc3ff36b9dff9655131f52"} target="_blank">niftymaestro.eth</a></Paragraph>
               <Divider />
-              <Paragraph>Shout out to Stateful Works who continually support the Protocol Guild and Ethereum core development,<br/>and to Austin Griffith and the Buidl Guidl for the excellent Scaffold Eth framework that this project is built on.</Paragraph>
+              <Paragraph>Shout out to Stateful Works who continually support the Protocol Guild and Ethereum core development,<br/>and to Austin Griffith and the Buidl Guidl for the excellent Scaffold Eth framework that this project is built upon.</Paragraph>
             </Card>
           </Route>
         </Switch>

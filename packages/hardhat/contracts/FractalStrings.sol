@@ -225,11 +225,11 @@ contract FractalStrings {
     ));
   }
 
-  // Animation time between 3 and 48 seconds, mostly in the middle of the range
+  // Animation time between 3 and 39 seconds, mostly in the middle of the range
   // Uses 8 bits of randomness
   function getAnimDurS(uint256 gen) public view returns (uint8) {
     uint8 r255 = sfad.getUint8(gen, 16, 8); // 0 to 255
-    uint8 r15 = r255 % 4 + (r255 >> 2) % 4 + (r255 >> 4) % 4 + (r255 >> 6) % 4; // 0 to 15
+    uint8 r15 = r255 % 4 + (r255 >> 2) % 4 + (r255 >> 4) % 4 + (r255 >> 6) % 4; // Between 0 and 12
     return 3 * (1 + r15);
   }
 
