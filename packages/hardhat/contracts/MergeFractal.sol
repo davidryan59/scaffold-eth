@@ -226,7 +226,7 @@ contract MergeFractal is ERC721, Ownable {
         name,
         '", "description":"',
         description,
-        '", "external_url":"https://ethereum-merge-fractals.surge.sh/',
+        '", "external_url":"https://ethereum-merge-fractals.surge.sh/token/',
         id.toString(),
         '", "attributes": ',
         getAllAttributes(id),
