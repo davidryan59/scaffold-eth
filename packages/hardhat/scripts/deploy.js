@@ -74,14 +74,26 @@ const main = async () => {
 
   // If you want to verify your contract on etherscan
   if (VERIFY_CONTRACTS) {
+    const delay = ms => new Promise(res => setTimeout(res, ms));
     try {
+      console.log(chalk.grey('Waiting for 30 seconds before verifying, give Etherscan a chance to catch up'))
+      await delay(30000);
       console.log(chalk.blue('Attempting verification on etherscan'))
       await run("verify:verify", {
         address: sharedFnsAndData.address,
-        // constructorArguments: args // If your contract has constructor arguments, you can pass them as an array
-      })      
+        constructorArguments: [],
+      })  
+      await run("verify:verify", {
+        address: fractalStrings.address,
+        constructorArguments: [sharedFnsAndData.address],
+      })  
+      await run("verify:verify", {
+        address: mergeFractal.address,
+        constructorArguments: [sharedFnsAndData.address, fractalStrings.address],
+      })   
     } catch (e) {
       console.log('There was an error with verification');
+      console.log(e);
     }
   }
 
