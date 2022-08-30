@@ -6,8 +6,8 @@ const { utils } = require("ethers");
 const R = require("ramda");
 
 
-const VERIFY_CONTRACTS = false; // localhost
-// const VERIFY_CONTRACTS = true;  // mainnet, goerli
+// const VERIFY_CONTRACTS = false; // localhost
+const VERIFY_CONTRACTS = true;  // mainnet, goerli
 
 
 const main = async () => {

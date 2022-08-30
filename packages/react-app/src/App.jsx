@@ -25,11 +25,11 @@ const { Title, Paragraph, Text } = Typography;
 
 // 📡 What chain are your contracts deployed to?
 
-const targetNetwork = NETWORKS.localhost;
-const networkName = 'TESTNET';
+// const targetNetwork = NETWORKS.localhost;
+// const networkName = 'TESTNET';
 
-// const targetNetwork = NETWORKS.goerli;
-// const networkName = 'Goerli (test 4)';
+const targetNetwork = NETWORKS.goerli;
+const networkName = 'Goerli (test 5)';
 
 // const targetNetwork = NETWORKS.mainnet;
 // const networkName = 'Ethereum';
