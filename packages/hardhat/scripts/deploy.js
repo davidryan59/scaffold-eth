@@ -75,24 +75,52 @@ const main = async () => {
   // If you want to verify your contract on etherscan
   if (VERIFY_CONTRACTS) {
     const delay = ms => new Promise(res => setTimeout(res, ms));
+    console.log(chalk.white('Waiting for 300 seconds before verifying, give Etherscan a chance to catch up'))
+    await delay(30000);
+    console.log(chalk.grey('Waiting for 270 more seconds...'))
+    await delay(30000);
+    console.log(chalk.grey('Waiting for 240 more seconds...'))
+    await delay(30000);
+    console.log(chalk.grey('Waiting for 210 more seconds...'))
+    await delay(30000);
+    console.log(chalk.grey('Waiting for 180 more seconds...'))
+    await delay(30000);
+    console.log(chalk.cyan('Waiting for 150 more seconds...'))
+    await delay(30000);
+    console.log(chalk.grey('Waiting for 120 more seconds...'))
+    await delay(30000);
+    console.log(chalk.grey('Waiting for 90 more seconds...'))
+    await delay(30000);
+    console.log(chalk.grey('Waiting for 60 more seconds...'))
+    await delay(30000);
+    console.log(chalk.grey('Waiting for 30 more seconds...'))
+    await delay(30000);
+    console.log(chalk.blue('Attempting verification on etherscan'))
     try {
-      console.log(chalk.grey('Waiting for 30 seconds before verifying, give Etherscan a chance to catch up'))
-      await delay(30000);
-      console.log(chalk.blue('Attempting verification on etherscan'))
       await run("verify:verify", {
         address: sharedFnsAndData.address,
         constructorArguments: [],
       })  
+    } catch (e) {
+      console.log('There was an error with verifying sharedFnsAndData');
+      console.log(e);
+    }
+    try {
       await run("verify:verify", {
         address: fractalStrings.address,
         constructorArguments: [sharedFnsAndData.address],
       })  
+    } catch (e) {
+      console.log('There was an error with verifying fractalStrings');
+      console.log(e);
+    }
+    try {
       await run("verify:verify", {
         address: mergeFractal.address,
         constructorArguments: [sharedFnsAndData.address, fractalStrings.address],
       })   
     } catch (e) {
-      console.log('There was an error with verification');
+      console.log('There was an error with verifying mergeFractal');
       console.log(e);
     }
   }

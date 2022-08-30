@@ -1,6 +1,8 @@
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.6.7;
 
+// GOERLI TEST 10
+
 contract SharedFnsAndData {
 
   // Divide by 10000 and use as an interpolation factor
