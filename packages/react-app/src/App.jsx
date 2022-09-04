@@ -29,7 +29,7 @@ const { Title, Paragraph, Text } = Typography;
 // const networkName = 'TESTNET 12';
 
 const targetNetwork = NETWORKS.goerli;
-const networkName = 'Goerli (test 12)';
+const networkName = 'Goerli (test 13)';
 
 // const targetNetwork = NETWORKS.mainnet;
 // const networkName = 'Ethereum';
