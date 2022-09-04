@@ -554,7 +554,7 @@ function App() {
           <Route exact path="/about">
             <Card title={`About ${networkName} Merge Fractal NFTs`}>
               <Paragraph>Where does the money go? 100% to Protocol Guild to fund core devs!<br />Here is their <a href={"https://etherscan.io/address/0xF29Ff96aaEa6C9A1fBa851f74737f3c069d4f1a9"} target="_blank">Ethereum address</a> on Etherscan, mint and see number go up.</Paragraph>
-              <Paragraph>Ethereum mainnet contract for NFT: Awaiting Deployment</Paragraph>
+              <Paragraph>Verified NFT contract on Ethereum mainnet: <a href={"https://etherscan.io/address/0xCeaAb19BaB4AdBc831b98A4Cf54A6A85A79218a4"} target="_blank">0xCeaAb19BaB4AdBc831b98A4Cf54A6A85A79218a4</a></Paragraph>
               <Paragraph>Source code for NFT: <a href={"https://github.com/davidryan59/scaffold-eth/tree/merge-fractal"} target="_blank">GitHub repository for Merge Fractal</a></Paragraph>
               <Divider />
               <Paragraph>NFT author: David Ryan</Paragraph>
