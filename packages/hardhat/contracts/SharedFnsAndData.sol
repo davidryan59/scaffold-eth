@@ -90,7 +90,7 @@ contract SharedFnsAndData {
   }
 
   function isMonochrome(uint256 gen) public pure returns (bool) {
-    return getUint8(gen, 182, 4) == 0;
+    return getUint8(gen, 200, 4) == 0;
   }
 
   function getRGBA(uint256 gen, uint8 arraySection, string memory alpha) public view returns (string memory) {
