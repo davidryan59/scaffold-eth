@@ -3,7 +3,7 @@ pragma solidity ^0.6.7;
 
 import './SharedFnsAndData.sol';
 
-// GOERLI TEST 11
+// TEST 12
 
 contract FractalStrings {
 

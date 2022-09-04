@@ -23,8 +23,8 @@ const { isAddress, getAddress, formatUnits, parseUnits } = utils;
 
 
 // // Select the network you want to deploy to here:
-// const defaultNetwork = "localhost";
-const defaultNetwork = "goerli";
+const defaultNetwork = "localhost";
+// const defaultNetwork = "goerli";
 // const defaultNetwork = "mainnet";
 
 console.log(`USING NETWORK "${defaultNetwork}"`);
@@ -52,7 +52,7 @@ module.exports = {
     
     localhost: {
       url: "http://localhost:8545",
-      gasPrice: 3_000_000_000,  // you can adjust gasPrice locally to see how much it will cost on production
+      gasPrice: 7_000_000_000,  // you can adjust gasPrice locally to see how much it will cost on production
       /*
         notice no mnemonic here? it will just use account 0 of the hardhat node to deploy
         (you can put in a mnemonic here to set the deployer locally)
@@ -70,7 +70,7 @@ module.exports = {
       accounts: {
         mnemonic: mnemonic(),
       },
-      gasPrice: 3_000_000_000 // Try and deploy when gas is under 3 gwei! (Aug 2022)
+      gasPrice: 7_000_000_000 // Try and deploy when total gas (baseFee + priorityFee) is under 7 gwei! (Aug 2022)
     },
 
     rinkeby: {

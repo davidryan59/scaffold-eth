@@ -34,19 +34,19 @@ contract MergeFractal is ERC721, Ownable {
 
   // ----------------------------------------------
 
-  // // Local testnet setup
-  // string internal constant NETWORK = 'TESTNET';
-  // uint256 internal constant INITIAL_PRICE = 1000000 * 1000000000; // 0.001 ETH
-  // uint256 internal constant INCREMENT_PRICE = 200000 * 1000000000; // 0.0002 ETH
-  // uint256 internal constant INCREMENT_STEP = 2;
-  // uint24 internal constant MINT_LIMIT = 5;
-
-  // Goerli test deployment(s)
-  string internal constant NETWORK = 'GOERLI TEST 11';
+  // Local testnet setup
+  string internal constant NETWORK = 'TESTNET 12';
   uint256 internal constant INITIAL_PRICE = 1000000 * 1000000000; // 0.001 ETH
   uint256 internal constant INCREMENT_PRICE = 200000 * 1000000000; // 0.0002 ETH
-  uint256 internal constant INCREMENT_STEP = 4;
-  uint24 internal constant MINT_LIMIT = 23;
+  uint256 internal constant INCREMENT_STEP = 2;
+  uint24 internal constant MINT_LIMIT = 5;
+
+  // // Goerli test deployment(s)
+  // string internal constant NETWORK = 'GOERLI TEST 11';
+  // uint256 internal constant INITIAL_PRICE = 1000000 * 1000000000; // 0.001 ETH
+  // uint256 internal constant INCREMENT_PRICE = 200000 * 1000000000; // 0.0002 ETH
+  // uint256 internal constant INCREMENT_STEP = 4;
+  // uint24 internal constant MINT_LIMIT = 23;
 
   // // Mainnet deployment
   // string internal constant NETWORK = 'Ethereum';
