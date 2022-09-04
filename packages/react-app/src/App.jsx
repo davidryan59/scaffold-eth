@@ -28,11 +28,11 @@ const { Title, Paragraph, Text } = Typography;
 // const targetNetwork = NETWORKS.localhost;
 // const networkName = 'TESTNET 12';
 
-const targetNetwork = NETWORKS.goerli;
-const networkName = 'Goerli (test 14)';
+// const targetNetwork = NETWORKS.goerli;
+// const networkName = 'Goerli (test 14)';
 
-// const targetNetwork = NETWORKS.mainnet;
-// const networkName = 'Ethereum';
+const targetNetwork = NETWORKS.mainnet;
+const networkName = 'Ethereum';
 
 
 const RECENT_DISPLAY_COUNT = 12;
