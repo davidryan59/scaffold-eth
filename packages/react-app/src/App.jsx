@@ -416,8 +416,8 @@ function App() {
           </div>
         }
       >
-        {/* <a href={"https://opensea.io/assets/"+(readContracts && readContracts.MergeFractal && readContracts.MergeFractal.address)+"/"+item.id} target="_blank"> */}
-        <a href={`/token/${item.id}`}>
+        {/* <a href={`/token/${item.id}`}> */}
+        <a href={"https://opensea.io/assets/"+(readContracts && readContracts.MergeFractal && readContracts.MergeFractal.address)+"/"+item.id} target="_blank">
           <img src={item.image} style={{background: 'rgba(128,128,128,0.1)'}}/>
         </a>
       </Card>
