@@ -1,7 +1,7 @@
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.6.7;
 
-// GOERLI TEST 13
+// GOERLI TEST 14
 
 contract SharedFnsAndData {
 
@@ -9,7 +9,7 @@ contract SharedFnsAndData {
   uint8 internal constant INTERP_LEN = 6;
   uint16[INTERP_LEN] internal interpolationCurve10k = [0,0,5000,10000,10000,0];
 
-  uint16[32] internal durations = [31,53,73,103,137,167,197,233,37,59,79,107,139,173,199,239,41,61,83,109,149,179,211,241,43,67,89,113,151,181,223,251];
+  uint16[32] internal durations = [31,53,73,103,137,167,197,233,37,59,79,107,139,173,199,239,41,61,83,109,149,179,211,241,43,67,89,113,151,181,223,252];
 
   // Control colour randomisations (4 colours are used throughout)
   uint8[4] internal sectionColStartBits = [24, 30, 36, 42]; // 4 sections, each uses 3 bits for colour, 3 bits for duration

@@ -3,7 +3,7 @@ pragma solidity ^0.6.7;
 
 import './SharedFnsAndData.sol';
 
-// GOERLI TEST 13
+// GOERLI TEST 14
 
 contract FractalStrings {
 
@@ -186,7 +186,7 @@ contract FractalStrings {
     '90;90;45;0;0;0;0;90',
     '90;90;60;30;0;0;90;90',
     '-90;-90;-90;-90;-90;0;0;-90;-90',
-    '90;90;90;90;0;0;0;45;90',
+    '90;90;90;90;0;0;0;46;90',
     '-90;-90;0;0;0;0;0;0;-90'
   ];
   // Defines `it_N_i` in terms of `it_[N-1]_i`
