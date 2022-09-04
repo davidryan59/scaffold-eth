@@ -24,7 +24,6 @@ import 'base64-sol/base64.sol';
 import './SharedFnsAndData.sol';
 import './FractalStrings.sol';
 
-// GET LISTED ON OPENSEA: https://testnets.opensea.io/get-listed/step-two
 
 contract MergeFractal is ERC721, Ownable {
 
@@ -60,7 +59,7 @@ contract MergeFractal is ERC721, Ownable {
   // Control placement of 4 sets of rotating lines
   uint8[4] internal sectionLineTranslates = [2, 4, 36, 38];
 
-  // Random core dev and team to thank
+  // Random team to thank, looks up from core dev
   uint8 internal constant TEAM_ARRAY_LEN = 25;
   string[TEAM_ARRAY_LEN] internal teams = [
     'Independent', // hidden
@@ -91,7 +90,7 @@ contract MergeFractal is ERC721, Ownable {
   ];
 
   // Random subtitle
-  uint8 internal constant SUBTITLE_ARRAY_LEN = 29;
+  uint8 internal constant SUBTITLE_ARRAY_LEN = 30;
   string[SUBTITLE_ARRAY_LEN] internal subtitles = [
     'Ethereum Merge September 2022',
     'TTD 58750000000000000000000',
@@ -110,9 +109,10 @@ contract MergeFractal is ERC721, Ownable {
     'Validators > Miners',
     'Decentralise Everything',
     'PoS > PoW',
-    'TTD 2^19 * 5^22 * 47',
     'Validate with 32 ETH',
     'The Flippening',
+    'Fight for financial privacy by default',
+    'TTD 2^19 * 5^22 * 47',
     'Build on Scaffold Eth',
     'Build with the Buidl Guidl',
     'Austin Griffith is Buidling',
@@ -131,6 +131,7 @@ contract MergeFractal is ERC721, Ownable {
   SharedFnsAndData sfad;
   FractalStrings fs;
   constructor(address sfadAddress, address fsAddress) public ERC721("MergeFractals", "MERGFRAC") {
+    // Using 3 contracts since there was too much for 1 contract...
     sfad = SharedFnsAndData(sfadAddress);
     fs = FractalStrings(fsAddress);
   }
@@ -156,7 +157,7 @@ contract MergeFractal is ERC721, Ownable {
     return id;
   }
 
-  // Query the current mint count
+  // Query the mint limit
   function mintLimit() public pure returns (uint24) {
     return MINT_LIMIT;
   }
@@ -337,7 +338,7 @@ contract MergeFractal is ERC721, Ownable {
   // Earlier subtitles in the array are common. Later ones are increasingly rare.
   function getSubtitle(uint256 gen) internal view returns (string memory) {
     uint8 rand1 = sfad.getUint8(gen, 172, 5) % SUBTITLE_ARRAY_LEN;
-    uint8 rand2 = sfad.getUint8(gen, 177, 5) % SUBTITLE_ARRAY_LEN; // Bits 16, 17 in use elsewhere, ought to reshuffle all!
+    uint8 rand2 = sfad.getUint8(gen, 177, 5) % SUBTITLE_ARRAY_LEN;
     uint8 idx = (rand1 < rand2) ? rand1 : rand2; // min function 
     return subtitles[idx];
   }

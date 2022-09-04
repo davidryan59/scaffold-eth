@@ -9,7 +9,6 @@ contract FractalStrings {
 
   SharedFnsAndData sfad;
   constructor(address sfadAddress) public {
-    // 2nd contract because 1st contract ran out of code space...
     sfad = SharedFnsAndData(sfadAddress);
   }
 
@@ -26,7 +25,6 @@ contract FractalStrings {
     ));
   }
 
-  // Defines shape0, shape1, ... shape7
   function defineAllShapes(uint256 gen) internal view returns (string memory) {
     return string(abi.encodePacked(
       defineShape(gen, 0, 1),
@@ -67,7 +65,7 @@ contract FractalStrings {
   }
 
   // There are 4 potential dropouts, each has probability 2^(-DROPOUT_BITS)
-  // uint8 internal constant DROPOUT_BITS = 2; // Prob of 0, 1, 2, 3, 4 dropouts is 31%, 42%, 21%, 4.6%, 0.3%
+  // Using DROPOUT_BITS = 2, so probability of 0, 1, 2, 3, 4 dropouts is 31%, 42%, 21%, 4.6%, 0.3%
   function countDropout01(uint256 gen, uint8 itemIdx) public view returns (uint8 result) {
     return sfad.getUint8(gen, 60 + 2 * itemIdx, 2) == 0 ? 1 : 0;
   }
@@ -86,7 +84,7 @@ contract FractalStrings {
     ));
   }
 
-  // 16 in 128 of rotation style. 8 in 128 of reflection. Otherwise freestyle.
+  // Probability 16 in 128 of rotation style, 8 in 128 of reflection, otherwise freestyle (104 in 128)
   function styleText(uint256 gen) public view returns (string memory) {
     if (countDropouts(gen) == 0) return 'Solid';
     uint8 style = styleNumber(gen);
