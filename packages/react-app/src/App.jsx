@@ -23,6 +23,10 @@ import {
 } from "./hooks";
 const { Title, Paragraph, Text } = Typography;
 
+
+const BUILD_NUMBER = '1.0.1'; // Increment this for each new build and public release
+
+
 // 📡 What chain are your contracts deployed to?
 
 // const targetNetwork = NETWORKS.localhost;
@@ -35,7 +39,7 @@ const targetNetwork = NETWORKS.mainnet;
 const networkName = 'Ethereum';
 
 
-const RECENT_DISPLAY_COUNT = 12;
+const RECENT_DISPLAY_COUNT = 10;
 
 // 😬 Sorry for all the console logging
 const DEBUG = true;
@@ -540,6 +544,7 @@ function App() {
               <Divider />
               <Paragraph>Latest mint:</Paragraph>
               <FractalList maxCount={1} dataSource={recentMergeFractals} />
+              <Paragraph>Build number: {BUILD_NUMBER}</Paragraph>
             </Card>
           </Route>
           <Route exact path="/recent">
