@@ -353,6 +353,7 @@ function App() {
     return (
       <div style={{ maxWidth: 820, margin: "auto", marginTop: 32, paddingBottom: 32 }}>
         {isSigner ? mintButton() : (<div><Button type={"primary"} onClick={loadWeb3Modal}>CONNECT WALLET</Button></div>)}
+        <Paragraph type="warning">Minting is in high demand, Infura API key is overloaded! Other minting sites are given below</Paragraph>
       </div>
     );
   }
@@ -540,7 +541,11 @@ function App() {
             <Card title={`Welcome to ${networkName} Merge Fractal NFTs!`}>
               <Paragraph>To celebrate the Ethereum Merge in September 2022, these Merge Fractals are 5875 unique pieces of fully on-chain digital generative art.<br />The animated SVG images are generated entirely within the smart contract, without using external data sources such as IPFS.</Paragraph>
               <Paragraph>All proceeds of NFT sales go to the Protocol Guild to support Ethereum core development.<br />Minting starts at 0.001 Ξ, increasing by 0.0002 Ξ every 50 mints, so total raise is 75 Ξ.<br />NFT attributes are randomly generated, some are <a href={"/rarities"}>rarer</a> than others.</Paragraph>
-              <Paragraph>To help increase visibility of this collection, you can also <a href="https://mint.fun/0xCeaAb19BaB4AdBc831b98A4Cf54A6A85A79218a4" target="_blank">mint Merge Fractals on mint.fun</a></Paragraph>
+              <Paragraph strong>Alternative minting sites</Paragraph>
+              <Paragraph>Mint on <a href="https://mint.fun/0xCeaAb19BaB4AdBc831b98A4Cf54A6A85A79218a4" target="_blank">mint.fun</a> (this has known bug at price increment every 50 mints)</Paragraph>
+              <Paragraph>Mint on <a href="https://abi.ninja/0xCeaAb19BaB4AdBc831b98A4Cf54A6A85A79218a4" target="_blank">ABI Ninja</a>, see <a href="https://twitter.com/davidryan59/status/1566600481891569665" target="_blank">instructions</a></Paragraph>
+              <Paragraph>Mint on <a href="https://etherscan.io/address/0xCeaAb19BaB4AdBc831b98A4Cf54A6A85A79218a4#code" target="_blank">Etherscan</a>, see <a href="https://twitter.com/davidryan59/status/1566601439652511744" target="_blank">instructions</a></Paragraph>
+              <Paragraph>Batch mint up to 10 on <a href="https://many-fractals.surge.sh/" target="_blank">Austin Griffith's unaudited but awesome site</a><br />(need to test whether batch mint works over a price increment, or not?)</Paragraph>
               <Divider />
               <Paragraph>Latest mint:</Paragraph>
               <FractalList maxCount={1} dataSource={recentMergeFractals} />
