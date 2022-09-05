@@ -452,7 +452,7 @@ function App() {
   }
 
   const raritiesDataSource = [
-    {key: 1, rarity: 'Developer Name', info: 'There are 120 core dev names, all are (roughly) equally likely.'},
+    {key: 1, rarity: 'Developer Name', info: 'There are 119 core dev names, all are (roughly) equally likely. There is also an honorary member...'},
     {key: 2, rarity: 'Team', info: `The core dev determines the team, so teams are rarer if they have fewer core devs listed on the Protocol Guild list.`},
     {key: 3, rarity: 'Style', info: 'Common: Freestyle 55%, Solid 32%. Rare: Spinner 9%, Reflective 4%.'},
     {key: 4, rarity: 'Dropouts', info: 'Rarest is 4 dropouts. Probability of 0, 1, 2, 3, 4 dropouts is: 31%, 42%, 21%, 4.6%, 0.3%.'},
