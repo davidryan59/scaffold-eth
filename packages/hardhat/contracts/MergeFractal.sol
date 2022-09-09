@@ -33,12 +33,12 @@ contract MergeFractal is ERC721, Ownable {
 
   // ----------------------------------------------
 
-  // // Local testnet setup
-  // string internal constant NETWORK = 'TESTNET 12';
-  // uint256 internal constant INITIAL_PRICE = 1000000 * 1000000000; // 0.001 ETH
-  // uint256 internal constant INCREMENT_PRICE = 200000 * 1000000000; // 0.0002 ETH
-  // uint256 internal constant INCREMENT_STEP = 2;
-  // uint24 internal constant MINT_LIMIT = 5;
+  // Local testnet setup
+  string internal constant NETWORK = 'TESTNET';
+  uint256 internal constant INITIAL_PRICE = 1000000 * 1000000000; // 0.001 ETH
+  uint256 internal constant INCREMENT_PRICE = 200000 * 1000000000; // 0.0002 ETH
+  uint256 internal constant INCREMENT_STEP = 2;
+  uint24 internal constant MINT_LIMIT = 5;
 
   // // Goerli test deployment(s)
   // string internal constant NETWORK = 'GOERLI TEST 14';
@@ -47,12 +47,12 @@ contract MergeFractal is ERC721, Ownable {
   // uint256 internal constant INCREMENT_STEP = 1;
   // uint24 internal constant MINT_LIMIT = 2;
 
-  // Mainnet deployment
-  string internal constant NETWORK = 'Ethereum';
-  uint256 internal constant INITIAL_PRICE = 1000000 * 1000000000; // 0.001 ETH
-  uint256 internal constant INCREMENT_PRICE = 200000 * 1000000000; // 0.0002 ETH
-  uint256 internal constant INCREMENT_STEP = 50; // increments at 51, 101, 151, 201...
-  uint24 internal constant MINT_LIMIT = 5875;
+  // // Mainnet deployment
+  // string internal constant NETWORK = 'Ethereum';
+  // uint256 internal constant INITIAL_PRICE = 1000000 * 1000000000; // 0.001 ETH
+  // uint256 internal constant INCREMENT_PRICE = 200000 * 1000000000; // 0.0002 ETH
+  // uint256 internal constant INCREMENT_STEP = 50; // increments at 51, 101, 151, 201...
+  // uint24 internal constant MINT_LIMIT = 5875;
 
   // ----------------------------------------------
 
@@ -366,9 +366,9 @@ contract MergeFractal is ERC721, Ownable {
   function renderTokenById(uint256 id) public view returns (string memory) {
     uint256 gen = generator[id];
     return string(abi.encodePacked(
-      renderDiskAndLines(gen),
-      renderBorder(gen),
-      renderText(id),
+      // renderDiskAndLines(gen),
+      // renderBorder(gen),
+      // renderText(id),
       fs.renderEthereums(gen)
     ));
   }

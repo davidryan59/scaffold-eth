@@ -24,19 +24,19 @@ import {
 const { Title, Paragraph, Text } = Typography;
 
 
-const BUILD_NUMBER = '1.0.2'; // Increment this for each new build and public release
+const BUILD_NUMBER = '0.0.0'; // Increment this for each new build and public release
 
 
 // 📡 What chain are your contracts deployed to?
 
-// const targetNetwork = NETWORKS.localhost;
-// const networkName = 'TESTNET 12';
+const targetNetwork = NETWORKS.localhost;
+const networkName = 'TESTNET';
 
 // const targetNetwork = NETWORKS.goerli;
 // const networkName = 'Goerli (test 14)';
 
-const targetNetwork = NETWORKS.mainnet;
-const networkName = 'Ethereum';
+// const targetNetwork = NETWORKS.mainnet;
+// const networkName = 'Ethereum';
 
 
 const RECENT_DISPLAY_COUNT = 5;
@@ -352,7 +352,7 @@ function App() {
   function MintButtonRow() {
     return (
       <div style={{ maxWidth: 820, margin: "auto", marginTop: 24, paddingBottom: 16 }}>
-        {isSigner ? mintButton() : (<div><Button type={"primary"} onClick={loadWeb3Modal}>CONNECT WALLET</Button></div>)}
+        {isSigner ? mintButton() : (<div>{mintButton()}<Button type={"primary"} onClick={loadWeb3Modal}>CONNECT WALLET</Button></div>)}
         <Paragraph type="warning">Infura API key is sometimes overloaded, other minting options are given below</Paragraph>
       </div>
     );

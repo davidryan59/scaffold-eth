@@ -1,7 +1,7 @@
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.6.7;
 
-// Mainnet 1
+// Testnet
 
 contract SharedFnsAndData {
 

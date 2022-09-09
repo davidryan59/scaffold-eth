@@ -3,7 +3,7 @@ pragma solidity ^0.6.7;
 
 import './SharedFnsAndData.sol';
 
-// Mainnet 1
+// Testnet
 
 contract FractalStrings {
 
@@ -14,38 +14,26 @@ contract FractalStrings {
 
   // To tesselate the Ethereum diamond, shapes are rectangles
   function defineShape(uint256 gen, uint8 sideIdx, uint8 colourIdxFill) internal view returns (string memory) {
-    return string(abi.encodePacked(
-      '<rect id="shape',
-      sfad.uint2str(sideIdx),
-      '" x="-0.5" y="-0.5" width="1" height="1" rx="0.25" fill="',
-      sfad.getRGBA(gen, colourIdxFill, "0.70"),
-      '" stroke="',
-      sfad.getRGBA(gen, 0, "0.80"),
-      '" stroke-width="0.15px"/>'
-    ));
+    return '<circle id="shape0" fill="rgba(128,128,255,0.25)" stroke-width="0.2px" stroke="rgba(0,0,0,0.5)" cx="0" cy="0" r="0.45"/>';
   }
 
   function defineAllShapes(uint256 gen) internal view returns (string memory) {
     return string(abi.encodePacked(
-      defineShape(gen, 0, 1),
-      defineShape(gen, 1, 2)
+      defineShape(gen, 0, 1)
     ));
   }
 
-  uint16[8] internal xStarts = [250, 750, 250, 750, 250, 750, 250, 750];
-  uint16[8] internal xEnds = [125, 375, 625, 875, 625, 875, 125, 375];
-  function getIteration1Item(uint256 gen, uint8 sideIdx, uint8 itemIdx) private view returns (string memory) {
-    uint8 idx = 4 * sideIdx + itemIdx;
+  string[4] internal translates = [
+    ' translate(-0.5,-0.5)',
+    ' translate(-0.5, 0.5)',
+    ' translate( 0.5,-0.5)',
+    ' translate( 0.5, 0.5)'
+  ];
+  function getIteration1Item(uint256 gen, uint8 itemIdx) private view returns (string memory) {
     return string(abi.encodePacked(
-      '<g transform="translate(-0.5, 0)"><animateTransform attributeName="transform" attributeType="XML" type="translate"',
-      sfad.calcValues(xStarts[idx], xEnds[idx], '0.', itemIdx > 1 ? " -0.25" : " 0.25"),
-      getAnimDurTxt(gen),
-      ' repeatCount="indefinite" additive="sum"/><animateTransform attributeName="transform" attributeType="XML" type="scale"',
-      sfad.calcValues(500, 250, '0.', ' 0.5'),
-      getAnimDurTxt(gen),
-      ' repeatCount="indefinite" additive="sum"/><use href="#shape',
-      sfad.uint2str(sideIdx),
-      '"/></g>'
+      '<g transform="scale(0.5)"><g transform="',
+      translates[itemIdx],
+      '"><use href="#shape0"/></g></g>'
     ));
   }
 
@@ -56,10 +44,10 @@ contract FractalStrings {
       '<g id="it_1_',
       sfad.uint2str(sideIdx),
       '">',
-      getIteration1Item(gen, sideIdx, 0),
-      getIteration1Item(gen, sideIdx, 1),
-      getIteration1Item(gen, sideIdx, 2),
-      getIteration1Item(gen, sideIdx, 3),
+      getIteration1Item(gen, 0),
+      getIteration1Item(gen, 1),
+      getIteration1Item(gen, 2),
+      getIteration1Item(gen, 3),
       '</g>'
     ));
   }
@@ -67,7 +55,8 @@ contract FractalStrings {
   // There are 4 potential dropouts, each has probability 2^(-DROPOUT_BITS)
   // Using DROPOUT_BITS = 2, so probability of 0, 1, 2, 3, 4 dropouts is 31%, 42%, 21%, 4.6%, 0.3%
   function countDropout01(uint256 gen, uint8 itemIdx) public view returns (uint8 result) {
-    return sfad.getUint8(gen, 60 + 2 * itemIdx, 2) == 0 ? 1 : 0;
+    return 0;
+    // return sfad.getUint8(gen, 60 + 2 * itemIdx, 2) == 0 ? 1 : 0;
   }
 
   function countDropouts(uint256 gen) public view returns (uint8) {
@@ -158,7 +147,8 @@ contract FractalStrings {
 
   // side = 0, 1; iteration = 2, 3, 4; this uses 24 bits of randomness
   function getTwistIdx(uint256 gen, uint8 sideIdx, uint8 iteration) internal view returns (uint8) {
-    return sfad.getUint8(gen, 76 + 4 * sideIdx + 8 * (iteration - 2), 4);
+    return 0;
+    // return sfad.getUint8(gen, 76 + 4 * sideIdx + 8 * (iteration - 2), 4);
   }
 
   // Rotation at each level is at slightly different times to the overall movement
@@ -212,16 +202,15 @@ contract FractalStrings {
 
   function renderEthereum(uint256 gen, uint8 sideIdx, uint8 iteration, int16 translate) public view returns (string memory) {
     return string(abi.encodePacked(
-      '<g><animateTransform attributeName="transform" attributeType="XML" type="translate"',
-      sfad.calcValues(0, 200 - translate, '', ''),
+      '<g><animateTransform attributeName="transform" attributeType="XML" type="rotate"',
+      // sfad.calcValues(0, 360, '', ' 200 200'),
+      sfad.calcValues(0, 0, '', ' 200 200'),
       getAnimDurTxt(gen),
       ' repeatCount="indefinite" additive="sum"/><use href="#it_',
       sfad.uint2str(iteration),
       '_',
       sfad.uint2str(sideIdx),
-      '" transform="translate(',
-      sfad.int2str(translate),
-      ', 200) scale(95, 190) rotate(45)"/></g>'
+      '" transform="translate(200, 200) scale(281, 281)"/></g>'
     ));
   }
 
@@ -256,8 +245,9 @@ contract FractalStrings {
       defineIterationN(gen, 0, 4),
       defineIterationN(gen, 1, 4), // up to iteration 4 can be rendered
       '</defs>',
-      renderEthereum(gen, 0, RENDER_ITERATION, 125),
-      renderEthereum(gen, 1, RENDER_ITERATION, 275)
+      renderEthereum(gen, 0, 4, 125)
+      // renderEthereum(gen, 0, RENDER_ITERATION, 125)
+      // renderEthereum(gen, 1, RENDER_ITERATION, 275)
     ));
   }
 }
