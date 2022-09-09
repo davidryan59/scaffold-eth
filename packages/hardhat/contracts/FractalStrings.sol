@@ -14,7 +14,8 @@ contract FractalStrings {
 
   // To tesselate the Ethereum diamond, shapes are rectangles
   function defineShape(uint256 gen, uint8 sideIdx, uint8 colourIdxFill) internal view returns (string memory) {
-    return '<circle id="shape0" fill="rgba(128,128,255,1)" stroke-width="0.4px" stroke="rgba(0,0,0,1)" cx="0" cy="0" r="0.5"/>';
+    return '<circle id="shape0" fill="rgba(0,0,0,1)" stroke="none" cx="0" cy="0" r="0.5"/>';
+    // return '<circle id="shape0" fill="rgba(255,255,0,0.5)" stroke-width="0.3px" stroke="rgba(0,0,255,0.8)" cx="0" cy="0" r="0.5"/>';
   }
 
   function defineAllShapes(uint256 gen) internal view returns (string memory) {
@@ -24,8 +25,8 @@ contract FractalStrings {
   }
 
   string[7] internal translates = [
-    ' translate(-1, 0)',
     ' translate(0, 0)',
+    ' translate(-1, 0)',
     ' translate(1, 0)',
     ' translate( 0.5, 0.866)',
     ' translate(-0.5, 0.866)',
@@ -34,7 +35,7 @@ contract FractalStrings {
   ];
   function getIteration1Item(uint256 gen, uint8 itemIdx) private view returns (string memory) {
     return string(abi.encodePacked(
-      '<g transform="scale(0.333)"><g transform="',
+      '<g transform="scale(0.42857)"><g transform="',
       translates[itemIdx],
       '"><use href="#shape0"/></g></g>'
     ));
@@ -114,32 +115,30 @@ contract FractalStrings {
     return sfad.getUint8(gen, 190 + coordIdx + 2 * itemIdx, 1);
   }
 
-  // Returns 0, 1, 2, or 3
-  // Multiply by 90 to get a rotation angle
-  function getRotationNum(uint256 gen, uint8 itemIdx) internal view returns (uint8) {
-    uint8 style = styleNumber(gen);
-    if (style < 16) {
-      uint8 r1 = style % 4; // 0..3
-      uint8 r2 = style >> 2; // different 0..3
-      return (r1 + r2 * itemIdx) % 4;
-    }
-    if (style < 24) return 0;
-    return sfad.getUint8(gen, 48 + 2 * itemIdx, 2);
+  // Returns "360", "-360", or "0"
+  string[3] internal rotates = ["0","360","-360"];
+  function getRotationNum(uint256 gen, uint8 itemIdx) internal view returns (string memory) {
+    return "360";
+    // return rotates[sfad.getUint8(gen, 48 + 2 * itemIdx, 2) % 3];
   }
 
   // string[4] internal xs = ['-0.25','-0.25',' 0.25',' 0.25'];
   // string[4] internal ys = ['-0.25',' 0.25',' 0.25','-0.25'];
   function getIterationNItem(uint256 gen, uint8 iteration, uint8 sideIdx, uint8 itemIdx) internal view returns (string memory) {
     return string(abi.encodePacked(
-      '<g transform="scale(0.333)">',
-      iteration == RENDER_ITERATION ? '' : getDropoutAnimTxt(gen, itemIdx),
+      '<g transform="scale(0.42857)">',
+      '<g transform="',
+      translates[itemIdx],
+      '">',
       '<use href="#it_',
       sfad.uint2str(iteration-1),
       '_',
       sfad.uint2str(sideIdx),
-      '" transform="',
-      translates[itemIdx],
-      '"/></g>'
+      '">',
+      '<animateTransform attributeName="transform" attributeType="XML" type="rotate" values="0;',
+      getRotationNum(gen, itemIdx),
+      '" dur="1000s" repeatCount="indefinite" />',
+      '</use></g></g>'
     ));
   }
 
@@ -203,15 +202,11 @@ contract FractalStrings {
 
   function renderEthereum(uint256 gen, uint8 sideIdx, uint8 iteration, int16 translate) public view returns (string memory) {
     return string(abi.encodePacked(
-      '<g><animateTransform attributeName="transform" attributeType="XML" type="rotate"',
-      // sfad.calcValues(0, 360, '', ' 200 200'),
-      sfad.calcValues(0, 0, '', ' 200 200'),
-      getAnimDurTxt(gen),
-      ' repeatCount="indefinite" additive="sum"/><use href="#it_',
+      '<g><animateTransform attributeName="transform" attributeType="XML" type="rotate" values="0 200 200;360 200 200" dur="1000s" repeatCount="indefinite" additive="sum"/><use href="#it_',
       sfad.uint2str(iteration),
       '_',
       sfad.uint2str(sideIdx),
-      '" transform="translate(200, 200) scale(350, 350)"/></g>'
+      '" transform="translate(200, 200) scale(282, 282)"/></g>'
     ));
   }
 
