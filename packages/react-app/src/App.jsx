@@ -24,7 +24,7 @@ import {
 const { Title, Paragraph, Text } = Typography;
 
 
-const BUILD_NUMBER = '1.0.1'; // Increment this for each new build and public release
+const BUILD_NUMBER = '1.0.2'; // Increment this for each new build and public release
 
 
 // 📡 What chain are your contracts deployed to?
@@ -39,7 +39,7 @@ const targetNetwork = NETWORKS.mainnet;
 const networkName = 'Ethereum';
 
 
-const RECENT_DISPLAY_COUNT = 10;
+const RECENT_DISPLAY_COUNT = 5;
 
 // 😬 Sorry for all the console logging
 const DEBUG = true;
@@ -351,9 +351,9 @@ function App() {
 
   function MintButtonRow() {
     return (
-      <div style={{ maxWidth: 820, margin: "auto", marginTop: 32, paddingBottom: 32 }}>
+      <div style={{ maxWidth: 820, margin: "auto", marginTop: 24, paddingBottom: 16 }}>
         {isSigner ? mintButton() : (<div><Button type={"primary"} onClick={loadWeb3Modal}>CONNECT WALLET</Button></div>)}
-        <Paragraph type="warning">Minting is in high demand, Infura API key is overloaded! Other minting sites are given below</Paragraph>
+        <Paragraph type="warning">Infura API key is sometimes overloaded, other minting options are given below</Paragraph>
       </div>
     );
   }
@@ -546,6 +546,7 @@ function App() {
               <Paragraph>Mint on <a href="https://abi.ninja/0xCeaAb19BaB4AdBc831b98A4Cf54A6A85A79218a4" target="_blank">ABI Ninja</a>, see <a href="https://twitter.com/davidryan59/status/1566600481891569665" target="_blank">instructions</a></Paragraph>
               <Paragraph>Mint on <a href="https://etherscan.io/address/0xCeaAb19BaB4AdBc831b98A4Cf54A6A85A79218a4#code" target="_blank">Etherscan</a>, see <a href="https://twitter.com/davidryan59/status/1566601439652511744" target="_blank">instructions</a></Paragraph>
               <Paragraph>Batch mint up to 10 on <a href="https://many-fractals.surge.sh/" target="_blank">Austin Griffith's unaudited but awesome site</a><br />(need to test whether batch mint works over a price increment, or not?)</Paragraph>
+              <Paragraph>You can also <a href="https://opensea.io/collection/mergefractals" target="_blank">view the collection on OpenSea</a>, viewing and filtering by rarities is available there</Paragraph>
               <Divider />
               <Paragraph>Latest mint:</Paragraph>
               <FractalList maxCount={1} dataSource={recentMergeFractals} />
@@ -583,7 +584,11 @@ function App() {
               <Paragraph>Twitter: <a href={"https://twitter.com/davidryan59"} target="_blank">@davidryan59</a></Paragraph>
               <Paragraph>Artist page on Nifty Ink: <a href={"https://nifty.ink/artist/0xbfac61d1e22efa9d37fc3ff36b9dff9655131f52"} target="_blank">niftymaestro.eth</a></Paragraph>
               <Divider />
-              <Paragraph>Shout out to Stateful Works who continually support the Protocol Guild and Ethereum core development,<br/>and to Austin Griffith and the Buidl Guidl for the excellent Scaffold Eth framework that this project is built upon.</Paragraph>
+              <Paragraph>Shout outs</Paragraph>
+              <Paragraph>Stateful Works who continually support the Protocol Guild and Ethereum core development</Paragraph>
+              <Paragraph>Austin Griffith for the excellent Scaffold Eth framework that this project has used</Paragraph>
+              <Paragraph>Buidl Guidl for providing 0.31 ETH towards deploying the 3 NFT contracts to mainnet</Paragraph>
+              <Paragraph>Trent Van Epps and Superphiz for encouragement and support in developing these NFTs</Paragraph>
             </Card>
           </Route>
           <Route path="/token/:id">
