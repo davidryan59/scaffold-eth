@@ -24,7 +24,7 @@ import {
 const { Title, Paragraph, Text } = Typography;
 
 
-const BUILD_NUMBER = '1.0.3'; // Increment this for each new build and public release
+const BUILD_NUMBER = '1.0.4'; // Increment this for each new build and public release
 
 
 // 📡 What chain are your contracts deployed to?
@@ -540,17 +540,17 @@ function App() {
           <Route exact path="/">
             <Card title={`Welcome to ${networkName} Merge Fractal NFTs!`}>
               <Paragraph>To celebrate the Ethereum Merge in September 2022, these Merge Fractals are 5875 unique pieces of fully on-chain digital generative art.<br />The animated SVG images are generated entirely within the smart contract, without using external data sources such as IPFS.</Paragraph>
-              <Paragraph>All proceeds of NFT sales go to the Protocol Guild to support Ethereum core development.<br />Minting starts at 0.001 Ξ, increasing by 0.0002 Ξ every 50 mints, so total raise is 75 Ξ.<br />NFT attributes are randomly generated, some are <a href={"/rarities"}>rarer</a> than others.</Paragraph>
+              <Paragraph>All proceeds of NFT sales (100%) go to the Protocol Guild to support Ethereum core development, with 0% charge on resale.<br />Minting starts at 0.001 Ξ, increasing by 0.0002 Ξ every 50 mints, so total raise is 75 Ξ.<br />NFT attributes are randomly generated, some are <a href={"/rarities"}>rarer</a> than others.</Paragraph>
               <Paragraph strong>Alternative minting sites</Paragraph>
               <Paragraph>Mint on <a href="https://mint.fun/0xCeaAb19BaB4AdBc831b98A4Cf54A6A85A79218a4" target="_blank">mint.fun</a> (this has known bug at price increment every 50 mints)</Paragraph>
-              <Paragraph>Mint on <a href="https://abi.ninja/0xCeaAb19BaB4AdBc831b98A4Cf54A6A85A79218a4" target="_blank">ABI Ninja</a>, see <a href="https://twitter.com/davidryan59/status/1566600481891569665" target="_blank">instructions</a></Paragraph>
+              <Paragraph>Mint on <a href="https://abi.ninja/0xCeaAb19BaB4AdBc831b98A4Cf54A6A85A79218a4" target="_blank">ABI Ninja</a> (most reliable!), see <a href="https://twitter.com/davidryan59/status/1566600481891569665" target="_blank">instructions</a></Paragraph>
               <Paragraph>Mint on <a href="https://etherscan.io/address/0xCeaAb19BaB4AdBc831b98A4Cf54A6A85A79218a4#code" target="_blank">Etherscan</a>, see <a href="https://twitter.com/davidryan59/status/1566601439652511744" target="_blank">instructions</a></Paragraph>
               <Paragraph>Batch mint up to 10 on <a href="https://many-fractals.surge.sh/" target="_blank">Austin Griffith's unaudited but awesome site</a><br />(need to test whether batch mint works over a price increment, or not?)</Paragraph>
               <Paragraph strong>Viewing sites</Paragraph>
               <Paragraph><a href="https://opensea.io/collection/mergefractals" target="_blank">View or sell on OpenSea</a></Paragraph>
               <Paragraph><a href="https://www.gem.xyz/collection/mergefractals/" target="_blank">View or sell on Gem.xyz</a></Paragraph>
-              <Paragraph><a href="https://oncyber.io/mergefractal" target="_blank">OnCyber gallery for drcoder.eth</a></Paragraph>
               <Paragraph><a href="https://app.zerion.io/" target="_blank">View your NFT collection with Zerion</a></Paragraph>
+              <Paragraph><a href="https://oncyber.io/mergefractal" target="_blank">OnCyber gallery for drcoder.eth</a>, showing twenty early NFTs</Paragraph>
               <Divider />
               <Paragraph>Latest mint:</Paragraph>
               <FractalList maxCount={1} dataSource={recentMergeFractals} />
@@ -584,15 +584,16 @@ function App() {
               <Paragraph>Verified NFT contract on Ethereum mainnet: <a href={"https://etherscan.io/address/0xCeaAb19BaB4AdBc831b98A4Cf54A6A85A79218a4"} target="_blank">0xCeaAb19BaB4AdBc831b98A4Cf54A6A85A79218a4</a></Paragraph>
               <Paragraph>Source code for NFT: <a href={"https://github.com/davidryan59/scaffold-eth/tree/merge-fractal"} target="_blank">GitHub repository for Merge Fractal</a></Paragraph>
               <Divider />
-              <Paragraph>NFT author: David Ryan</Paragraph>
-              <Paragraph>Twitter: <a href={"https://twitter.com/davidryan59"} target="_blank">@davidryan59</a></Paragraph>
-              <Paragraph>Artist page on Nifty Ink: <a href={"https://nifty.ink/artist/0xbfac61d1e22efa9d37fc3ff36b9dff9655131f52"} target="_blank">niftymaestro.eth</a></Paragraph>
-              <Divider />
-              <Paragraph>Shout outs</Paragraph>
+              <Paragraph strong>Shout outs</Paragraph>
               <Paragraph>Stateful Works who continually support the Protocol Guild and Ethereum core development</Paragraph>
               <Paragraph>Austin Griffith for the excellent Scaffold Eth framework that this project has used</Paragraph>
-              <Paragraph>Buidl Guidl for providing 0.31 ETH towards deploying the 3 NFT contracts to mainnet</Paragraph>
+              <Paragraph>Buidl Guidl for funding this project 0.31 ETH, which paid to deploy the 3 NFT contracts to mainnet</Paragraph>
               <Paragraph>Trent Van Epps and Superphiz for encouragement and support in developing these NFTs</Paragraph>
+              <Divider />
+              <Paragraph strong>NFT by David Ryan (drcoder.eth)</Paragraph>
+              <Paragraph>Twitter: <a href={"https://twitter.com/davidryan59"} target="_blank">@davidryan59</a></Paragraph>
+              <Paragraph>Artist page on Nifty Ink: <a href={"https://nifty.ink/artist/0xbfac61d1e22efa9d37fc3ff36b9dff9655131f52"} target="_blank">niftymaestro.eth</a></Paragraph>
+              <Paragraph>The only funding I've received (so far) is 0.31 ETH from Buidl Guidl, minus deployment costs, and I have minted 20 early NFTs.<br />No minting or royalty fees have been deducted by me. Hope these NFTs help everyone to celebrate the Ethereum Merge in style!</Paragraph>
             </Card>
           </Route>
           <Route path="/token/:id">
