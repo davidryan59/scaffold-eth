@@ -24,7 +24,7 @@ import {
 const { Title, Paragraph, Text } = Typography;
 
 
-const BUILD_NUMBER = '1.0.4'; // Increment this for each new build and public release
+const BUILD_NUMBER = '1.0.5'; // Increment this for each new build and public release
 
 
 // 📡 What chain are your contracts deployed to?
@@ -543,7 +543,7 @@ function App() {
               <Paragraph>All proceeds of NFT sales (100%) go to the Protocol Guild to support Ethereum core development, with 0% charge on resale.<br />Minting starts at 0.001 Ξ, increasing by 0.0002 Ξ every 50 mints, so total raise is 75 Ξ.<br />NFT attributes are randomly generated, some are <a href={"/rarities"}>rarer</a> than others.</Paragraph>
               <Paragraph strong>Alternative minting sites</Paragraph>
               <Paragraph>Mint on <a href="https://mint.fun/0xCeaAb19BaB4AdBc831b98A4Cf54A6A85A79218a4" target="_blank">mint.fun</a> (this has known bug at price increment every 50 mints)</Paragraph>
-              <Paragraph>Mint on <a href="https://abi.ninja/0xCeaAb19BaB4AdBc831b98A4Cf54A6A85A79218a4" target="_blank">ABI Ninja</a> (most reliable!), see <a href="https://twitter.com/davidryan59/status/1566600481891569665" target="_blank">instructions</a></Paragraph>
+              <Paragraph>Mint on <a href="https://abi.ninja/0xCeaAb19BaB4AdBc831b98A4Cf54A6A85A79218a4" target="_blank">ABI Ninja</a>, see <a href="https://twitter.com/davidryan59/status/1568604044297646083" target="_blank">instructions</a></Paragraph>
               <Paragraph>Mint on <a href="https://etherscan.io/address/0xCeaAb19BaB4AdBc831b98A4Cf54A6A85A79218a4#code" target="_blank">Etherscan</a>, see <a href="https://twitter.com/davidryan59/status/1566601439652511744" target="_blank">instructions</a></Paragraph>
               <Paragraph>Batch mint up to 10 on <a href="https://many-fractals.surge.sh/" target="_blank">Austin Griffith's unaudited but awesome site</a><br />(need to test whether batch mint works over a price increment, or not?)</Paragraph>
               <Paragraph strong>Viewing sites</Paragraph>
