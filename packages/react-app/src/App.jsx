@@ -24,7 +24,7 @@ import {
 const { Title, Paragraph, Text } = Typography;
 
 
-const BUILD_NUMBER = '1.0.2'; // Increment this for each new build and public release
+const BUILD_NUMBER = '1.0.3'; // Increment this for each new build and public release
 
 
 // 📡 What chain are your contracts deployed to?
@@ -546,7 +546,11 @@ function App() {
               <Paragraph>Mint on <a href="https://abi.ninja/0xCeaAb19BaB4AdBc831b98A4Cf54A6A85A79218a4" target="_blank">ABI Ninja</a>, see <a href="https://twitter.com/davidryan59/status/1566600481891569665" target="_blank">instructions</a></Paragraph>
               <Paragraph>Mint on <a href="https://etherscan.io/address/0xCeaAb19BaB4AdBc831b98A4Cf54A6A85A79218a4#code" target="_blank">Etherscan</a>, see <a href="https://twitter.com/davidryan59/status/1566601439652511744" target="_blank">instructions</a></Paragraph>
               <Paragraph>Batch mint up to 10 on <a href="https://many-fractals.surge.sh/" target="_blank">Austin Griffith's unaudited but awesome site</a><br />(need to test whether batch mint works over a price increment, or not?)</Paragraph>
-              <Paragraph>You can also <a href="https://opensea.io/collection/mergefractals" target="_blank">view the collection on OpenSea</a>, viewing and filtering by rarities is available there</Paragraph>
+              <Paragraph strong>Viewing sites</Paragraph>
+              <Paragraph><a href="https://opensea.io/collection/mergefractals" target="_blank">View or sell on OpenSea</a></Paragraph>
+              <Paragraph><a href="https://www.gem.xyz/collection/mergefractals/" target="_blank">View or sell on Gem.xyz</a></Paragraph>
+              <Paragraph><a href="https://oncyber.io/mergefractal" target="_blank">OnCyber gallery for drcoder.eth</a></Paragraph>
+              <Paragraph><a href="https://app.zerion.io/" target="_blank">View your NFT collection with Zerion</a></Paragraph>
               <Divider />
               <Paragraph>Latest mint:</Paragraph>
               <FractalList maxCount={1} dataSource={recentMergeFractals} />
