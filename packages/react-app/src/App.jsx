@@ -24,7 +24,7 @@ import {
 const { Title, Paragraph, Text } = Typography;
 
 
-const BUILD_NUMBER = '1.0.5'; // Increment this for each new build and public release
+const BUILD_NUMBER = '1.0.6'; // Increment this for each new build and public release
 
 
 // 📡 What chain are your contracts deployed to?
@@ -39,7 +39,7 @@ const targetNetwork = NETWORKS.mainnet;
 const networkName = 'Ethereum';
 
 
-const RECENT_DISPLAY_COUNT = 5;
+const RECENT_DISPLAY_COUNT = 3;
 
 // 😬 Sorry for all the console logging
 const DEBUG = true;
@@ -80,7 +80,8 @@ const web3Modal = new Web3Modal({
 });
 
 function App() {
-  const mainnetProvider = scaffoldEthProvider && scaffoldEthProvider._network ? scaffoldEthProvider : mainnetInfura;
+  // const mainnetProvider = scaffoldEthProvider && scaffoldEthProvider._network ? scaffoldEthProvider : mainnetInfura;
+  const mainnetProvider = scaffoldEthProvider;
 
   const logoutOfWeb3Modal = async () => {
      await web3Modal.clearCachedProvider();
