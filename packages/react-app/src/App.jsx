@@ -24,7 +24,7 @@ import {
 const { Title, Paragraph, Text } = Typography;
 
 
-const BUILD_NUMBER = '1.1.0'; // Increment this for each new build and public release
+const BUILD_NUMBER = '1.1.1'; // Increment this for each new build and public release
 
 
 // 📡 What chain are your contracts deployed to?
@@ -328,6 +328,8 @@ function App() {
 
   const [transferToAddresses, setTransferToAddresses] = useState({});
 
+  const stillLoading = () => mintLimitCR === undefined;
+
   const mintButton = () => (
     <Button type={"primary"} onClick={async ()=>{
       const isMintingAllowed = await readContracts.MergeFractal.isMintingAllowed();
@@ -337,8 +339,8 @@ function App() {
       }
     }}>
       {
-        mintLimitCR === undefined
-        ? 'Loading...'
+        stillLoading()
+        ? 'Mint button loading...'
         : isMintingAllowedCR
         ? (
             getPriceNextCR
@@ -354,7 +356,7 @@ function App() {
     return (
       <div style={{ maxWidth: 820, margin: "auto", marginTop: 24, paddingBottom: 16 }}>
         {isSigner ? mintButton() : (<div><Button type={"primary"} onClick={loadWeb3Modal}>CONNECT WALLET</Button></div>)}
-        <Paragraph type="warning">Infura API key is sometimes overloaded, other minting options are given below</Paragraph>
+        {stillLoading() ? (<Paragraph type="warning">Alternative minting sites are available below</Paragraph>) : null}
       </div>
     );
   }
