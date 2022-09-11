@@ -24,7 +24,7 @@ import {
 const { Title, Paragraph, Text } = Typography;
 
 
-const BUILD_NUMBER = '1.0.6'; // Increment this for each new build and public release
+const BUILD_NUMBER = '1.1.0'; // Increment this for each new build and public release
 
 
 // 📡 What chain are your contracts deployed to?
