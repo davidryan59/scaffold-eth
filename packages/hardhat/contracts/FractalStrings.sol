@@ -7,6 +7,33 @@ import './SharedFnsAndData.sol';
 
 contract FractalStrings {
 
+  // string internal constant SCALE_FACTOR = '0.33333';
+  // string internal constant CIRCLE_RADIUS = '0.5';
+  // string internal constant OVERALL_SCALE = '280';
+
+  // string internal constant SCALE_FACTOR = '0.37796';
+  // string internal constant CIRCLE_RADIUS = '0.5';
+  // string internal constant OVERALL_SCALE = '280';
+
+  // string internal constant SCALE_FACTOR = '0.385';
+  // string internal constant CIRCLE_RADIUS = '0.46';
+  // string internal constant OVERALL_SCALE = '320';
+
+  // string internal constant SCALE_FACTOR = '0.4';
+  // string internal constant CIRCLE_RADIUS = '0.45';
+  // string internal constant OVERALL_SCALE = '300';
+
+  string internal constant SCALE_FACTOR = '0.42';
+  string internal constant CIRCLE_RADIUS = '0.435';
+  string internal constant OVERALL_SCALE = '275';
+
+  // string internal constant SCALE_FACTOR = '0.45';
+  // string internal constant CIRCLE_RADIUS = '0.4';
+  // string internal constant OVERALL_SCALE = '245';
+
+  string internal constant ROTATION_DURATION_S = '100';
+  // string internal constant ROTATION_DURATION_S = '1000';
+
   SharedFnsAndData sfad;
   constructor(address sfadAddress) public {
     sfad = SharedFnsAndData(sfadAddress);
@@ -14,8 +41,9 @@ contract FractalStrings {
 
   // To tesselate the Ethereum diamond, shapes are rectangles
   function defineShape(uint256 gen, uint8 sideIdx, uint8 colourIdxFill) internal view returns (string memory) {
-    return '<circle id="shape0" fill="rgba(0,0,0,1)" stroke="none" cx="0" cy="0" r="0.5"/>';
-    // return '<circle id="shape0" fill="rgba(255,255,0,0.5)" stroke-width="0.3px" stroke="rgba(0,0,255,0.8)" cx="0" cy="0" r="0.5"/>';
+    return string(abi.encodePacked('<circle id="shape0" fill="rgba(0,0,0,1)" stroke="none" cx="0" cy="0" r="',
+    CIRCLE_RADIUS,
+    '"/>'));
   }
 
   function defineAllShapes(uint256 gen) internal view returns (string memory) {
@@ -35,7 +63,9 @@ contract FractalStrings {
   ];
   function getIteration1Item(uint256 gen, uint8 itemIdx) private view returns (string memory) {
     return string(abi.encodePacked(
-      '<g transform="scale(0.42857)"><g transform="',
+      '<g transform="scale(',
+      SCALE_FACTOR,
+      ')"><g transform="',
       translates[itemIdx],
       '"><use href="#shape0"/></g></g>'
     ));
@@ -126,7 +156,9 @@ contract FractalStrings {
   // string[4] internal ys = ['-0.25',' 0.25',' 0.25','-0.25'];
   function getIterationNItem(uint256 gen, uint8 iteration, uint8 sideIdx, uint8 itemIdx) internal view returns (string memory) {
     return string(abi.encodePacked(
-      '<g transform="scale(0.42857)">',
+      '<g transform="scale(',
+      SCALE_FACTOR,
+      ')">',
       '<g transform="',
       translates[itemIdx],
       '">',
@@ -137,7 +169,9 @@ contract FractalStrings {
       '">',
       '<animateTransform attributeName="transform" attributeType="XML" type="rotate" values="0;',
       getRotationNum(gen, itemIdx),
-      '" dur="1000s" repeatCount="indefinite" />',
+      '" dur="',
+      ROTATION_DURATION_S,
+      's" repeatCount="indefinite" />',
       '</use></g></g>'
     ));
   }
@@ -202,11 +236,15 @@ contract FractalStrings {
 
   function renderEthereum(uint256 gen, uint8 sideIdx, uint8 iteration, int16 translate) public view returns (string memory) {
     return string(abi.encodePacked(
-      '<g><animateTransform attributeName="transform" attributeType="XML" type="rotate" values="0 200 200;360 200 200" dur="1000s" repeatCount="indefinite" additive="sum"/><use href="#it_',
+      '<g><animateTransform attributeName="transform" attributeType="XML" type="rotate" values="0 200 200;360 200 200" dur="',
+      ROTATION_DURATION_S,
+      's" repeatCount="indefinite" additive="sum"/><use href="#it_',
       sfad.uint2str(iteration),
       '_',
       sfad.uint2str(sideIdx),
-      '" transform="translate(200, 200) scale(282, 282)"/></g>'
+      '" transform="translate(200, 200) scale(',
+      OVERALL_SCALE,
+      ')"/></g>'
     ));
   }
 
