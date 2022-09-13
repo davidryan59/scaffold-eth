@@ -24,7 +24,7 @@ import {
 const { Title, Paragraph, Text } = Typography;
 
 
-const BUILD_NUMBER = '1.1.2'; // Increment this for each new build and public release
+const BUILD_NUMBER = '1.1.3'; // Increment this for each new build and public release
 
 
 // 📡 What chain are your contracts deployed to?
@@ -157,7 +157,7 @@ function App() {
   // At the moment tokens do not update over time. If they did, would want to refresh this cache after say 1 day.
   const getTokenURI = async (contractAddress, tokenId) => {
     let result = "";
-    const localStorageKey = `MRGFRC_${contractAddress.slice(2, 8)}_id${tokenId}_tokenURI`;
+    const localStorageKey = `nft${contractAddress.slice(2, 6)}_id${tokenId}_uri`;
     const existingData = window.localStorage.getItem(localStorageKey);
     if (!existingData) {
       console.log(`Get Token URI: getting new data for ${localStorageKey}`);
