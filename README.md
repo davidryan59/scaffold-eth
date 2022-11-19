@@ -1,8 +1,10 @@
-# 🏗 Scaffold-ETH
+# Demo Pet Stroker
 
-> everything you need to build on Ethereum! 🚀
+Example contract for Sozu Haus / Game7 to demonstrate Metamask Snaps 
 
-🧪 Quickly experiment with Solidity using a frontend that adapts to your smart contract:
+By David Ryan and Alex Cheema
+
+---------------------
 
 ![image](https://user-images.githubusercontent.com/2653167/124158108-c14ca380-da56-11eb-967e-69cde37ca8eb.png)
 
@@ -39,7 +41,7 @@ cd scaffold-eth
 yarn deploy
 ```
 
-🔏 Edit your smart contract `YourContract.sol` in `packages/hardhat/contracts`
+🔏 Edit your smart contract `DemoPetStroker.sol` in `packages/hardhat/contracts`
 
 📝 Edit your frontend `App.jsx` in `packages/react-app/src`
 
@@ -68,7 +70,7 @@ Documentation, tutorials, challenges, and many more resources, visit: [docs.scaf
 
 📕 Read the docs: https://docs.soliditylang.org
 
-📚 Go through each topic from [solidity by example](https://solidity-by-example.org) editing `YourContract.sol` in **🏗 scaffold-eth**
+📚 Go through each topic from [solidity by example](https://solidity-by-example.org) editing `DemoPetStroker.sol` in **🏗 scaffold-eth**
 
 - [Primitive Data Types](https://solidity-by-example.org/primitives/)
 - [Mappings](https://solidity-by-example.org/mapping/)

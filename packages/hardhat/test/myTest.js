@@ -12,29 +12,29 @@ describe("My Dapp", function () {
     setTimeout(done, 2000);
   });
 
-  describe("YourContract", function () {
-    it("Should deploy YourContract", async function () {
-      const YourContract = await ethers.getContractFactory("YourContract");
+  describe("DemoPetStroker", function () {
+    it("Should deploy DemoPetStroker", async function () {
+      const DemoPetStroker = await ethers.getContractFactory("DemoPetStroker");
 
-      myContract = await YourContract.deploy();
+      myContract = await DemoPetStroker.deploy();
     });
 
-    describe("setPurpose()", function () {
-      it("Should be able to set a new purpose", async function () {
-        const newPurpose = "Test Purpose";
+    describe("strokeThePet()", function () {
+      it("Should be able to set a new countPetStrokes", async function () {
+        const newPetStrokes = "Test PetStrokes";
 
-        await myContract.setPurpose(newPurpose);
-        expect(await myContract.purpose()).to.equal(newPurpose);
+        await myContract.strokeThePet(newPetStrokes);
+        expect(await myContract.countPetStrokes()).to.equal(newPetStrokes);
       });
 
-      it("Should emit a SetPurpose event ", async function () {
+      it("Should emit a PetJustStroked event ", async function () {
         const [owner] = await ethers.getSigners();
 
-        const newPurpose = "Another Test Purpose";
+        const newPetStrokes = "Another Test PetStrokes";
 
-        expect(await myContract.setPurpose(newPurpose))
-          .to.emit(myContract, "SetPurpose")
-          .withArgs(owner.address, newPurpose);
+        expect(await myContract.strokeThePet(newPetStrokes))
+          .to.emit(myContract, "PetJustStroked")
+          .withArgs(owner.address, newPetStrokes);
       });
     });
   });

@@ -6,7 +6,7 @@ import { SyncOutlined } from "@ant-design/icons";
 import { Address, Balance, Events } from "../components";
 
 export default function ExampleUI({
-  purpose,
+  countPetStrokes,
   address,
   mainnetProvider,
   localProvider,
@@ -16,29 +16,22 @@ export default function ExampleUI({
   readContracts,
   writeContracts,
 }) {
-  const [newPurpose, setNewPurpose] = useState("loading...");
-
   return (
     <div>
       {/*
-        ⚙️ Here is an example UI that displays and sets the purpose in your smart contract:
+        ⚙️ Here is an example UI that displays and sets the countPetStrokes in your smart contract:
       */}
       <div style={{ border: "1px solid #cccccc", padding: 16, width: 400, margin: "auto", marginTop: 64 }}>
         <h2>Example UI:</h2>
-        <h4>purpose: {purpose}</h4>
+        <h4>countPetStrokes: {countPetStrokes}</h4>
         <Divider />
         <div style={{ margin: 8 }}>
-          <Input
-            onChange={e => {
-              setNewPurpose(e.target.value);
-            }}
-          />
           <Button
             style={{ marginTop: 8 }}
             onClick={async () => {
-              /* look how you call setPurpose on your contract: */
+              /* look how you call strokeThePet on your contract: */
               /* notice how you pass a call back for tx updates too */
-              const result = tx(writeContracts.YourContract.setPurpose(newPurpose), update => {
+              const result = tx(writeContracts.DemoPetStroker.strokeThePet(), update => {
                 console.log("📡 Transaction Update:", update);
                 if (update && (update.status === "confirmed" || update.status === 1)) {
                   console.log(" 🍾 Transaction " + update.hash + " finished!");
@@ -57,7 +50,7 @@ export default function ExampleUI({
               console.log(await result);
             }}
           >
-            Set Purpose!
+            Stroke the Pet!
           </Button>
         </div>
         <Divider />
@@ -84,7 +77,7 @@ export default function ExampleUI({
         <Divider />
         Your Contract Address:
         <Address
-          address={readContracts && readContracts.YourContract ? readContracts.YourContract.address : null}
+          address={readContracts && readContracts.DemoPetStroker ? readContracts.DemoPetStroker.address : null}
           ensProvider={mainnetProvider}
           fontSize={16}
         />
@@ -92,11 +85,11 @@ export default function ExampleUI({
         <div style={{ margin: 8 }}>
           <Button
             onClick={() => {
-              /* look how you call setPurpose on your contract: */
-              tx(writeContracts.YourContract.setPurpose("🍻 Cheers"));
+              /* look how you call strokeThePet on your contract: */
+              tx(writeContracts.DemoPetStroker.strokeThePet("🍻 Cheers"));
             }}
           >
-            Set Purpose to &quot;🍻 Cheers&quot;
+            Stroke the Pet to &quot;🍻 Cheers&quot;
           </Button>
         </div>
         <div style={{ margin: 8 }}>
@@ -107,7 +100,7 @@ export default function ExampleUI({
               here we are sending value straight to the contract's address:
             */
               tx({
-                to: writeContracts.YourContract.address,
+                to: writeContracts.DemoPetStroker.address,
                 value: utils.parseEther("0.001"),
               });
               /* this should throw an error about "no fallback nor receive function" until you add it */
@@ -119,16 +112,16 @@ export default function ExampleUI({
         <div style={{ margin: 8 }}>
           <Button
             onClick={() => {
-              /* look how we call setPurpose AND send some value along */
+              /* look how we call strokeThePet AND send some value along */
               tx(
-                writeContracts.YourContract.setPurpose("💵 Paying for this one!", {
+                writeContracts.DemoPetStroker.strokeThePet("💵 Paying for this one!", {
                   value: utils.parseEther("0.001"),
                 }),
               );
-              /* this will fail until you make the setPurpose function payable */
+              /* this will fail until you make the strokeThePet function payable */
             }}
           >
-            Set Purpose With Value
+            Stroke the Pet With Value
           </Button>
         </div>
         <div style={{ margin: 8 }}>
@@ -136,9 +129,9 @@ export default function ExampleUI({
             onClick={() => {
               /* you can also just craft a transaction and send it to the tx() transactor */
               tx({
-                to: writeContracts.YourContract.address,
+                to: writeContracts.DemoPetStroker.address,
                 value: utils.parseEther("0.001"),
-                data: writeContracts.YourContract.interface.encodeFunctionData("setPurpose(string)", [
+                data: writeContracts.DemoPetStroker.interface.encodeFunctionData("strokeThePet(string)", [
                   "🤓 Whoa so 1337!",
                 ]),
               });
@@ -152,12 +145,12 @@ export default function ExampleUI({
 
       {/*
         📑 Maybe display a list of events?
-          (uncomment the event and emit line in YourContract.sol! )
+          (uncomment the event and emit line in DemoPetStroker.sol! )
       */}
       <Events
         contracts={readContracts}
-        contractName="YourContract"
-        eventName="SetPurpose"
+        contractName="DemoPetStroker"
+        eventName="PetJustStroked"
         localProvider={localProvider}
         mainnetProvider={mainnetProvider}
         startBlock={1}

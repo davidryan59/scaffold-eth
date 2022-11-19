@@ -11,8 +11,8 @@ import { Link } from "react-router-dom";
  **/
 function Home({ yourLocalBalance, readContracts }) {
   // you can also use hooks locally in your component of choice
-  // in this case, let's keep track of 'purpose' variable from our contract
-  const purpose = useContractReader(readContracts, "YourContract", "purpose");
+  // in this case, let's keep track of 'countPetStrokes' variable from our contract
+  const countPetStrokes = useContractReader(readContracts, "DemoPetStroker", "countPetStrokes");
 
   return (
     <div>
@@ -33,7 +33,7 @@ function Home({ yourLocalBalance, readContracts }) {
           className="highlight"
           style={{ marginLeft: 4, /* backgroundColor: "#f9f9f9", */ padding: 4, borderRadius: 4, fontWeight: "bolder" }}
         >
-          YourContract.sol
+          DemoPetStroker.sol
         </span>{" "}
         in{" "}
         <span
@@ -43,7 +43,7 @@ function Home({ yourLocalBalance, readContracts }) {
           packages/hardhat/contracts
         </span>
       </div>
-      {!purpose ? (
+      {!countPetStrokes ? (
         <div style={{ margin: 32 }}>
           <span style={{ marginRight: 8 }}>👷‍♀️</span>
           You haven't deployed your contract yet, run
@@ -75,7 +75,7 @@ function Home({ yourLocalBalance, readContracts }) {
       ) : (
         <div style={{ margin: 32 }}>
           <span style={{ marginRight: 8 }}>🤓</span>
-          The "purpose" variable from your contract is{" "}
+          The "countPetStrokes" variable from your contract is{" "}
           <span
             className="highlight"
             style={{
@@ -85,7 +85,7 @@ function Home({ yourLocalBalance, readContracts }) {
               fontWeight: "bolder",
             }}
           >
-            {purpose}
+            {countPetStrokes}
           </span>
         </div>
       )}

@@ -1,11 +1,11 @@
 import { BigInt, Address } from "@graphprotocol/graph-ts";
 import {
-  YourContract,
-  SetPurpose,
-} from "../generated/YourContract/YourContract";
-import { Purpose, Sender } from "../generated/schema";
+  DemoPetStroker,
+  PetJustStroked,
+} from "../generated/DemoPetStroker/DemoPetStroker";
+import { PetStrokes, Sender } from "../generated/schema";
 
-export function handleSetPurpose(event: SetPurpose): void {
+export function handleStrokeThePet(event: PetJustStroked): void {
   let senderString = event.params.sender.toHexString();
 
   let sender = Sender.load(senderString);
@@ -19,15 +19,15 @@ export function handleSetPurpose(event: SetPurpose): void {
     sender.purposeCount = sender.purposeCount.plus(BigInt.fromI32(1));
   }
 
-  let purpose = new Purpose(
+  let countPetStrokes = new PetStrokes(
     event.transaction.hash.toHex() + "-" + event.logIndex.toString()
   );
 
-  purpose.purpose = event.params.purpose;
-  purpose.sender = senderString;
-  purpose.createdAt = event.block.timestamp;
-  purpose.transactionHash = event.transaction.hash.toHex();
+  countPetStrokes.countPetStrokes = event.params.countPetStrokes;
+  countPetStrokes.sender = senderString;
+  countPetStrokes.createdAt = event.block.timestamp;
+  countPetStrokes.transactionHash = event.transaction.hash.toHex();
 
-  purpose.save();
+  countPetStrokes.save();
   sender.save();
 }

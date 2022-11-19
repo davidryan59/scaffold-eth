@@ -11,8 +11,8 @@ import Address from "./Address";
 
   <Events
     contracts={readContracts}
-    contractName="YourContract"
-    eventName="SetPurpose"
+    contractName="DemoPetStroker"
+    eventName="PetJustStroked"
     localProvider={localProvider}
     mainnetProvider={mainnetProvider}
     startBlock={1}
@@ -31,7 +31,7 @@ export default function Events({ contracts, contractName, eventName, localProvid
         dataSource={events}
         renderItem={item => {
           return (
-            <List.Item key={item.blockNumber + "_" + item.args.sender + "_" + item.args.purpose}>
+            <List.Item key={item.blockNumber + "_" + item.args.sender + "_" + item.args.countPetStrokes}>
               <Address address={item.args[0]} ensProvider={mainnetProvider} fontSize={16} />
               {item.args[1]}
             </List.Item>

@@ -28,7 +28,7 @@ function Subgraph(props) {
   {
     purposes(first: 25, orderBy: createdAt, orderDirection: desc) {
       id
-      purpose
+      countPetStrokes
       createdAt
       sender {
         id
@@ -46,9 +46,9 @@ function Subgraph(props) {
 
   const purposeColumns = [
     {
-      title: "Purpose",
-      dataIndex: "purpose",
-      key: "purpose",
+      title: "PetStrokes",
+      dataIndex: "countPetStrokes",
+      key: "countPetStrokes",
     },
     {
       title: "Sender",
@@ -63,7 +63,7 @@ function Subgraph(props) {
     },
   ];
 
-  const [newPurpose, setNewPurpose] = useState("loading...");
+  const [newPetStrokes, setNewPurpose] = useState("loading...");
 
   const deployWarning = (
     <div style={{ marginTop: 8, padding: 8 }}>Warning: 🤔 Have you deployed your subgraph yet?</div>
@@ -174,12 +174,12 @@ function Subgraph(props) {
           />
           <Button
             onClick={() => {
-              console.log("newPurpose", newPurpose);
-              /* look how you call setPurpose on your contract: */
-              props.tx(props.writeContracts.YourContract.setPurpose(newPurpose));
+              console.log("newPetStrokes", newPetStrokes);
+              /* look how you call strokeThePet on your contract: */
+              props.tx(props.writeContracts.DemoPetStroker.strokeThePet(newPetStrokes));
             }}
           >
-            Set Purpose
+            Stroke the Pet
           </Button>
         </div>
 
