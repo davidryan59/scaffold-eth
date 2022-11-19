@@ -55,15 +55,15 @@ export default function ExampleUI({
             console.log(await result);
           }}
         >
-          press me to stroke the pet painfully
+          PREss Me to stroKe the peT pAinFuLly
         </Button>
       </div>
       <img src={petImage} alt="Cute Pet" style={{ margin: '10px' }} />
-      <p style={{ color: 'darkgreen' }}>pet as been stroked like {countPetStrokes} times</p>
+      <p style={{ color: 'darkgreen' }}>pEt as beEN stROked likE {countPetStrokes} tiMEs</p>
       <p style={{ fontSize: '50%' }}>
         <a href="https://goerli.etherscan.io/address/0xf06eb42a778be7a24a4ea4ef48ea880d669fc949#code" target="_blank"><u>Goerli Contract</u></a> | <a href="https://github.com/davidryan59/scaffold-eth/tree/stroke-pet" target="_blank"><u>GitHub repo</u></a>
       </p>
-      <div style={{ margin: '100px', color: 'rgba(255,0,0,0)' }}>.</div>
+      <div style={{ margin: '500px', color: 'rgba(255,0,0,0.6)', fontSize: '45%' }}>graphic design proudly presented by drcoder.eth</div>
     </div>
   );
 }

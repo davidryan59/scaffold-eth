@@ -25,6 +25,6 @@ export default function Header({ link, title, subTitle, ...props }) {
 
 Header.defaultProps = {
   link: "https://github.com/austintgriffith/scaffold-eth",
-  title: "Stroke The Pet Painfully",
-  subTitle: "Demonstrating our love-hate relationship with Metamask pop-ups",
+  title: "sTROke tHe pET pAINfully",
+  subTitle: "demoNStrating love-HATE relaTIONship wiTh meTAmask pOP-up",
 };
