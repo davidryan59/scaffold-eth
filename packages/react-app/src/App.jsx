@@ -295,7 +295,7 @@ function App(props) {
         fontSize: '150%'
       }} selectedKeys={[location.pathname]} mode="horizontal">
         <Menu.Item key="/">
-          <Link to="/"><span style={{ color: '#FF8800' }}>conNect to GOERLI tHen STRoke ze pET</span></Link>
+          <Link to="/"><span style={{ color: '#FF8800' }}>connect to GOERLI then STROke ze pet</span></Link>
         </Menu.Item>
       </Menu>
 
