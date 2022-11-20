@@ -288,33 +288,44 @@ function App(props) {
         logoutOfWeb3Modal={logoutOfWeb3Modal}
         USE_NETWORK_SELECTOR={USE_NETWORK_SELECTOR}
       />
-      <Menu style={{
-        textAlign: "center",
-        marginTop: 0,
-        backgroundColor: 'cyan',
-        fontFamily: 'Comic Sans MS',
-        fontSize: '150%'
-      }} selectedKeys={[location.pathname]} mode="horizontal">
-        <Menu.Item key="/">
-          <Link to="/"><span style={{ color: '#FF8800' }}>stroke ze PET very painfu-ally</span></Link>
-        </Menu.Item>
-      </Menu>
+      {
+        !web3Modal?.cachedProvider
+        ?
+        'Please press Connect in top right'
+        :
+        <Menu style={{
+          textAlign: "center",
+          marginTop: 0,
+          backgroundColor: 'cyan',
+          fontFamily: 'Comic Sans MS',
+          fontSize: '150%'
+        }} selectedKeys={[location.pathname]} mode="horizontal">
+          <Menu.Item key="/">
+            <Link to="/"><span style={{ color: '#FF8800' }}>stroke ze PET very painfu-ally</span></Link>
+          </Menu.Item>
+        </Menu>
+      }
 
       <Switch>
         <Route exact path="/">
-          {/* pass in any web3 props to this Home component. For example, yourLocalBalance */}
-          <ExampleUI
-            address={address}
-            userSigner={userSigner}
-            mainnetProvider={mainnetProvider}
-            localProvider={localProvider}
-            yourLocalBalance={yourLocalBalance}
-            price={price}
-            tx={tx}
-            writeContracts={writeContracts}
-            readContracts={readContracts}
-            countPetStrokes={countPetStrokes}
-          />
+          {
+            !web3Modal?.cachedProvider
+            ?
+            null
+            :
+            <ExampleUI
+              address={address}
+              userSigner={userSigner}
+              mainnetProvider={mainnetProvider}
+              localProvider={localProvider}
+              yourLocalBalance={yourLocalBalance}
+              price={price}
+              tx={tx}
+              writeContracts={writeContracts}
+              readContracts={readContracts}
+              countPetStrokes={countPetStrokes}
+            />
+          }
         </Route>
       </Switch>
     </div>

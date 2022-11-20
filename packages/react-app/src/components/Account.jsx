@@ -86,7 +86,7 @@ export default function Account({
 
   return (
     <div style={{ display: "flex" }}>
-      {display}
+      {web3Modal?.cachedProvider ? display : null}
       {web3Modal && (
         <Button style={{ marginLeft: 8 }} shape="round" onClick={accountButtonInfo.action}>
           {accountButtonInfo.name}
