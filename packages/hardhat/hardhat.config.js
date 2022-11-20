@@ -28,7 +28,8 @@ const { isAddress, getAddress, formatUnits, parseUnits } = utils;
 // Select the network you want to deploy to here:
 //
 // const defaultNetwork = "localhost";
-const defaultNetwork = "goerli";
+// const defaultNetwork = "goerli";
+const defaultNetwork = "goerliOptimism";
 
 const mainnetGwei = 21;
 
@@ -161,6 +162,15 @@ module.exports = {
       },
       companionNetworks: {
         l1: "mainnet",
+      },
+    },
+    goerliOptimism: {
+      url: "https://goerli.optimism.io/",
+      accounts: {
+        mnemonic: mnemonic(),
+      },
+      companionNetworks: {
+        l1: "goerli",
       },
     },
     kovanOptimism: {

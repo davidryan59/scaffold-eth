@@ -54,7 +54,8 @@ const { ethers } = require("ethers");
 
 /// 📡 What chain are your contracts deployed to?
 // const initialNetwork = NETWORKS.localhost; // <------- select your target frontend network (localhost, rinkeby, xdai, mainnet)
-const initialNetwork = NETWORKS.goerli;
+// const initialNetwork = NETWORKS.goerli;
+const initialNetwork = NETWORKS.goerliOptimism;
 
 // 😬 Sorry for all the console logging
 const DEBUG = true;
@@ -295,7 +296,7 @@ function App(props) {
         fontSize: '150%'
       }} selectedKeys={[location.pathname]} mode="horizontal">
         <Menu.Item key="/">
-          <Link to="/"><span style={{ color: '#FF8800' }}>connect to GOERLI then STROke ze pet</span></Link>
+          <Link to="/"><span style={{ color: '#FF8800' }}>stroke ze PET very painfu-ally</span></Link>
         </Menu.Item>
       </Menu>
 

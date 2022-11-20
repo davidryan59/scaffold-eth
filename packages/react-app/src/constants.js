@@ -21,6 +21,28 @@ export const NETWORKS = {
     blockExplorer: "",
     rpcUrl: localRpcUrl,
   },
+  goerli: {
+    name: "goerli",
+    color: "#0975F6",
+    chainId: 5,
+    faucet: "https://goerli-faucet.slock.it/",
+    blockExplorer: "https://goerli.etherscan.io/",
+    rpcUrl: `https://goerli.infura.io/v3/${INFURA_ID}`,
+  },
+  goerliOptimism: {
+    name: "goerliOptimism",
+    color: "#f01a37",
+    chainId: 420,
+    blockExplorer: "https://blockscout.com/optimism/goerli",
+    rpcUrl: "https://goerli.optimism.io"
+  },
+  optimism: {
+    name: "optimism",
+    color: "#f01a37",
+    chainId: 10,
+    blockExplorer: "https://optimistic.etherscan.io/",
+    rpcUrl: `https://mainnet.optimism.io`,
+  },
   mainnet: {
     name: "mainnet",
     color: "#ff8b9e",
@@ -51,14 +73,6 @@ export const NETWORKS = {
     faucet: "https://faucet.ropsten.be/",
     blockExplorer: "https://ropsten.etherscan.io/",
     rpcUrl: `https://ropsten.infura.io/v3/${INFURA_ID}`,
-  },
-  goerli: {
-    name: "goerli",
-    color: "#0975F6",
-    chainId: 5,
-    faucet: "https://goerli-faucet.slock.it/",
-    blockExplorer: "https://goerli.etherscan.io/",
-    rpcUrl: `https://goerli.infura.io/v3/${INFURA_ID}`,
   },
   xdai: {
     name: "xdai",
@@ -111,13 +125,6 @@ export const NETWORKS = {
     blockExplorer: "https://kovan-optimistic.etherscan.io/",
     rpcUrl: `https://kovan.optimism.io`,
     gasPrice: 0,
-  },
-  optimism: {
-    name: "optimism",
-    color: "#f01a37",
-    chainId: 10,
-    blockExplorer: "https://optimistic.etherscan.io/",
-    rpcUrl: `https://mainnet.optimism.io`,
   },
   rinkebyArbitrum: {
     name: "rinkebyArbitrum",

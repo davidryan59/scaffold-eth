@@ -61,31 +61,23 @@ export default function ExampleUI({
       <img src={petImage} alt="Cute Pet" style={{ margin: '10px' }} />
       <p style={{ color: 'darkgreen' }}>pet as been STROKed like {countPetStrokes} times</p>
       <p style={{ color: 'grey' }}>cure pain to use METAMASK SNAP for no popup... coming s👀N</p>
-      <div style={{ color: '#BB8800', fontSize: '50%' }}>
+      <div style={{ color: '#BB8800', fontSize: '65%' }}>
         <div style={{ }}>
           <p>&nbsp;</p>
           <p><b>Instructions</b></p>
+          <p><i>tl;dr – get Metamask on Optimistic Goerli network, and have some OptGoerliETH</i></p>
+          <p><b>ze loooonnng and boooring steps</b></p>
           <p>Log in to Metamask, change network to Goerli testnet</p>
           <p>If you need Goerli ETH, use the faucet <a href="https://goerlifaucet.com/" target="_blank"><u>here</u></a></p>
           <p>Bridge Goerli ETH to Optimistic Goerli <a href="https://app.optimism.io/bridge/deposit" target="_blank"><u>here</u></a></p>
           <p>Add the Optimistic Goerli network to Metamask using <a href="https://chainlist.org/chain/420" target="_blank"><u>Chainlist</u></a></p>
-          <p>Inspect the `stroke pet` contract and <a href="https://github.com/davidryan59/scaffold-eth/tree/stroke-pet" target="_blank"><u>GitHub repo</u></a></p>
+          <p>Inspect the `stroke pet` <a href="https://blockscout.com/optimism/goerli/address/0xECf7D972D829eF1b5c9875b1aceb0D442946BD2b/contracts#address-tabs" target="_blank"><u>Contract</u></a> and <a href="https://github.com/davidryan59/scaffold-eth/tree/stroke-pet" target="_blank"><u>GitHub repo</u></a></p>
           <p>&nbsp;</p>
         </div>
-        <p style={{ fontSize: '50%' }}>
-          <a href="https://chainlist.org/chain/420" target="_blank"><u>Add Optimistic Goerli network</u></a>
-        </p>
-        <p style={{ fontSize: '50%' }}>
-          <a href="https://app.optimism.io/bridge/deposit" target="_blank"><u>Deposit Goerli ETH to Optimistic Goerli</u></a>
-        </p>
-        <p style={{ fontSize: '50%' }}>
-          Goerli <a href="https://goerli.etherscan.io/address/0xf06eb42a778be7a24a4ea4ef48ea880d669fc949#code" target="_blank"><u>Contract</u></a> and <a href="https://goerlifaucet.com/" target="_blank"><u>Faucet</u></a>
-        </p>
-        <p style={{ fontSize: '50%' }}>
-          <a href="https://github.com/davidryan59/scaffold-eth/tree/stroke-pet" target="_blank"><u>GitHub repo</u></a>
-        </p>
       </div>
-      <div style={{ margin: '500px', color: 'rgba(255,0,0,0.6)', fontSize: '45%' }}>graphic design proudly presented by drcoder.eth</div>
+      <div style={{ margin: '500px', color: 'rgba(255,0,0,0.6)', fontSize: '45%' }}>
+        graphic design proudly presented by drcoder.eth
+      </div>
     </div>
   );
 }
