@@ -289,6 +289,10 @@ function App(props) {
         USE_NETWORK_SELECTOR={USE_NETWORK_SELECTOR}
       />
       {
+        (NETWORKCHECK && localChainId && selectedChainId && localChainId !== selectedChainId)
+        ?
+        null
+        :
         !web3Modal?.cachedProvider
         ?
         'Please press Connect in top right'
@@ -309,6 +313,10 @@ function App(props) {
       <Switch>
         <Route exact path="/">
           {
+            (NETWORKCHECK && localChainId && selectedChainId && localChainId !== selectedChainId)
+            ?
+            null
+            :
             !web3Modal?.cachedProvider
             ?
             null
