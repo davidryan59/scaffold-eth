@@ -1,0 +1,6 @@
+.mainButton:hover {
+  opacity: 0.6;
+}
+.mainButton:active {
+  opacity: 0.33;
+}

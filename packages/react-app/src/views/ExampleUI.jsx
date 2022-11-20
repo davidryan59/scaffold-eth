@@ -1,6 +1,7 @@
 import { Button, Row, Col, Card, DatePicker, Divider, Input, Progress, Slider, Spin, Switch } from "antd";
 import React, { useState } from "react";
 import petImage from '../cute-pet.png';
+import './ExampleUI.css';
 import { utils } from "ethers";
 import { SyncOutlined } from "@ant-design/icons";
 
@@ -21,6 +22,7 @@ export default function ExampleUI({
     <div style={{ fontFamily: 'Comic Sans MS', fontSize: '200%' }}>
       <div style={{ margin: 8 }}>
         <Button
+          className="mainButton"
           style={{
             margin: 20,
             paddingBottom: '10px',
@@ -34,7 +36,7 @@ export default function ExampleUI({
             color: '#FF0000'
           }}
           onClick={async () => {
-            /* look how you call strokeThePet on your contract: */
+            /* look how you call strokeThePet on your contract:*/
             /* notice how you pass a call back for tx updates too */
             const result = tx(writeContracts.DemoPetStroker.strokeThePet(), update => {
               console.log("📡 Transaction Update:", update);
@@ -51,7 +53,7 @@ export default function ExampleUI({
                 );
               }
             });
-            console.log("awaiting metamask/web3 confirm result...", result);
+            console.log("awaiting metamask/web3 confirm result....", result);
             console.log(await result);
           }}
         >
